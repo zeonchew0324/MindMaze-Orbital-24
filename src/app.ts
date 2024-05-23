@@ -32,12 +32,30 @@ app.get('/api', (req, res) => {
 
 // Signup post request
 app.post('/signup', async (req, res) => {
-  const userResponse = await admin.auth().createUser({
-    email: req.body.email,
-    password: req.body.password,
-    disabled: false
-  })
-  res.json(userResponse)
+  try {
+    const userResponse = await admin.auth().createUser({
+      email: req.body.email,
+      password: req.body.password,
+      disabled: false
+    })
+    res.json(userResponse)
+  } catch (e) {
+    res.status(500).json({error: e.message});
+  }
+})
+
+// Signin post request
+app.post('/signup', async (req, res) => {
+  try {
+    const userResponse = await admin.auth().createUser({
+      email: req.body.email,
+      password: req.body.password,
+      disabled: false
+    })
+    res.json(userResponse)
+  } catch (e) {
+    res.status(500).json({error: e.message});
+  }
 })
 
 // Start the server
