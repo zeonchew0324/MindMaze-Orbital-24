@@ -1,3 +1,6 @@
+import { Request, Response } from "express"
+import { FirebaseError } from "firebase-admin/app"
+
 const {PORT} = require('../process.env')
 const express = require('express')
 
@@ -20,18 +23,25 @@ app.use(express.json())
 
 app.use(express.urlencoded({extended: true}))
 
+// Handle FirebaseAuthError
+import type { FirebaseAuthError } from 'firebase-admin/lib/utils/error';
+
+function isFirebaseAuthError(error: any): error is FirebaseAuthError {
+  return true;
+}
+
 // Define a basic route
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
   res.send('Hello, WoRLD')
 })
 
 // Define default api route
-app.get('/api', (req, res) => {
+app.get('/api', (req: Request, res: Response) => {
   res.json({ message: 'Welcome to the API!' })
 })
 
 // Signup post request
-app.post('/signup', async (req, res) => {
+app.post('/signup', async (req: Request, res: Response) => {
   try {
     const userResponse = await admin.auth().createUser({
       email: req.body.email,
@@ -40,22 +50,20 @@ app.post('/signup', async (req, res) => {
     })
     res.json(userResponse)
   } catch (e) {
-    res.status(500).json({error: e.message});
+    if (isFirebaseAuthError(e)) {
+      res.status(500).json({ error: e.message });
+    } else {
+      // Handle other types of errors
+      console.log(typeof e)
+      res.status(500).json({ error: 'An unexpected error occurred'});
+    }
   }
 })
 
-// Signin post request
-app.post('/signup', async (req, res) => {
-  try {
-    const userResponse = await admin.auth().createUser({
-      email: req.body.email,
-      password: req.body.password,
-      disabled: false
-    })
-    res.json(userResponse)
-  } catch (e) {
-    res.status(500).json({error: e.message});
-  }
+app.post('/signin', async (req: Request, res: Response) => {
+
+// Work in Progress
+
 })
 
 // Start the server
