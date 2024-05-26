@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import LoginPage from './pages/loginPage/LoginPage'
+import SignupPage from './pages/signupPage/SignupPage'
+import ResetPasswordPage from './pages/resetPasswordPage/ResetPasswordPage'
 
 type Message = {
   message: String

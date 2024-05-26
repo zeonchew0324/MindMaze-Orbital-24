@@ -1,6 +1,7 @@
 import React from 'react'
+import './LoginForm.css'
 
-function Login() {
+function LoginForm() {
   return (
     <div>
       <div className= 'container' >
@@ -21,4 +22,4 @@ function Login() {
   )
 }
 
-export default Login
+export default LoginForm

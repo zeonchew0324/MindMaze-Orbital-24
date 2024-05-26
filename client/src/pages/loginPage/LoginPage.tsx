@@ -1,12 +1,11 @@
 import React from 'react'
 import LoginForm from '../../components/loginForm/LoginForm'
+import Title from '../../components/title/Title'
 
 function LoginPage() {
   return (
     <div>
-      <div className = 'logo'> 
-        <h1>MindMaze</h1>
-      </div>
+      <Title />
       <LoginForm />
     </div>
   )
