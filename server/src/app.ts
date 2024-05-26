@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { FirebaseError } from "firebase-admin/app"
 
-const {PORT} = require('../process.env')
+const {PORT} = require('../../process.env')
 const express = require('express')
 
 // Create an instance of Express
@@ -9,7 +9,7 @@ const app = express()
 
 //Firebase admin
 const admin = require('firebase-admin')
-const credentials = require('../serviceAccountKey.json')
+const credentials = require('../../firebase/serviceAccountKey.json')
 
 admin.initializeApp({
   credential: admin.credential.cert(credentials)

@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 //Firebase admin
 const admin = require('firebase-admin');
-const credentials = require('../../serviceAccountKey.json');
+const credentials = require('../serviceAccountKey.json');
 admin.initializeApp({
     credential: admin.credential.cert(credentials)
 });
@@ -29,7 +29,6 @@ app.get('/api', (req, res) => {
 // Signup post request
 app.post('/signup', async (req, res) => {
     try {
-        throw new Error("too soon nigga");
         const userResponse = await admin.auth().createUser({
             email: req.body.email,
             password: req.body.password,
@@ -49,24 +48,7 @@ app.post('/signup', async (req, res) => {
     }
 });
 app.post('/signin', async (req, res) => {
-    try {
-        const userResponse = await admin.auth().createUser({
-            email: req.body.email,
-            password: req.body.password,
-            disabled: false
-        });
-        res.json(userResponse);
-    }
-    catch (e) {
-        if (isFirebaseAuthError(e)) {
-            res.status(500).json({ error: e.message });
-        }
-        else {
-            // Handle other types of errors
-            console.log(typeof e);
-            res.status(500).json({ error: 'An unexpected error occurred' });
-        }
-    }
+    // Work in Progress
 });
 // Start the server
 app.listen(port, () => {
