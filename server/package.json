@@ -4,9 +4,9 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./dist/server",
-    "dev": "nodemon server",
-    "compile": "npx tsc"
+    "start": "node ./dist/server.js",
+    "dev": "nodemon ./src/server.ts",
+    "compile": "tsc --build"
   },
   "keywords": [],
   "author": "",
