@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import LoginPage from './pages/loginPage/LoginPage'
 
 type Message = {
   message: String
@@ -17,20 +18,24 @@ function App() {
   })
 
   return (
-    <div>
-      {
-        (backendData === null) 
-        ? (
-          <p> Loading... </p>
-        ) : (
-          backendData.map((message, i) => (
-            <p key={i}>
-              {message.message}
-            </p>
-          ))
-        )
-      }
-    </div>
+    <>
+      <LoginPage />
+    </>
+
+    // <div>
+    //   {
+    //     (backendData === null) 
+    //     ? (
+    //       <p> Loading... </p>
+    //     ) : (
+    //       backendData.map((message, i) => (
+    //         <p key={i}>
+    //           {message.message}
+    //         </p>
+    //       ))
+    //     )
+    //   }
+    // </div>
   )
 }
 

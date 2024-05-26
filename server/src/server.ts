@@ -9,11 +9,11 @@ const app = express()
 // Define a port number
 const port = PORT || 3000
 
-app.use(cors())
+
 
 // Middleware to parse JSON bodies
 app.use(express.json())
-
+app.use(cors())
 app.use(express.urlencoded({extended: true}))
 
 // Define a basic route
@@ -23,7 +23,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // Define default api route
 app.get('/api', (req: Request, res: Response) => {
-  res.json([{ message: 'Welcome to the API!' }, { message: 'Second line' }])
+  res.json([{ message: 'Welcome to the API!' }, { message: 'Second line HHHH' }])
 })
 
 // Start the server
