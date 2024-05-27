@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { Route, Router, Routes } from 'react-router-dom'
+
 import LoginPage from './pages/loginPage/LoginPage'
 import SignupPage from './pages/signupPage/SignupPage'
 import ResetPasswordPage from './pages/resetPasswordPage/ResetPasswordPage'
@@ -20,24 +22,12 @@ function App() {
   })
 
   return (
-    <>
-      <LoginPage />
-    </>
-
-    // <div>
-    //   {
-    //     (backendData === null) 
-    //     ? (
-    //       <p> Loading... </p>
-    //     ) : (
-    //       backendData.map((message, i) => (
-    //         <p key={i}>
-    //           {message.message}
-    //         </p>
-    //       ))
-    //     )
-    //   }
-    // </div>
+    <Routes>
+      <Route path="/" element={<LoginPage/>} />
+      <Route path="/login" element={<LoginPage/>} />
+      <Route path="/signup" element={<SignupPage/>} />
+      <Route path="/reset-password" element={<ResetPasswordPage/>} />
+    </Routes>
   )
 }
 
