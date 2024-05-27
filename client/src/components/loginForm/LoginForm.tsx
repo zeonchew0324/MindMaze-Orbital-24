@@ -1,16 +1,47 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './LoginForm.css'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import 'firebase/auth'
+import { doSignInWithEmailAndPassword} from '../../firebase/auth'
+import { useAuth } from '../../contexts/AuthProvider'
+import HomePage from '../../pages/homePage/HomePage'
 
 function LoginForm() {
+
+  const { userLoggedIn  } = useAuth()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [isSigningIn, setIsSigningIn] = useState(false)
+  const [errMessage, setErrMessage] = useState('')
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!isSigningIn) {
+      setIsSigningIn(true)
+      try {
+        await doSignInWithEmailAndPassword(email, password);
+        navigate('/home')
+      } catch (error) {
+        if (error instanceof Error) {
+          setErrMessage(error.message)
+        }
+        setIsSigningIn(false) // Reset signing-in state
+      }
+    }
+  }
+
   return (
     <div>
       <div className= 'container' >
         <h2 className = "title"> Welcome Back </h2>
         <form action="/login" method="POST">
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
-            <button type="submit">Login</button>
+          <input type="email" name="email" placeholder="Email" 
+              onChange={(e) => setEmail(e.target.value)}required />
+          <input type="password" name="password" placeholder="Password" 
+              onChange={(e) => setPassword(e.target.value)} required />
+          <button type="submit" onClick={event => onSubmit(event)}>Login</button>
         </form>
         <p className = 'other-page' > Don't have an account? 
             <Link to="/signup" className = 'other-page link'> Sign up </Link>
