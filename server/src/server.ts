@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import cors from 'cors'
+const { uploadTestData } = require("./firebase/firebase-config");
 const { PORT } = require('../process.env')
 const express = require('express')
 
@@ -22,6 +23,16 @@ app.get('/', (req: Request, res: Response) => {
 // Define default api route
 app.get('/api', (req: Request, res: Response) => {
   res.json([{ message: 'Welcome to the API!' }, { message: 'Second line HHHH' }])
+})
+
+// Test upload db
+app.get('/test-upload', async (req: Request, res: Response) => {
+  try {
+    await uploadTestData(); 
+    res.json([{ message: 'Test data uploaded successfully!' }])
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to upload test data.' })
+  }
 })
 
 // Start the server
