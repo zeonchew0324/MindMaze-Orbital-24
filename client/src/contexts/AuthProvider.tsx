@@ -2,24 +2,15 @@ import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { createContext } from "react"
 import { auth } from "../firebase/firebase-config"
 import { User, onAuthStateChanged } from 'firebase/auth'
+import { AuthStatus, AuthProviderProps } from '../types/auth'
 
-type AuthContextType = {
-  currentUser: User | null,
-  userLoggedIn: boolean,
-  loading: boolean
-}
-
-type AuthProviderProps = {
-  children: ReactNode;
-};
-
-const AuthContext = createContext<AuthContextType>({ 
+const AuthContext = createContext<AuthStatus>({ 
   currentUser: null,
   userLoggedIn: false,
   loading: false
 })
 
-export function useAuth(): AuthContextType{
+export function useAuth(): AuthStatus{
   return useContext(AuthContext);
 }
 
@@ -34,7 +25,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     return unsubscribe
   }, [])
 
-  function initializeUser(user: User | null): void{ //ANY to be changed
+  function initializeUser(user: User | null): void{
     if (user) {
       setCurrentUser(user)
       setUserLoggedIn(true)
@@ -45,7 +36,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     setLoading(false)
   }
 
-  const value: AuthContextType = {
+  const value: AuthStatus = {
     currentUser,
     userLoggedIn,
     loading
