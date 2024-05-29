@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import 'firebase/auth'
 import { doSignInWithEmailAndPassword} from '../../firebase/auth'
 import { useAuth } from '../../contexts/AuthProvider'
-import HomePage from '../../pages/homePage/HomePage'
 
 function LoginForm() {
 
@@ -12,7 +11,6 @@ function LoginForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSigningIn, setIsSigningIn] = useState(false)
-  const [errMessage, setErrMessage] = useState('')
 
   const navigate = useNavigate();
 
@@ -25,7 +23,7 @@ function LoginForm() {
         navigate('/home')
       } catch (error) {
         if (error instanceof Error) {
-          setErrMessage(error.message)
+          alert(error.message)
         }
         setIsSigningIn(false) // Reset signing-in state
       }

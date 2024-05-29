@@ -9,7 +9,6 @@ function SignupForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSigningUp, setIsSigningUp] = useState(false)
-  const [errMessage, setErrMessage] = useState('')
 
   const navigate = useNavigate();
 
@@ -23,7 +22,7 @@ function SignupForm() {
       } catch (error) {
         console.log('hello fail')
         if (error instanceof Error) {
-          setErrMessage(error.message)
+          alert(error.message)
         }
         setIsSigningUp(false) // Reset signing-in state
       }
