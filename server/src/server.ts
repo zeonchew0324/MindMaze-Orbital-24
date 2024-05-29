@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import cors from 'cors'
 import path from "path";
 const { uploadTestData } = require("./firebase/firebase-config");
-const { PORT } = require('../process.env')
 const express = require('express')
 
 // Create an instance of Express

@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
 const path_1 = __importDefault(require("path"));
 const { uploadTestData } = require("./firebase/firebase-config");
-const { PORT } = require('../process.env');
 const express = require('express');
 // Create an instance of Express
 const app = express();
