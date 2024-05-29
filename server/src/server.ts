@@ -1,5 +1,6 @@
 import { Request, Response } from "express"
 import cors from 'cors'
+import path from "path";
 const { uploadTestData } = require("./firebase/firebase-config");
 const { PORT } = require('../process.env')
 const express = require('express')
@@ -14,6 +15,13 @@ const port = 5000 //dev
 app.use(express.json())
 app.use(cors())
 app.use(express.urlencoded({extended: true}))
+
+// Serve react files
+app.use(express.static(path.join(__dirname, '../../client/build')))
+
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname + '/client/build/index.html'));
+});
 
 // Define a basic route
 app.get('/', (req: Request, res: Response) => {

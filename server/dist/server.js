@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 const { uploadTestData } = require("./firebase/firebase-config");
 const { PORT } = require('../process.env');
 const express = require('express');
@@ -24,6 +25,11 @@ const port = 5000; //dev
 app.use(express.json());
 app.use((0, cors_1.default)());
 app.use(express.urlencoded({ extended: true }));
+// Serve react files
+app.use(express.static(path_1.default.join(__dirname, '../../client/build')));
+app.get('*', (req, res) => {
+    res.sendFile(path_1.default.join(__dirname + '/client/build/index.html'));
+});
 // Define a basic route
 app.get('/', (req, res) => {
     res.send('Hello, WoRLD');
