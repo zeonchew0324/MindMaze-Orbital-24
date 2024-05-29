@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // Serve react files
 app.use(express.static(path_1.default.join(__dirname, '../../client/build')));
 app.get('*', (req, res) => {
-    res.sendFile(path_1.default.join('../../client/build/index.html'));
+    res.sendFile(path_1.default.join(__dirname, '../../client/build/index.html'));
 });
 // Define a basic route
 app.get('/', (req, res) => {
