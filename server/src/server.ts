@@ -19,7 +19,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, '../../client/build')))
 
 app.get('*', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../../client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
 });
 
 // Define a basic route
