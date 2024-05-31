@@ -6,7 +6,7 @@ describe('Title', () => {
   test('renders the title with the correct text and class', () => {
     render(<Title />);
     
-    const logoElement = screen.getByText('MindMaze');
+    const logoElement = screen.getByText('Mind Maze');
     expect(logoElement).toBeInTheDocument();
     expect(logoElement).toHaveClass('logo');
   });
