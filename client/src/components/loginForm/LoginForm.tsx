@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import './LoginForm.css'
 import { Link, useNavigate } from 'react-router-dom'
-import 'firebase/auth'
 import { doSignInWithEmailAndPassword} from '../../firebase/auth'
 import { useAuth } from '../../contexts/AuthProvider'
 
