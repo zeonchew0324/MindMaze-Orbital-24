@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import Navbar from '../../components/navBar/NavBar'
+
 
 function HomePage() {
 
