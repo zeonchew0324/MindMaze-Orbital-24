@@ -27,7 +27,6 @@ function HomePage() {
 
   return (
     <>
-      <Navbar />
       <p>Welcome Back!</p>
       <button onClick={(e) => onSignOut(e)}> Sign out </button>;
     </>
