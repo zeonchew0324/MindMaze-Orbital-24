@@ -21,9 +21,11 @@ function RouteHandler() {
       <Route path="/reset-password" element={<ResetPasswordPage/>} />
 
       <Route element = {<ProtectedRoutes />}>
-        <Route path="/habits" element={<HabitsPage/>} />
-        <Route path="/profile" element={<ProfilePage/>} />
-        <Route path="/timetable" element={<TimetablePage/>} />
+        <Route path="/home" element={<Layout><HomePage/></Layout>} />
+        <Route path="/profile" element={<Layout><ProfilePage/></Layout>} />
+        <Route path="/habits" element={<Layout><HabitsPage/></Layout>} />
+        <Route path="/timetable" element={<Layout><TimetablePage/></Layout>} />
+        <Route path="/todo" element={<Layout><TodoPage/></Layout>} />
       </Route>
       
     </Routes>
