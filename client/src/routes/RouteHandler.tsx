@@ -8,6 +8,8 @@ import ProtectedRoutes from '../utils/ProtectedRoutes'
 import HabitsPage from '../pages/habitsPage/HabitsPage'
 import ProfilePage from '../pages/profilePage/ProfilePage'
 import TimetablePage from '../pages/timetablePage/TimetablePage'
+import TodoPage from '../pages/todoPage/TodoPage'
+import Layout from '../components/layout/Layout'
 
 
 function RouteHandler() {
@@ -17,13 +19,13 @@ function RouteHandler() {
       <Route path="/login" element={<LoginPage/>} />
       <Route path="/signup" element={<SignupPage/>} />
       <Route path="/reset-password" element={<ResetPasswordPage/>} />
-      <Route path="/habits" element={<HabitsPage/>} />
-      <Route path="/profile" element={<ProfilePage/>} />
-      <Route path="/timetable" element={<TimetablePage/>} />
-    
-      <Route path="/" element={<ProtectedRoutes/>}>
-        <Route path="/home" element={<HomePage/>} />
+
+      <Route element = {<ProtectedRoutes />}>
+        <Route path="/habits" element={<HabitsPage/>} />
+        <Route path="/profile" element={<ProfilePage/>} />
+        <Route path="/timetable" element={<TimetablePage/>} />
       </Route>
+      
     </Routes>
   )
 }

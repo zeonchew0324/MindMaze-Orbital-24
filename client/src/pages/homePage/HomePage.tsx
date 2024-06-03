@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import Navbar from '../../components/navBar/NavBar'
 
 function HomePage() {
 
@@ -24,21 +25,11 @@ function HomePage() {
     }
   }
 
-
-                  
-                  
-  
- 
-
-
   return (
     <>
+      <Navbar />
       <p>Welcome Back!</p>
-      <button onClick={(e) => onSignOut(e)}> 
-                  Sign out 
-                  </button>;
-
-      
+      <button onClick={(e) => onSignOut(e)}> Sign out </button>;
     </>
   )
 }
