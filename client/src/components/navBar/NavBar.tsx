@@ -1,8 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 //added navbar for home page
- //add navigation bar on top, profile; dashboard(main); habits; timetable; to-do
 function NavBar() {
     return (
         <nav>
