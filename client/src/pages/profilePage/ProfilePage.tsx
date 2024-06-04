@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState, useEffec} from "react";
+import {sendPasswordResetEmail, updatePassword} from '../../firebase/auth';
 
 function ProfilePage() { 
     return (
