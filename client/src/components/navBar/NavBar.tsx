@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Navbar.css';
+import './NavBar.css';
 
 //added navbar for home page
 function NavBar() {
     return (
         <nav>
-            <ul>
+            <ul className='navbar'>
                 <li><Link to = "/profile">Profile</Link></li>
                 <li><Link to = "/home">Dashboard</Link></li>
                 <li><Link to = "/habits">Habits</Link></li>
@@ -17,4 +17,4 @@ function NavBar() {
     )
 }
 
-export default Navbar;
+export default NavBar;
