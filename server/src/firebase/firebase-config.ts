@@ -3,6 +3,8 @@ const { initializeApp } = require("firebase/app")
 const { getAnalytics } = require("firebase/analytics")
 const { getAuth } = require("firebase/auth")
 const { getFirestore, doc, setDoc } = require("firebase/firestore")
+const admin = require('firebase-admin')
+const serviceAccount = require('./serviceAccountKey.json')
 
 const firebaseConfig = {
   apiKey: "AIzaSyBN_RFLOMZo8hp-26J9Fzqztpo0gMGsr-I",
@@ -18,6 +20,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
 const firestoreDb = getFirestore()
+
+// Initialize Admin
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+})
 
 
 // Upload test data to db
@@ -37,4 +44,4 @@ const uploadTestData = async () => {
 
 const auth = getAuth(app)
 
-module.exports = { app, auth, uploadTestData }
+module.exports = { app, auth, uploadTestData, admin }

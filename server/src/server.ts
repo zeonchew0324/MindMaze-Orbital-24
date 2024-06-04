@@ -3,6 +3,7 @@ import cors from 'cors'
 import path from "path";
 const { uploadTestData } = require("./firebase/firebase-config");
 const express = require('express')
+import { decodeToken } from './middleware/checkAuth';
 
 // Create an instance of Express
 const app = express()
@@ -13,6 +14,7 @@ const port = 5000 //dev
 // Middleware to parse JSON bodies
 app.use(express.json())
 app.use(cors())
+app.use('/api', decodeToken)
 app.use(express.urlencoded({extended: true}))
 
 // Serve react files
@@ -29,7 +31,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // Define default api route
 app.get('/api', (req: Request, res: Response) => {
-  res.json([{ message: 'Welcome to the API!' }, { message: 'Second line HHHH' }])
+  res.json([{ message: 'Welcome to the API!' }, { message2: 'Second line HHHH' }])
 })
 
 // Test upload db

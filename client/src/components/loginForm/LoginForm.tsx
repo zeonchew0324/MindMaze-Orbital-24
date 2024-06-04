@@ -3,10 +3,11 @@ import './LoginForm.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { doSignInWithEmailAndPassword} from '../../firebase/auth'
 import { useAuth } from '../../contexts/AuthProvider'
+import TestBackendAuth from '../testBackendAuth/TestBackendAuth'
 
 function LoginForm() {
 
-  const { userLoggedIn  } = useAuth()
+  const { userLoggedIn, token } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSigningIn, setIsSigningIn] = useState(false)
@@ -46,6 +47,7 @@ function LoginForm() {
         <p className = 'other-page' > Forgot your password? 
             <Link to="/reset-password" className = 'other-page link'> Reset password </Link>
         </p>
+        <TestBackendAuth token={token}/>
       </div>
     </div>
   )
