@@ -32,17 +32,23 @@ export const doPasswordChange = (password: string) => {
 export const updateUsername = async (newUsername: string) => {
   const currentUser = auth.currentUser;
   if (currentUser) {
-    return updateProfile(user, {{displayName: newUsername}});
-    const userDoc = doc(db, 'users', user.uid);
-    await updateDoc(userDoc, { username: newUsername });
+    try {
+      await updateProfile(currentUser, { displayName: newUsername }); 
+      const userDoc = doc(db, 'users', currentUser.uid); 
+      await updateDoc(userDoc, { username: newUsername });
+    } catch (error) {
+      console.error('Error updating username:', error);
+      throw error; 
+    }
   }
 }
 
+
 export const deleteAccount = async () => {
   const currentUser = auth.currentUser;
-  if (user) {
-    await deleteUser(user);
-    const userDoc = doc(db, 'users', user.uid);
+  if (currentUser) {
+    await deleteUser(currentUser);
+    const userDoc = doc(db, 'users', currentUser.uid);
     await updateDoc(userDoc, {deleted : true});
   }
 }
