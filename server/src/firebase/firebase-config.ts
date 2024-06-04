@@ -4,7 +4,7 @@ const { getAnalytics } = require("firebase/analytics")
 const { getAuth } = require("firebase/auth")
 const { getFirestore, doc, setDoc } = require("firebase/firestore")
 const admin = require('firebase-admin')
-const serviceAccount = require('./serviceAccountKey.json')
+const serviceAccount = require('../../src/firebase/serviceAccountKey.json')
 
 const firebaseConfig = {
   apiKey: "AIzaSyBN_RFLOMZo8hp-26J9Fzqztpo0gMGsr-I",

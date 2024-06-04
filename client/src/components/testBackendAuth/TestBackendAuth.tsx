@@ -3,8 +3,10 @@ import axios from 'axios'
 import { AuthTokenProp } from '../../types/auth'
 
 function TestBackendAuth({ token }: AuthTokenProp) {
+
   useEffect(() => {
     if (token) {
+      console.log('fetching data from api...')
       fetchData(token)
     }
   }, [token])
@@ -14,7 +16,7 @@ function TestBackendAuth({ token }: AuthTokenProp) {
       headers: {
         Authorization: 'Bearer ' + token,
       }
-    })
+    }).then(res => console.log(res.data)).catch(e => console.log(e))
   }
 
   return (

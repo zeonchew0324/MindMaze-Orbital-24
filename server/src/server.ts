@@ -20,6 +20,11 @@ app.use(express.urlencoded({extended: true}))
 // Serve react files
 app.use(express.static(path.join(__dirname, '../../client/build')))
 
+// Define default api route
+app.get('/api', (req: Request, res: Response) => {
+  res.json({'message': 'hello this is api!'})
+})
+
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
 });
@@ -27,11 +32,6 @@ app.get('*', (req: Request, res: Response) => {
 // Define a basic route
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello, WoRLD')
-})
-
-// Define default api route
-app.get('/api', (req: Request, res: Response) => {
-  res.json([{ message: 'Welcome to the API!' }, { message2: 'Second line HHHH' }])
 })
 
 // Test upload db
