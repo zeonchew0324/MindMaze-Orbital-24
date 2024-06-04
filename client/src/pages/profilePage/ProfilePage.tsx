@@ -9,6 +9,8 @@ const ProfilePage: React.FC = () => {
     const [newPassword, setNewPassword] = useState('');
     const [mazeCompleted, setMazeCompleted] = useState(0);
     const [message, setMessage] = useState('');
+    const [showUsernameInput, setShowUsernameInput] = useState(false);
+    const [showPasswordInput, setShowPasswordInput] = useState(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -66,22 +68,34 @@ const ProfilePage: React.FC = () => {
           <p>{message}</p>
           <div className="profile-section">
             <h2>Username: {username}</h2>
-            <input
-              type="text"
-              placeholder="New Username"
-              value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
-            />
-            <button onClick={handleUsernameChange}>Change Username</button>
+            {showUsernameInput ? (
+              <>
+                <input
+                  type="text"
+                  placeholder="New Username"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                />
+                <button onClick={handleUsernameChange}>Save</button>
+              </>
+            ) : (
+              <button onClick={() => setShowUsernameInput(true)}>Change Username</button>
+            )}
           </div>
           <div className="profile-section">
-            <input
-              type="password"
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <button onClick={handlePasswordChange}>Change Password</button>
+            {showPasswordInput ? (
+              <>
+                <input
+                  type="password"
+                  placeholder="New Password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+                <button onClick={handlePasswordChange}>Save</button>
+              </>
+            ) : (
+              <button onClick={() => setShowPasswordInput(true)}>Change Password</button>
+            )}
           </div>
           <div className="profile-section">
             <h2>Mazes Completed: {mazeCompleted}</h2>
