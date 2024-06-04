@@ -5,7 +5,7 @@ import './NavBar.css';
 //added navbar for home page
 function NavBar() {
     return (
-        <nav>
+        <nav >
             <ul className='navbar'>
                 <li><Link to = "/profile">Profile</Link></li>
                 <li><Link to = "/home">Dashboard</Link></li>

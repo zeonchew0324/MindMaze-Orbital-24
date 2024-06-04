@@ -27,7 +27,7 @@ function HomePage() {
 
   return (
     <>
-      <p>Welcome Back!</p>
+      <h1>Welcome Back!</h1>
       <button onClick={(e) => onSignOut(e)}> Sign out </button>;
     </>
   )
