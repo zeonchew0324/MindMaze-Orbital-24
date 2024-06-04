@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #aa581d, #d49144);
+    background: linear-gradient(to right, #e09763, #d69363);
     color: #ffffff;
     margin: 0;
     padding: 0;
@@ -8,7 +8,7 @@ body {
   
   .navbar {
     background-color: rgba(20, 20, 20, 0.4);
-    padding: 10px 20px;
+    padding: 20px 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     display: flex;
     justify-content: space-between;
@@ -17,12 +17,7 @@ body {
     width: 100%;
     top: 0;
     left: 0;
-    z-index: 1000;
-  }
-  
-  .navbar-logo {
-    font-size: 24px;
-    margin: 0;
+    z-index: 100;
   }
   
   .navbar-nav {
@@ -33,28 +28,30 @@ body {
   }
   
   .navbar-nav li {
-    margin: 0 10px;
+    margin: 0 20px;
   }
   
   .navbar a {
-    color: #ffffff;
+    color: #000000;
     text-decoration: none;
-    padding: 10px 20px;
-    margin: 0;
-    font-size: 16px;
+    padding: 20px 0px;
+    margin-left: 10px;
+    font-size: 20px;
     border-radius: 5px;
     transition: background 0.3s ease;
+    font-weight: 800;
   }
   
   .navbar a:hover {
-    background: #694801;
+    background: #4a3305;
+
   }
   
   .navbar .active {
-    background: #694801;
+    background: #4a3305;
   }
   
   main {
-    padding-top: 70px; /* Adjust based on the navbar height */
+    padding-top: 10px; /* Adjust based on the navbar height */
   }
   
