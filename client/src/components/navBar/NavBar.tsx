@@ -10,9 +10,6 @@ const NavBar: React.FC = () => {
           <NavLink to="/home" className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
         </li>
         <li>
-          <NavLink to="/profile" className={({ isActive }) => (isActive ? 'active' : '')}>Profile</NavLink>
-        </li>
-        <li>
           <NavLink to="/habits" className={({ isActive }) => (isActive ? 'active' : '')}>Habits</NavLink>
         </li>
         <li>
@@ -20,6 +17,9 @@ const NavBar: React.FC = () => {
         </li>
         <li>
           <NavLink to="/todo" className={({ isActive }) => (isActive ? 'active' : '')}>To-Do</NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile" className={({ isActive }) => (isActive ? 'active' : '')}>Profile</NavLink>
         </li>
       </ul>
     </nav>
