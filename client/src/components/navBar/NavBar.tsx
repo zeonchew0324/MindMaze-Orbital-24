@@ -1,20 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import './NavBar.css';
+import { NavLink } from 'react-router-dom';
+import './NavBar.css'; // Make sure to import the CSS file
 
-//added navbar for home page
-function NavBar() {
-    return (
-        <nav >
-            <ul className='navbar'>
-                <li><Link to = "/profile">Profile</Link></li>
-                <li><Link to = "/home">Dashboard</Link></li>
-                <li><Link to = "/habits">Habits</Link></li>
-                <li><Link to = "/timetable">Timetable</Link></li>
-                <li><Link to = "/todo">To-do</Link></li>
-            </ul>
-        </nav>
-    )
-}
+const NavBar: React.FC = () => {
+  return (
+    <nav className="navbar">
+      <ul className="navbar-nav">
+        <li>
+          <NavLink to="/home" className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
+        </li>
+        <li>
+          <NavLink to="/profile" className={({ isActive }) => (isActive ? 'active' : '')}>Profile</NavLink>
+        </li>
+        <li>
+          <NavLink to="/habits" className={({ isActive }) => (isActive ? 'active' : '')}>Habits</NavLink>
+        </li>
+        <li>
+          <NavLink to="/timetable" className={({ isActive }) => (isActive ? 'active' : '')}>Timetable</NavLink>
+        </li>
+        <li>
+          <NavLink to="/todo" className={({ isActive }) => (isActive ? 'active' : '')}>To-Do</NavLink>
+        </li>
+      </ul>
+    </nav>
+  );
+};
 
 export default NavBar;
