@@ -7,7 +7,8 @@ import { AuthStatus, AuthProviderProps } from '../types/auth'
 const AuthContext = createContext<AuthStatus>({ 
   currentUser: null,
   userLoggedIn: false,
-  loading: false
+  loading: false,
+  token: '',
 })
 
 export function useAuth(): AuthStatus{
@@ -18,6 +19,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
   const [userLoggedIn, setUserLoggedIn] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [token, setToken] = useState('')
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser)
@@ -29,9 +31,13 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     if (user) {
       setCurrentUser(user)
       setUserLoggedIn(true)
+      user.getIdToken().then((token) => {
+        setToken(token)
+      })
     } else {
       setCurrentUser(null)
       setUserLoggedIn(false)
+      setToken('')
     }
     setLoading(false)
   }
@@ -39,7 +45,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const value: AuthStatus = {
     currentUser,
     userLoggedIn,
-    loading
+    loading,
+    token,
   }
 
   return (
