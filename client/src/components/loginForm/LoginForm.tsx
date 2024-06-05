@@ -26,8 +26,8 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center bg-gradient-to-r from-[#aa581d] to-[#d49144] text-white m-0">
-      <div className="container bg-black bg-opacity-40 p-10 rounded-lg shadow-lg text-center">
+    <div className="flex flex-col justify-center items-center text-white m-0">
+      <div className="container bg-black bg-opacity-50 p-10 rounded-lg shadow-lg text-center">
         <h1 className="text-2xl mb-5">Welcome Back</h1>
         <form onSubmit={onSubmit} className="flex flex-col">
           <input
