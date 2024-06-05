@@ -2,11 +2,9 @@ import React, { useState } from 'react'
 import './LoginForm.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { doSignInWithEmailAndPassword} from '../../firebase/auth'
-import { useAuth } from '../../contexts/AuthProvider'
 
 function LoginForm() {
 
-  const { userLoggedIn  } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSigningIn, setIsSigningIn] = useState(false)
