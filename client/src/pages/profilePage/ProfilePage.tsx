@@ -63,11 +63,11 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div className="profile-page">
-          <h1>Profile Page</h1>
+        <div >
+          <h1 className = "p-6">Profile Page</h1>
           <p>{message}</p>
-          <div className="profile-section">
-            <h2>Username: {username}</h2>
+          <div >
+            <h2 >Username: {username}</h2>
             {showUsernameInput ? (
               <>
                 <input
