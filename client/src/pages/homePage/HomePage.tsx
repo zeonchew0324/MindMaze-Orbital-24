@@ -3,6 +3,7 @@ import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthProvider'
 
+
 function HomePage() {
 
   const [errMessage, setErrMessage] = useState('')
@@ -28,10 +29,9 @@ function HomePage() {
 
   return (
     <>
-      <p>Welcome Back!</p>
-      <button onClick={(e) => onSignOut(e)}> 
-        Sign out 
-      </button>
+      <h1>Welcome Back!</h1>
+      <button onClick={(e) => onSignOut(e)}> Sign out </button>;
+
     </>
   )
 }
