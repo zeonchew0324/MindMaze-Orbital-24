@@ -4,13 +4,6 @@ import { AuthTokenProp } from '../../types/auth'
 
 function TestBackendAuth({ token }: AuthTokenProp) {
 
-  useEffect(() => {
-    if (token) {
-      console.log('fetching data from api...')
-      fetchData(token)
-    }
-  }, [token])
-
   const fetchData = async (token: string) => {
     const res = await axios.get('http://localhost:5000/api', {
       headers: {
@@ -19,9 +12,20 @@ function TestBackendAuth({ token }: AuthTokenProp) {
     }).then(res => console.log(res.data)).catch(e => console.log(e))
   }
 
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      await fetchData(token);
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message)
+      }
+    }
+  }
+
   return (
     <div>
-      TestBackendAuth
+      <button onClick={event => onSubmit(event)}>Send request to API test</button>
     </div>
   )
 }
