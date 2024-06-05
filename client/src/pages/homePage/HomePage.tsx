@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import TestBackendAuth from '../../components/testBackendAuth/TestBackendAuth'
-import { AuthTokenProp } from '../../types/auth'
 import { useAuth } from '../../contexts/AuthProvider'
 
 function HomePage() {
@@ -31,7 +29,6 @@ function HomePage() {
   return (
     <>
       <p>Welcome Back!</p>
-      <TestBackendAuth token={token}/>
       <button onClick={(e) => onSignOut(e)}> 
         Sign out 
       </button>
