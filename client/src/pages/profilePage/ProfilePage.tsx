@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from "react";
-import {getCurrentUser, updateUsername, doPasswordChange, deleteAccount, getMazeCompleted} from '../../firebase/auth';
+import React, { useState, useEffect } from "react";
+import { getCurrentUser, updateUsername, doPasswordChange, deleteAccount, getMazeCompleted } from '../../firebase/auth';
 import { updatePassword } from "firebase/auth";
-import './ProfilePage.css';
 
 const ProfilePage: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -25,16 +24,15 @@ const ProfilePage: React.FC = () => {
         fetchUserData();
       }, []);
 
-
     const handleUsernameChange = async () => {
-    try {
-        await updateUsername(newUsername);
-        setUsername(newUsername);
-        setNewUsername('');
-        setMessage('Username updated successfully');
-    } catch (error) {
-        setMessage('Error updating username');
-    }
+        try {
+            await updateUsername(newUsername);
+            setUsername(newUsername);
+            setNewUsername('');
+            setMessage('Username updated successfully');
+        } catch (error) {
+            setMessage('Error updating username');
+        }
     };
 
     const handlePasswordChange = async () => {
@@ -42,11 +40,10 @@ const ProfilePage: React.FC = () => {
             await doPasswordChange(newPassword);
             setNewPassword('');
             setMessage('Password changed successfully');
-
         } catch (error) {
             setMessage('Error changing password');
         }
-    }
+    };
 
     const handleAccountDeletion = async () => {
         try {
@@ -63,11 +60,11 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div >
-          <h1 className = "p-6">Profile Page</h1>
+        <div className="p-6 text-left">
+          <h1 className="text-7xl">Profile Page</h1>
           <p>{message}</p>
-          <div >
-            <h2 >Username: {username}</h2>
+          <div>
+            <h2>Username: {username}</h2>
             {showUsernameInput ? (
               <>
                 <input
@@ -75,11 +72,12 @@ const ProfilePage: React.FC = () => {
                   placeholder="New Username"
                   value={newUsername}
                   onChange={(e) => setNewUsername(e.target.value)}
+                  className="p-2 m-2 rounded-lg border"
                 />
-                <button onClick={handleUsernameChange}>Save</button>
+                <button onClick={handleUsernameChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
               </>
             ) : (
-              <button onClick={() => setShowUsernameInput(true)}>Change Username</button>
+              <button onClick={() => setShowUsernameInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Username</button>
             )}
           </div>
           <div className="profile-section">
@@ -90,21 +88,22 @@ const ProfilePage: React.FC = () => {
                   placeholder="New Password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
+                  className="p-2 m-2 rounded-lg border"
                 />
-                <button onClick={handlePasswordChange}>Save</button>
+                <button onClick={handlePasswordChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
               </>
             ) : (
-              <button onClick={() => setShowPasswordInput(true)}>Change Password</button>
+              <button onClick={() => setShowPasswordInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Password</button>
             )}
           </div>
           <div className="profile-section">
             <h2>Mazes Completed: {mazeCompleted}</h2>
           </div>
           <div className="profile-section">
-            <button onClick={handleAccountDeletion} className="delete-button">Delete Account</button>
+            <button onClick={handleAccountDeletion} className="bg-red-500 text-white p-2 rounded-lg">Delete Account</button>
           </div>
         </div>
       );
-    }
+}
 
 export default ProfilePage;
