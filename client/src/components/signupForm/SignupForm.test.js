@@ -3,7 +3,7 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { MemoryRouter } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import SignupForm from './SignupForm';
+//import SignupForm from './SignupForm';
 import { doCreateUserWithEmailAndPassword } from '../../firebase/auth';
 
 jest.mock('../../firebase/auth');
