@@ -4,9 +4,9 @@ import './NavBar.css';
 
 const NavBar: React.FC = () => {
   return (
-    <nav className="bg-black bg-opacity-40 py-5 shadow-lg flex justify-center items-center fixed w-full top-0 left-0 z-50 transition duration-300 ease-in-out">
+    <nav className="bg-black bg-opacity-40 py-4 shadow-lg flex justify-center items-center fixed w-full top-0 left-0 z-50 transition duration-300 ease-in-out">
       <ul className="flex list-none m-0 p-0 w-full">
-        <li className="flex-1 text-center">
+        <li className="flex-1 text-center border-r-4 border-stone-800">
           <NavLink 
             to="/home" 
             className={({ isActive }) => 
@@ -18,7 +18,7 @@ const NavBar: React.FC = () => {
             Home
           </NavLink>
         </li>
-        <li className="flex-1 text-center">
+        <li className="flex-1 text-center border-r-4 border-stone-800">
           <NavLink 
             to="/habits" 
             className={({ isActive }) => 
@@ -30,7 +30,7 @@ const NavBar: React.FC = () => {
             Habits
           </NavLink>
         </li>
-        <li className="flex-1 text-center">
+        <li className="flex-1 text-center border-r-4 border-stone-800">
           <NavLink 
             to="/timetable" 
             className={({ isActive }) => 
@@ -42,7 +42,7 @@ const NavBar: React.FC = () => {
             Timetable
           </NavLink>
         </li>
-        <li className="flex-1 text-center">
+        <li className="flex-1 text-center border-r-4 border-stone-800">
           <NavLink 
             to="/todo" 
             className={({ isActive }) => 
@@ -54,7 +54,7 @@ const NavBar: React.FC = () => {
             To-Do
           </NavLink>
         </li>
-        <li className="flex-1 text-center">
+        <li className="flex-1 text-center ">
           <NavLink 
             to="/profile" 
             className={({ isActive }) => 

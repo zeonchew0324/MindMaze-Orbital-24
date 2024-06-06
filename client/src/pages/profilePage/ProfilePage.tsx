@@ -29,9 +29,9 @@ const ProfilePage: React.FC = () => {
             await updateUsername(newUsername);
             setUsername(newUsername);
             setNewUsername('');
+            setShowUsernameInput(false);
             setMessage('Username updated successfully');
         } catch (error) {
-            console.error("Error updating username:", error);
             setMessage('Error updating username');
         }
     };
@@ -40,8 +40,10 @@ const ProfilePage: React.FC = () => {
         try {
             await doPasswordChange(newPassword);
             setNewPassword('');
+            setShowPasswordInput(false);
             setMessage('Password changed successfully');
         } catch (error) {
+            console.error(error);
             setMessage('Error changing password');
         }
     };
@@ -62,12 +64,16 @@ const ProfilePage: React.FC = () => {
 
     return (
         <div className="flex justify-center items-center bg-black bg-opacity-60 border-stone-800 border-4 rounded-xl">
-          <div className="p-20 rounded-lg shadow-lg w-full max-w-lg">
-            <h1 className="text-2xl font-bold mb-4">Profile Info</h1>
-            <p className="mb-4 text-red-500">{message}</p>
+          <div className="py-16 px-20 rounded-lg shadow-lg w-full max-w-lg">
+            <h1 className="text-4xl font-bold mb-4 leading-relaxed">Profile Info</h1>
+            <p className="mb-4 text-xl text-red-500">{message}</p>
             <div className="border-t border-white my-4"></div>
             <div className="mb-4">
-              <h2 className="text-xl mb-2">Username: {username}</h2>
+              <h2 className="text-2xl mb-2 leading-relaxed">Username: {username}</h2>
+              <div className="mb-4">
+              <div className="border-t border-white my-4"></div>
+              <h2 className="text-2xl leading-relaxed">Mazes Completed: {mazeCompleted}</h2>
+            </div>
               <div className="border-t border-white my-4"></div>
               {showUsernameInput ? (
                 <div className="flex items-center space-x-2">
@@ -78,16 +84,16 @@ const ProfilePage: React.FC = () => {
                     onChange={(e) => setNewUsername(e.target.value)}
                     className="p-2 m-2 rounded-lg border w-full text-black"
                   />
-                  <button onClick={handleUsernameChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
+                  <button onClick={handleUsernameChange} className="bg-blue-500 text-white p-2 my-1.5 leading-relaxed rounded-lg">Save</button>
                 </div>
               ) : (
-                <button onClick={() => setShowUsernameInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Username</button>
+                <button onClick={() => setShowUsernameInput(true)} className="bg-blue-500 text-white p-2 my-1.5 leading-relaxed rounded-lg">Change Username</button>
               )}
             </div>
             <div className="border-t border-white my-4"></div>
             <div className="mb-4">
               {showPasswordInput ? (
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center text-black space-x-2">
                   <input
                     type="password"
                     placeholder="New Password"
@@ -95,19 +101,16 @@ const ProfilePage: React.FC = () => {
                     onChange={(e) => setNewPassword(e.target.value)}
                     className="p-2 m-2 rounded-lg border w-full"
                   />
-                  <button onClick={handlePasswordChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
+                  <button onClick={handlePasswordChange} className="bg-blue-500 text-white my-1.5 leading-relaxed p-2 rounded-lg">Save</button>
                 </div>
               ) : (
-                <button onClick={() => setShowPasswordInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Password</button>
+                <button onClick={() => setShowPasswordInput(true)} className="bg-blue-500 text-white my-1.5 leading-relaxed p-2 rounded-lg">Change Password</button>
               )}
             </div>
+            
             <div className="mb-4">
               <div className="border-t border-white my-4"></div>
-              <h2 className="text-xl">Mazes Completed: {mazeCompleted}</h2>
-            </div>
-            <div className="mb-4">
-              <div className="border-t border-white my-4"></div>
-              <button onClick={handleAccountDeletion} className="bg-red-500 text-white p-2 rounded-lg">Delete Account</button>
+              <button onClick={handleAccountDeletion} className="bg-red-500 mt-2 text-xl leading-relaxed text-white p-2 rounded-lg">Delete Account</button>
             </div>
           </div>
         </div>
