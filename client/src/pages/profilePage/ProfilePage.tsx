@@ -31,6 +31,7 @@ const ProfilePage: React.FC = () => {
             setNewUsername('');
             setMessage('Username updated successfully');
         } catch (error) {
+            console.error("Error updating username:", error);
             setMessage('Error updating username');
         }
     };
@@ -60,47 +61,54 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div className="p-6 text-left">
-          <h1 className="text-7xl">Profile Page</h1>
-          <p>{message}</p>
-          <div>
-            <h2>Username: {username}</h2>
-            {showUsernameInput ? (
-              <>
-                <input
-                  type="text"
-                  placeholder="New Username"
-                  value={newUsername}
-                  onChange={(e) => setNewUsername(e.target.value)}
-                  className="p-2 m-2 rounded-lg border"
-                />
-                <button onClick={handleUsernameChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
-              </>
-            ) : (
-              <button onClick={() => setShowUsernameInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Username</button>
-            )}
-          </div>
-          <div className="profile-section">
-            {showPasswordInput ? (
-              <>
-                <input
-                  type="password"
-                  placeholder="New Password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="p-2 m-2 rounded-lg border"
-                />
-                <button onClick={handlePasswordChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
-              </>
-            ) : (
-              <button onClick={() => setShowPasswordInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Password</button>
-            )}
-          </div>
-          <div className="profile-section">
-            <h2>Mazes Completed: {mazeCompleted}</h2>
-          </div>
-          <div className="profile-section">
-            <button onClick={handleAccountDeletion} className="bg-red-500 text-white p-2 rounded-lg">Delete Account</button>
+        <div className="flex justify-center items-center bg-black bg-opacity-60 border-stone-800 border-4 rounded-xl">
+          <div className="p-20 rounded-lg shadow-lg w-full max-w-lg">
+            <h1 className="text-2xl font-bold mb-4">Profile Info</h1>
+            <p className="mb-4 text-red-500">{message}</p>
+            <div className="border-t border-white my-4"></div>
+            <div className="mb-4">
+              <h2 className="text-xl mb-2">Username: {username}</h2>
+              <div className="border-t border-white my-4"></div>
+              {showUsernameInput ? (
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    placeholder="New Username"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    className="p-2 m-2 rounded-lg border w-full text-black"
+                  />
+                  <button onClick={handleUsernameChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
+                </div>
+              ) : (
+                <button onClick={() => setShowUsernameInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Username</button>
+              )}
+            </div>
+            <div className="border-t border-white my-4"></div>
+            <div className="mb-4">
+              {showPasswordInput ? (
+                <div className="flex items-center space-x-2">
+                  <input
+                    type="password"
+                    placeholder="New Password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="p-2 m-2 rounded-lg border w-full"
+                  />
+                  <button onClick={handlePasswordChange} className="bg-blue-500 text-white p-2 rounded-lg">Save</button>
+                </div>
+              ) : (
+                <button onClick={() => setShowPasswordInput(true)} className="bg-blue-500 text-white p-2 rounded-lg">Change Password</button>
+              )}
+            </div>
+            <div className="mb-4">
+              <div className="border-t border-white my-4"></div>
+              <h2 className="text-xl">Mazes Completed: {mazeCompleted}</h2>
+            </div>
+            <div className="mb-4">
+              <div className="border-t border-white my-4"></div>
+              <button onClick={handleAccountDeletion} className="bg-red-500 text-white p-2 rounded-lg">Delete Account</button>
+            </div>
           </div>
         </div>
       );
