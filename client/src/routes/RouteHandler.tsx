@@ -8,8 +8,8 @@ import ProtectedRoutes from '../utils/ProtectedRoutes'
 import HabitsPage from '../pages/habitsPage/HabitsPage'
 import ProfilePage from '../pages/profilePage/ProfilePage'
 import TimetablePage from '../pages/timetablePage/TimetablePage'
-import TodoPage from '../pages/todoPage/TodoPage'
 import Layout from '../components/layout/Layout'
+import TodoPage from '../pages/todoPage/TodoPage'
 
 
 function RouteHandler() {
