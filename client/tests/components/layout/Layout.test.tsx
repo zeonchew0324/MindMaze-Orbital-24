@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Layout from '../../../src/components/layout/Layout';
 import { MemoryRouter } from 'react-router-dom';
+import Layout from '../../../src/components/layout/Layout';
+
 
 describe('Layout component', () => {
   beforeEach(() => {
