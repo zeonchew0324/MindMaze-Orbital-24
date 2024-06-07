@@ -1,11 +1,14 @@
 import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
+import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import { afterAll, vi } from "vitest";
 import userEvent from '@testing-library/user-event';
 import { doSignInWithEmailAndPassword } from '../../../src/firebase/auth';
 import LoginPage from '../../../src/pages/loginPage/LoginPage';
+import LoginForm from '../../../src/components/loginForm/LoginForm';
+import SignupPage from '../../../src/pages/signupPage/SignupPage';
+import ResetPasswordPage from '../../../src/pages/resetPasswordPage/ResetPasswordPage';
 
 vi.mock("../../../src/contexts/AuthProvider", () => {
   return {
@@ -36,16 +39,14 @@ vi.mock('react-router-dom', async (importOriginal) => {
 describe('Login', () => {
   beforeEach(() => {
     render(
-      (
-        <LoginPage />
-      ), 
-      {
-        wrapper: ({children}) => (
-          <MemoryRouter initialEntries={["/"]}>
-            {children}
-          </MemoryRouter>
-     ),
-   });
+      <MemoryRouter initialEntries={['/login']}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
   });
 
   afterAll(() => {
@@ -85,5 +86,19 @@ describe('Login', () => {
 
     expect(doSignInWithEmailAndPassword).toHaveBeenCalledWith('test@example.com', 'password123');
     expect(doSignInWithEmailAndPassword).toHaveBeenCalledTimes(1); 
+  });
+
+  it('Redirects to Sign up', () => {
+    const signUpLink = screen.getByRole('link', { name: /sign up/i });
+    userEvent.click(signUpLink);
+  
+    expect(screen.getByText(/Create an account/i)).toBeInTheDocument();
+  });
+
+  it('Redirects to Reset Password', () => {
+    const resetPasswordLink = screen.getByRole('link', { name: /reset password/i });
+    userEvent.click(resetPasswordLink);
+  
+    expect(screen.getByText(/Reset your password/i)).toBeInTheDocument();
   });
 });
