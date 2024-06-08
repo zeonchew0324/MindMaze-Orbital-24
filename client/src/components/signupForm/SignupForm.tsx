@@ -20,7 +20,7 @@ function SignupForm() {
       } catch (error) {
         console.log('hello fail');
         if (error instanceof Error) {
-          alert(error.message);
+          alert('Error signing up, please enter valid email and password')
         }
         setIsSigningUp(false); // Reset signing-in state
       }
