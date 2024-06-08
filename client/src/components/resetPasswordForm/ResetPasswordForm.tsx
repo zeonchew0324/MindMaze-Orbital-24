@@ -12,9 +12,10 @@ function ResetPasswordForm() {
       try {
         await doSendPasswordResetEmail(email);
         alert('Email sent!');
+        setTimeout(() => setIsSending(false), 10000);
       } catch (error) {
         if (error instanceof Error) {
-          alert(error.message);
+          alert('An error occured, try again later');
         }
         setTimeout(() => setIsSending(false), 10000); // Reset signing-in state
       }

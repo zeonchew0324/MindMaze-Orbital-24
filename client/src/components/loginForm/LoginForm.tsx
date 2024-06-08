@@ -18,7 +18,7 @@ function LoginForm() {
         navigate('/home');
       } catch (error) {
         if (error instanceof Error) {
-          alert(error.message);
+          alert('Error: Invalid credentials');
         }
         setIsSigningIn(false); // Reset signing-in state
       }
