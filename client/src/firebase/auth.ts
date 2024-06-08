@@ -1,7 +1,7 @@
 import {auth} from './firebase-config';
 
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, updateProfile, deleteUser } from "firebase/auth";
-import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 const db = getFirestore();
 
@@ -34,8 +34,15 @@ export const updateUsername = async (newUsername: string) => {
   if (currentUser) {
     try {
       await updateProfile(currentUser, { displayName: newUsername }); 
-      const userDoc = doc(db, 'users', currentUser.uid); 
-      await updateDoc(userDoc, { username: newUsername });
+      const userDocRef = doc(db, 'users', currentUser.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (userDoc.exists()) {
+        await updateDoc(userDocRef, { username: newUsername });
+      } else {
+        await setDoc(userDocRef, { username: newUsername, email: currentUser.email });
+      }
+
     } catch (error) {
       console.error('Error updating username:', error);
       throw error; 

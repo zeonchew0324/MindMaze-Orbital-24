@@ -1,14 +1,4 @@
-body {
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #aa581d, #d49144);
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  flex-direction: column;
-}
+/*dk what error cant be deleted */
 
 .logo h1 {
   font-size: 48px; 
