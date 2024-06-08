@@ -5,7 +5,6 @@ import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 const db = getFirestore();
 
-
 export const doCreateUserWithEmailAndPassword = async (email: string, password: string) => {
   return createUserWithEmailAndPassword(auth, email, password)
 }
@@ -42,7 +41,6 @@ export const updateUsername = async (newUsername: string) => {
     }
   }
 }
-
 
 export const deleteAccount = async () => {
   const currentUser = auth.currentUser;
