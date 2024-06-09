@@ -13,13 +13,14 @@ interface HabitsContextType {
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined);
 
-export const useHabits = () => {
-  const context = useContext(HabitsContext);
-  if (!context) {
-    throw new Error('useHabits must be used within a HabitsProvider');
-  }
-  return context;
+export const useHabits = (): HabitsContextType => {
+    const context = useContext(HabitsContext);
+    if (!context) {
+      throw new Error('useHabits must be used within a HabitsProvider');
+    }
+    return context;
 };
+  
 
 export const HabitsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [habits, setHabits] = useState<Habit[]>([]);
