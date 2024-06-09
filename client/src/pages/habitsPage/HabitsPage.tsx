@@ -31,7 +31,6 @@ const HabitsPage: React.FC = () => {
     return (
         
         <div>
-            <NavBar />
             <WeeklyBar selectedDay = {selectedDay} setSelectedDay={setSelectedDay}/>
             <HabitsList habits={filteredHabits} />
             <div>
@@ -39,6 +38,7 @@ const HabitsPage: React.FC = () => {
                 {showAddForm && (
                   <div>
                     <input
+                      className = 'text-black'
                       type="text"
                       value={habitName}
                       onChange={(e) => setHabitName(e.target.value)}
