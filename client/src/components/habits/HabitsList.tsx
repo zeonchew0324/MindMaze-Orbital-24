@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHabits } from '../../contexts/HabitsProvider';
 
 interface Habit {
   id: number;
@@ -10,15 +11,18 @@ interface HabitsListProps {
 }
 
 const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
+  const { deleteHabit } = useHabits();
   return (
     <div className="p-4">
       {habits.length === 0 ? (
-        <p>No habits recorded for this day.</p>
+        <h1>No habits recorded for this day.</h1>
       ) : (
-        <ul>
+        <ul >
           {habits.map((habit) => (
-            <li key={habit.id} className="p-2 border-b">
-              {habit.name}
+            <li key={habit.id} className="flex items-centre p-2 border-b">
+              <span className="flex-grow">{habit.name}</span>
+              <button className = "text-black p-3 ml-10"  
+              onClick={() => deleteHabit(habit.id)}>Delete</button>
             </li>
           ))}
         </ul>
