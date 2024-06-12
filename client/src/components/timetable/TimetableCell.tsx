@@ -5,10 +5,11 @@ type Prop = {
   block: TimeBlock
 }
 
-function TimetableCell() {
+function TimetableCell(props: Prop) {
+  const { block } = props
   return (
-    <button>
-
+    <button className = "border h-10 ml-2 p-1">
+      {block.name}
     </button>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
 import { TimeBlock } from '../../types/timetable'
+import TimetableCell from './TimetableCell'
 
 type Props = {
   blocks: TimeBlock[]
@@ -8,9 +9,9 @@ type Props = {
 function TimetableRow(props: Props) {
   const { blocks } = props 
   return (
-    <div className="relative flex flex-1 min-w-[500px] mb-[1px]">
-      {blocks.map(block => block.name)}
-  </div>
+    <div className="relativ<e flex flex-1 min-w-[500px] mb-[1px]">
+      {blocks.map(b => <TimetableCell block={b}/>)}
+    </div>
   )
 }
 
