@@ -9,7 +9,7 @@ function Timetable() {
       <div>
         #Timings
       </div>
-      <ol>
+      <ol className="w-[100%]">
         {days.map((day, index) => (
           <TimetableDay day={day}/>
         ))}
