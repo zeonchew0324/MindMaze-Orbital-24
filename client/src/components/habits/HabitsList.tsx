@@ -1,5 +1,7 @@
 import React from 'react';
 import { useHabits } from '../../contexts/HabitsProvider';
+import { FaTrash } from 'react-icons/fa';
+
 
 interface Habit {
   id: number;
@@ -17,12 +19,17 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
       {habits.length === 0 ? (
         <h1>No habits recorded for this day.</h1>
       ) : (
-        <ul >
+        <ul>
           {habits.map((habit) => (
-            <li key={habit.id} className="flex items-centre p-2 border-b">
-              <span className="flex-grow">{habit.name}</span>
-              <button className = "text-black p-3 ml-10"  
-              onClick={() => deleteHabit(habit.id)}>Delete</button>
+            <li key={habit.id} className="flex items-center p-2 border-b">
+              <span className="flex-grow text-xl text-white font-bold">{habit.name}</span>
+              <button
+                className="text-white rounded-xl bg-red-500 hover:bg-red-700 p-2 ml-10 flex items-center"
+                onClick={() => deleteHabit(habit.id)}
+              >
+                <FaTrash className="mr-2"/>
+                Delete
+              </button>
             </li>
           ))}
         </ul>
