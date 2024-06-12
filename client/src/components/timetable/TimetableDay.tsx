@@ -22,11 +22,11 @@ function TimetableDay(props: Props) {
   const {day} = props
 
   return (
-    <li className="flex items-center p-4 border border-gray-200 rounded-md w-full">
-      <div className="mr-4 font-medium min-w-[50px]">
+    <li className="flex items-center border-b border-gray-200 last:border-0 w-full">
+      <div className="pl-2 pt-2 pb-2 font-medium border-r border-gray-200 w-20 " >
         {day}
       </div>
-      <div className="text-gray-700 flex-grow w-full">
+      <div className="text-gray-100 flex-grow w-full">
         <TimetableRow blocks={[testBlock]} />
       </div>
     </li>
