@@ -10,12 +10,14 @@
   bottom: -5px;
   left: 30px;
   background-color: #000000;
+  color:#ffffff;
 }
 
 .navbar a:hover::after {
   width: 50%;
   left: 25%;
   text-decoration: underline;
+  
   
 }
 

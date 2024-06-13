@@ -44,7 +44,7 @@ const HabitsPage: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center w-full">
       <WeeklyBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
       <HabitsList habits={filteredHabits} />
       <div>
@@ -60,7 +60,7 @@ const HabitsPage: React.FC = () => {
         {showAddForm && (
           <div>
             <input
-              className='text-black bg-gray-200 rounded-md p-2 mb-2'
+              className='text-black bg-gray-200 rounded-md p-2 mb-2 w-72'
               type="text"
               value={habitName}
               onChange={(e) => setHabitName(e.target.value)}
@@ -76,7 +76,7 @@ const HabitsPage: React.FC = () => {
                     onChange={() => handleDaySelection(day)}
                     className="form-checkbox h-5 w-5 text-green-600"
                   />
-                  <span className="ml-2 text-gray-700">{day}</span>
+                  <span className="ml-2 mr-2 text-gray-700">{day}</span>
                 </label>
               ))}
             </div>
