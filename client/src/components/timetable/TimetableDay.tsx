@@ -12,7 +12,7 @@ const testBlocks = [
     startTime: '10:00',
     duration: '1:00',
     endTime: '11:00',
-    day: 'Monday',
+    day: 'Mon',
   },
   {
     id: 'test1',
@@ -20,7 +20,7 @@ const testBlocks = [
     startTime: '10:00',
     duration: '1:00',
     endTime: '11:00',
-    day: 'Monday',
+    day: 'Mon',
   },
   {
     id: 'test2',
@@ -28,7 +28,7 @@ const testBlocks = [
     startTime: '10:00',
     duration: '1:00',
     endTime: '11:00',
-    day: 'Monday',
+    day: 'Mon',
   }
 ]
 
@@ -40,13 +40,11 @@ function TimetableDay(props: Props) {
   const {day} = props
 
   return (
-    <li className="flex items-center border-b border-gray-200 last:border-0 w-full">
-      <div className="pl-2 pt-2 pb-2 font-medium border-r border-gray-200 w-20 " >
+    <li className="flex border-b border-gray-200 last:border-0 h-[50px]">
+      <div className="pl-2 pt-3 pb-3 font-medium border-r border-gray-200 w-[50px]" >
         {day}
       </div>
-      <div className="text-gray-100 flex-grow w-full">
-        <TimetableRow blocks={testBlocks} />
-      </div>
+      <TimetableRow blocks={testBlocks.filter(x => x.day === day)} />
     </li>
   )
 }
