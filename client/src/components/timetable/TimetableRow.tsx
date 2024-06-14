@@ -20,7 +20,7 @@ function TimetableRow(props: Props) {
   console.log(numOfHours)
   const { blocks } = props 
   return (
-    <div className={"bg-red-900 grid grid-cols-24 h-full w-[1000px] divide-x-1"}>
+    <div className={"grid grid-cols-24 w-[1000px] divide-x-1"}>
       {blocks.map((b, index) => <TimetableCell key={index} block={b}/>)}
     </div>
   )
