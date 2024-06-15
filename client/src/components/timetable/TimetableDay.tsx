@@ -1,10 +1,6 @@
 import React from 'react'
 import TimetableRow from './TimetableRow';
 
-/*
-  Test prop
- */
-
 const testBlocks = [
   {
     id: '1',
