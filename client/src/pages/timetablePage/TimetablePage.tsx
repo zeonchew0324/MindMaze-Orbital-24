@@ -1,12 +1,18 @@
 import React from "react";
 import Timetable from "../../components/timetable/Timetable";
+import { TimetablePopupProvider } from "../../contexts/TimetablePopupProvider";
+import { TimeblockProvider } from "../../contexts/TimeblockProvider";
 
 function TimetablePage() { 
     return (
-        <div>
-            <h1> Timetable </h1>
-            <Timetable/>
-        </div>
+        <>
+            <TimeblockProvider>
+                <TimetablePopupProvider>
+                    <h1> Timetable </h1>
+                    <Timetable/>
+                </TimetablePopupProvider>
+            </TimeblockProvider>
+        </>
     )
 }
 
