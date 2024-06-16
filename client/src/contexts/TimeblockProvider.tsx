@@ -28,7 +28,7 @@ export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
       startTime: '10:00',
       duration: '1:00',
       endTime: '11:00',
-      day: 'Mon',
+      day: 'Sat',
     },
     {
       id: '0',

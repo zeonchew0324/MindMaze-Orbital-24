@@ -1,9 +1,11 @@
 import React from 'react'
+import { TimeBlock } from '../../types/timetable';
 
 type PopupProps = {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  editingBlock?: TimeBlock;
 };
 
 
