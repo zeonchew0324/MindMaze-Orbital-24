@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthProvider';
-import { doCreateUserWithEmailAndPassword } from '../../firebase/auth';
+import React, { useState } from 'react'
+import './SignupForm.css'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthProvider'
+import { doCreateUserWithEmailAndPassword } from '../../firebase/auth'
 
 function SignupForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -14,11 +16,11 @@ function SignupForm() {
     e.preventDefault();
     if (!isSigningUp) {
       setIsSigningUp(true);
+      setError(null); // Reset previous error
       try {
         await doCreateUserWithEmailAndPassword(email, password);
         navigate('/home');
       } catch (error) {
-        console.log('hello fail');
         if (error instanceof Error) {
           alert('Error signing up, please enter valid email and password')
         }
