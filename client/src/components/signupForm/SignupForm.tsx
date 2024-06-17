@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import './SignupForm.css';
-import { Link, useNavigate } from 'react-router-dom';
-import { doCreateUserWithEmailAndPassword } from '../../firebase/auth';
+import React, { useState } from 'react'
+import './SignupForm.css'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthProvider'
+import { doCreateUserWithEmailAndPassword } from '../../firebase/auth'
 
 function SignupForm() {
   const [email, setEmail] = useState('');
@@ -21,7 +22,7 @@ function SignupForm() {
         navigate('/home');
       } catch (error) {
         if (error instanceof Error) {
-          setError(error.message); // Set error message to state
+          alert('Error signing up, please enter valid email and password')
         }
         setIsSigningUp(false); // Reset signing-in state
       }
@@ -29,8 +30,8 @@ function SignupForm() {
   };
 
   return (
-    <div className='container'>
-      <h2 className="title">Create an account</h2>
+    <div className="bg-black/40 p-6 rounded-lg shadow-lg text-center">
+      <h2 className="text-2xl mb-6">Create an account</h2>
       <form onSubmit={onSubmit} method="POST">
         <input
           type="email"
@@ -38,6 +39,7 @@ function SignupForm() {
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="w-full p-2 mb-4 text-black rounded-md"
         />
         <input
           type="password"
@@ -45,12 +47,20 @@ function SignupForm() {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="w-full p-2 mb-4 text-black rounded-md"
         />
-        <button type="submit">Continue</button>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white p-2 mt-4 rounded-md hover:bg-blue-700 transition-colors duration-300 ease-in-out"
+        >
+          Continue
+        </button>
       </form>
-      {error && <p className="error-message">{error}</p>} 
-      <p className='other-page'>
-        Already have an account? <Link to="/login" className='other-page link'>Login Here</Link>
+      <p className="mt-4">
+        Already have an account?{' '}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Login Here
+        </Link>
       </p>
     </div>
   );

@@ -29,7 +29,7 @@ function HomePage() {
 
   return (
     <>
-      <h1>Welcome Back!</h1>
+      <h1 className='text-8xl'>Welcome Back!</h1>
       <button onClick={(e) => onSignOut(e)}> Sign out </button>;
 
     </>

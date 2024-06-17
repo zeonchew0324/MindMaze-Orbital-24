@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './ResetPasswordForm.css';
 import { doSendPasswordResetEmail } from '../../firebase/auth';
 
 function ResetPasswordForm() {
@@ -19,7 +18,7 @@ function ResetPasswordForm() {
         alert('Email sent!');
       } catch (error) {
         if (error instanceof Error) {
-          setErrorMessage(error.message); // Set error message
+          alert('An error occured, try again later');
         }
         setTimeout(() => setIsSending(false), 10000); // Reset signing-in state
       }
@@ -29,20 +28,27 @@ function ResetPasswordForm() {
   };
 
   return (
-    <div className="container">
-      <h2 className="title">Reset your password</h2>
-      <form action="/login" method="POST">
+    <div className="bg-black bg-opacity-50  text-white py-8 px-4 rounded-lg shadow-lg max-w-md mx-auto">
+      <h2 className="text-3xl font-bold mb-8">Reset your password</h2>
+      <form onSubmit={onSubmit}>
         <input
           type="email"
           name="email"
           placeholder="Email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="w-full px-4 py-2 mb-4 bg-white text-black rounded-lg shadow-md focus:outline-none focus:ring focus:border-blue-500"
         />
-        <button type="submit" onClick={(e) => onSubmit(e)}>Send Password Reset Email</button>
+        <button
+          type="submit"
+          onClick={onSubmit}
+          disabled={isSending}
+          className={`w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md transition duration-300 ${isSending ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+        >
+          {isSending ? 'Sending...' : 'Send Password Reset Email'}
+        </button>
       </form>
-      {errorMessage && <p className="error-message">{errorMessage}</p>} {/* Display error message */}
-      {rateLimitMessage && <p className="rate-limit-message">{rateLimitMessage}</p>} {/* Display rate-limit message */}
     </div>
   );
 }
