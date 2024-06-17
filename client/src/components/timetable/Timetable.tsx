@@ -23,7 +23,7 @@ function Timetable() {
       </div>
       <div className="flex justify-end mt-2 mb-0">
         <button 
-          onClick={openPopup} 
+          onClick={() => openPopup(undefined)} 
           className="relative p-2 border border-1 bg-blue-500  text-gray-100 hover:text-gray-300">
           Add Activity
         </button>

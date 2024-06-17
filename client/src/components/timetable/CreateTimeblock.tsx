@@ -1,9 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useTimetablePopup } from '../../contexts/TimetablePopupProvider';
+import { useTimeblock } from '../../contexts/TimeblockProvider';
+import { calculateDuration } from '../../utils/timetable';
+import { TimeBlock } from '../../types/timetable';
 
 function CreateTimeblock() {
+  const { popupContent, closePopup } = useTimetablePopup();
+  const { timeBlocks, setTimeBlocks } = useTimeblock();
+  
   const [name, setName] = useState('');
   const [timeframes, setTimeframes] = useState([{ start: '', end: '', day: '' }]);
   const [errors, setErrors] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (popupContent) {
+      const activityTimeBlocks = timeBlocks.filter(tb => tb.name === popupContent.name);
+      const formattedTimeframes = activityTimeBlocks.map(tb => ({
+        start: tb.startTime,
+        end: tb.endTime,
+        day: tb.day
+      }));
+      setName(popupContent.name);
+      setTimeframes(formattedTimeframes);
+      setErrors(new Array(formattedTimeframes.length).fill(''));
+    }
+  }, [popupContent, timeBlocks]);
 
   const handleAddTimeframe = () => {
     setTimeframes([...timeframes, { start: '', end: '', day: '' }]);
@@ -21,15 +42,24 @@ function CreateTimeblock() {
     const newTimeframes = timeframes.map((timeframe, i) =>
       i === index ? { ...timeframe, [key]: value } : timeframe
     );
-
+  
     const { start, end } = newTimeframes[index];
     let errorMessage = '';
-
+  
     if (start && end && start >= end) {
       errorMessage = 'End time must be after start time';
     }
-
-    const newErrors = errors.map((error, i) => (i === index ? errorMessage : error));
+  
+    const newErrors = newTimeframes.map((tf, i) => {
+      if (i === index) {
+        if (tf.start && tf.end && tf.start >= tf.end) {
+          return 'End time must be after start time';
+        }
+        return '';
+      }
+      return errors[i] || '';
+    });
+  
     setTimeframes(newTimeframes);
     setErrors(newErrors);
   };
@@ -43,7 +73,24 @@ function CreateTimeblock() {
       return;
     }
 
-    console.log({ name, timeframes });
+    // Remove original time frames if editing
+    if (popupContent) {
+      const filteredTimeBlocks = timeBlocks.filter(tb => tb.name !== popupContent.name);
+      setTimeBlocks(filteredTimeBlocks);
+    }
+
+    // Add new or edited time blocks
+    const newTimeBlocks = timeframes.map((tf, index) => ({
+      id: (timeBlocks.length + index).toString(),
+      name: name,
+      startTime: tf.start,
+      endTime: tf.end,
+      duration: calculateDuration(tf.start, tf.end),
+      day: tf.day,
+    }));
+    setTimeBlocks(prevTimeBlocks => [...prevTimeBlocks, ...newTimeBlocks]);
+
+    closePopup()
   };
 
   const hourOptions = Array.from({ length: 24 }, (_, i) => {
@@ -156,7 +203,7 @@ function CreateTimeblock() {
           className="w-full py-2 px-4 bg-green-500 text-white rounded-md hover:bg-green-700"
           disabled={errors.some((error) => error !== '')}
         >
-          Create
+          {popupContent ? 'Save' : 'Create'}
         </button>
       </form>
     </div>

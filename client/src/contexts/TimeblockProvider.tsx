@@ -32,7 +32,7 @@ export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
     },
     {
       id: '0',
-      name: 'exi',
+      name: 'Lic',
       startTime: '11:00',
       duration: '1:00',
       endTime: '12:00',

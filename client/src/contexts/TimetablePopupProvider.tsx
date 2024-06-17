@@ -1,10 +1,12 @@
 import React, { ReactNode, useContext, useEffect, useState } from 'react'
 import { createContext } from "react"
+import { TimeBlock } from '../types/timetable';
 
 type TTPopupContextType = {
-  isPopupOpen: boolean;
-  openPopup: () => void;
-  closePopup: () => void;
+  isPopupOpen: boolean
+  openPopup: (content: TimeBlock | undefined) => void
+  closePopup: () => void
+  popupContent: TimeBlock | undefined
 };
 
 const PopupContext = createContext<TTPopupContextType | undefined>(undefined);
@@ -22,13 +24,17 @@ type TTPopupProviderProps = {
 };
 
 export const TimetablePopupProvider: React.FC<TTPopupProviderProps> = ({ children }) => {
-  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false)
+  const [popupContent, setPopupContent] = useState<TimeBlock | undefined>(undefined)
 
-  const openPopup = () => setPopupOpen(true);
+  const openPopup = (content: TimeBlock | undefined) => {
+    setPopupContent(content)
+    setPopupOpen(true)
+  }
   const closePopup = () => setPopupOpen(false);
 
   return (
-    <PopupContext.Provider value={{ isPopupOpen, openPopup, closePopup }}>
+    <PopupContext.Provider value={{ isPopupOpen, openPopup, closePopup, popupContent }}>
       {children}
     </PopupContext.Provider>
   );

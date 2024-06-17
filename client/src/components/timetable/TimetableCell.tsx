@@ -1,8 +1,6 @@
 import React from 'react';
 import { TimeBlock } from '../../types/timetable';
 import { useTimetablePopup } from '../../contexts/TimetablePopupProvider';
-import EditTimeblock from './EditTimeblock';
-import TimetablePopup from './TimetablePopup';
 import { calculateColumn } from '../../utils/timetable';
 
 type Prop = {
@@ -13,7 +11,7 @@ function TimetableCell(props: Prop) {
   const { isPopupOpen, openPopup, closePopup } = useTimetablePopup()
 
   const handleEditClick = () => {
-    openPopup();
+    openPopup(block);
   };
 
   const { block } = props;
@@ -28,9 +26,6 @@ function TimetableCell(props: Prop) {
       >
         {block.name}
       </button>
-      <TimetablePopup isOpen={isPopupOpen} onClose={closePopup}>
-        <EditTimeblock />
-      </TimetablePopup>
     </>
     
   );
