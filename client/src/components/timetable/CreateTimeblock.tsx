@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTimetablePopup } from '../../contexts/TimetablePopupProvider';
 import { useTimeblock } from '../../contexts/TimeblockProvider';
-import { calculateDuration } from '../../utils/timetable';
-import { TimeBlock } from '../../types/timetable';
+import { calculateDuration, sortWithStartTime } from '../../utils/timetable';
 
 function CreateTimeblock() {
   const { popupContent, closePopup } = useTimetablePopup();
@@ -74,23 +73,26 @@ function CreateTimeblock() {
     }
 
     // Remove original time frames if editing
+    let updatedTimeBlocks = timeBlocks;
     if (popupContent) {
-      const filteredTimeBlocks = timeBlocks.filter(tb => tb.name !== popupContent.name);
-      setTimeBlocks(filteredTimeBlocks);
+      updatedTimeBlocks = timeBlocks.filter(tb => tb.name !== popupContent.name);
     }
 
     // Add new or edited time blocks
     const newTimeBlocks = timeframes.map((tf, index) => ({
-      id: (timeBlocks.length + index).toString(),
+      id: (updatedTimeBlocks.length + index).toString(),
       name: name,
       startTime: tf.start,
       endTime: tf.end,
       duration: calculateDuration(tf.start, tf.end),
       day: tf.day,
     }));
-    setTimeBlocks(prevTimeBlocks => [...prevTimeBlocks, ...newTimeBlocks]);
 
-    closePopup()
+    updatedTimeBlocks = updatedTimeBlocks.concat(newTimeBlocks).sort(sortWithStartTime);
+    console.log(updatedTimeBlocks)
+    setTimeBlocks(updatedTimeBlocks);
+
+    closePopup();
   };
 
   const hourOptions = Array.from({ length: 24 }, (_, i) => {

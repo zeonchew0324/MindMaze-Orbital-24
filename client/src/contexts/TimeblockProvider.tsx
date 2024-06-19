@@ -22,23 +22,42 @@ type TimeblockProviderProps = {
 
 export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
   const [timeBlocks, setTimeBlocks] = useState([
-    {
-      id: '1',
-      name: 'Lic',
-      startTime: '10:00',
-      duration: '1:00',
-      endTime: '11:00',
-      day: 'Sat',
-    },
+    // TIMEBLOCKS NEED TO BE SORTED ACCORDING TO START TIME!!!!!!
     {
       id: '0',
       name: 'Lic',
-      startTime: '11:00',
-      duration: '1:00',
-      endTime: '12:00',
-      day: 'Mon',
+      startTime: '3:00',
+      duration: '3:00',
+      endTime: '6:00',
+      day: 'Tue',
     },
-    // add more blocks as needed
+    {
+      id: '1',
+      name: 'Mic',
+      startTime: '0:00',
+      duration: '3:00',
+      endTime: '3:00',
+      day: 'Tue',
+    },
+    
+    
+
+    // {
+    //   id: '2',
+    //   name: 'Dig',
+    //   startTime: '9:00',
+    //   duration: '2:00',
+    //   endTime: '11:00',
+    //   day: 'Mon',
+    // },
+    // {
+    //   id: '10',
+    //   name: 'Mic',
+    //   startTime: '9:00',
+    //   duration: '2:00',
+    //   endTime: '11:00',
+    //   day: 'Mon',
+    // },
   ]);
 
   return (

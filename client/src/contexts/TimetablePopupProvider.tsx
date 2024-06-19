@@ -31,7 +31,10 @@ export const TimetablePopupProvider: React.FC<TTPopupProviderProps> = ({ childre
     setPopupContent(content)
     setPopupOpen(true)
   }
-  const closePopup = () => setPopupOpen(false);
+  const closePopup = () => {
+    setPopupContent(undefined)
+    setPopupOpen(false)
+  };
 
   return (
     <PopupContext.Provider value={{ isPopupOpen, openPopup, closePopup, popupContent }}>

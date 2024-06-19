@@ -8,26 +8,25 @@ type Prop = {
 };
 
 function TimetableCell(props: Prop) {
-  const { isPopupOpen, openPopup, closePopup } = useTimetablePopup()
+  const { isPopupOpen, openPopup, closePopup } = useTimetablePopup();
+  const { block } = props;
 
   const handleEditClick = () => {
     openPopup(block);
   };
 
-  const { block } = props;
   const { start, span } = calculateColumn(block.startTime, block.duration);
 
   return (
     <>
       <button
-        className={`col-start-${start + 1} col-span-${span} border m-0 bg-blue-500 text-white flex items-center justify-center`}
+        className={`col-start-${start + 1} col-span-${span} rounded-md border-blue-600 border text-[10px] m-0 bg-blue-500 text-white min-h-11 h-full`}
         style={{ gridColumn: `${start + 1} / span ${span}` }}
         onClick={handleEditClick}
       >
         {block.name}
       </button>
     </>
-    
   );
 }
 

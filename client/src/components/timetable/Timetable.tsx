@@ -3,6 +3,7 @@ import TimetableDay from './TimetableDay'
 import TimetablePopup from './TimetablePopup';
 import CreateTimeblock from './CreateTimeblock';
 import { useTimetablePopup } from '../../contexts/TimetablePopupProvider';
+import TimetableHeader from './TimetableHeader';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -12,12 +13,10 @@ function Timetable() {
   return (
     <>
       <div>
-        <div>
-          #Timings
-        </div>
-        <ol className="w-100% border border-gray-200 rounded-md">
+        <ol className="w-100% border border-blue-950 rounded-md overflow-hidden">
+          <TimetableHeader/>
           {days.map((day, index) => (
-            <TimetableDay day={day}/>
+            <TimetableDay day={day} key={index}/>
           ))}
         </ol>
       </div>
