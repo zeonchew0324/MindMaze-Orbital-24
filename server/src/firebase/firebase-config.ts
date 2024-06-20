@@ -1,19 +1,47 @@
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import { initializeApp } from 'firebase/app';
+// Import the functions you need from the SDKs you need
+const { initializeApp } = require("firebase/app") 
+const { getAnalytics } = require("firebase/analytics")
+const { getAuth } = require("firebase/auth")
+const { getFirestore, doc, setDoc } = require("firebase/firestore")
+const admin = require('firebase-admin')
+const serviceAccount = require('../../src/firebase/serviceAccountKey.json')
 
 const firebaseConfig = {
-  // Your Firebase configuration
+  apiKey: "AIzaSyBN_RFLOMZo8hp-26J9Fzqztpo0gMGsr-I",
+  authDomain: "mind-maze-8dc62.firebaseapp.com",
+  databaseURL: "https://mind-maze-8dc62.firebaseio.com",
+  projectId: "mind-maze-8dc62",
+  storageBucket: "mind-maze-8dc62.appspot.com",
+  messagingSenderId: "1024085963293",
+  appId: "1:1024085963293:web:82a00bd585e3fbf4d00cf4",
+  measurementId: "G-SP0XY1XD28"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+// Initialize Firebase
+const app = initializeApp(firebaseConfig)
+const firestoreDb = getFirestore()
 
-export const addHabitToDatabase = async (habit: { id: string; name: string; day: string }) => {
-  try {
-    const docRef = await addDoc(collection(db, 'habits'), habit);
-    console.log('Document written with ID: ', docRef.id);
-  } catch (e) {
-    console.error('Error adding document: ', e);
-    throw e;
+// Initialize Admin
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+})
+
+
+// Upload test data to db
+const uploadTestData = async () => {
+  const data = {
+    id: 2,
+    info: "2",
   }
-};
+  try {
+    const document = doc(firestoreDb, "test", "testDoc2")
+    let dataUpdated = await setDoc(document, data)
+    return dataUpdated
+  } catch (error) {
+    console.log("FIRESTORE ERROR!!!!!!!!!!!!!!!!!")
+  }
+}
+
+const auth = getAuth(app)
+
+module.exports = { app, auth, uploadTestData, admin }
