@@ -13,7 +13,9 @@ function CreateTimeblock() {
 
   useEffect(() => {
     if (popupContent) {
+      console.log('Popup Content:', popupContent);
       const activityTimeBlocks = timeBlocks.filter(tb => tb.name === popupContent.name);
+      console.log(activityTimeBlocks);
       const formattedTimeframes = activityTimeBlocks.map(tb => ({
         start: tb.startTime,
         end: tb.endTime,

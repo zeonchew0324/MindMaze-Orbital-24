@@ -44,6 +44,8 @@ app.get('/test-upload', async (req: Request, res: Response) => {
   }
 })
 
+app.
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

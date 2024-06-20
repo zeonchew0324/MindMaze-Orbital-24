@@ -32,7 +32,6 @@ export const TimetablePopupProvider: React.FC<TTPopupProviderProps> = ({ childre
     setPopupOpen(true)
   }
   const closePopup = () => {
-    setPopupContent(undefined)
     setPopupOpen(false)
   };
 
