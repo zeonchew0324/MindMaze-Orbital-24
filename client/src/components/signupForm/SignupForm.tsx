@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import './SignupForm.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthProvider'
 import { doCreateUserWithEmailAndPassword } from '../../firebase/auth'
