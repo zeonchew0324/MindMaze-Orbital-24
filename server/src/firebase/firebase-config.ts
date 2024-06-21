@@ -19,13 +19,15 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-const firestoreDb = getFirestore()
+
+const db = getFirestore(app)
 
 // Initialize Admin
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 })
 
+const firestoreDb = getFirestore(app)
 
 // Upload test data to db
 const uploadTestData = async () => {
@@ -44,4 +46,4 @@ const uploadTestData = async () => {
 
 const auth = getAuth(app)
 
-module.exports = { app, auth, uploadTestData, admin }
+module.exports = { app, auth, uploadTestData, admin, firestoreDb }
