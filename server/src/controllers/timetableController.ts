@@ -1,6 +1,6 @@
 import { time } from "console";
 import { Request, Response } from "express";
-import { collection, doc, getDoc, query, updateDoc, where, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, query, updateDoc, where, setDoc, addDoc } from "firebase/firestore";
 const { firestoreDb } = require("../firebase/firebase-config") 
 
 export async function handleGetTimetables(req: Request, res: Response) {
@@ -18,7 +18,17 @@ export async function handleGetTimetables(req: Request, res: Response) {
     }
 
     if (!userData.timetables) {
-      return res.status(404).json({ error: 'Timetables not found for this user' });
+      // If timetables field doesn't exist, initialize with a default timetable
+      const defaultTimetable = { name: 'default' }
+      const ttColRef = collection(db, `users/${id}/timetableCollection`)
+      const newDocRef = await addDoc(ttColRef, defaultTimetable)
+      const newDocId = newDocRef.id
+
+      await updateDoc(userRef, {
+        timetables: {
+          timetable1: newDocId
+        }
+      })
     }
 
     const timetableMap = userData.timetables;
