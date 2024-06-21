@@ -13,7 +13,7 @@ function Timetable() {
   return (
     <>
       <div>
-        <ol className="w-100% border border-blue-950 rounded-md overflow-hidden">
+        <ol className="shadow-xl w-100% border border-blue-950 rounded-md overflow-hidden">
           <TimetableHeader/>
           {days.map((day, index) => (
             <TimetableDay day={day} key={index}/>
