@@ -32,9 +32,19 @@ export function sortWithStartTime(a: TimeBlock, b: TimeBlock) {
   }
 }
 
-export function unpackData(arr: TimeBlockData[]) {
+export function unpackTTData(arr: TimeBlockData[]) {
   return arr.map(tb => ({
       ...tb,
       duration: calculateDuration(tb.startTime, tb.endTime)
+  }));
+}
+
+export function packTTData(arr: TimeBlock[]) {
+  return arr.map(({ id, name, startTime, endTime, day }) => ({
+    id,
+    name,
+    startTime,
+    endTime,
+    day
   }));
 }

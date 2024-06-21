@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { firestore } from "firebase-admin";
-import { handleGetTimetables } from "../controllers/timetableController";
+import { handleGetTimetables, handleUpdateTimetables } from "../controllers/timetableController";
 const express = require('express');
 const router = express.Router();
 
@@ -14,9 +14,7 @@ const router = express.Router();
 
 router.get('/timetables/:id/:index', handleGetTimetables)
 
-// router.put('/timetables/:id', async (req: Request, res: Response) => {
-//   // Update timetable logic
-// });
+router.put('/timetables/:id/:index', handleUpdateTimetables)
 
 // router.delete('/timetables/:id', async (req: Request, res: Response) => {
 //   // Delete timetable logic

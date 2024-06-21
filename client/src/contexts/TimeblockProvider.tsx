@@ -1,9 +1,10 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { TimeBlock, TimeBlockData } from '../types/timetable';
 import axios from 'axios';
-import { sortWithStartTime, unpackData } from '../utils/timetable';
+import { packTTData, sortWithStartTime, unpackTTData } from '../utils/timetable';
 import { useAuth } from './AuthProvider';
 import { AuthTokenProp } from '../types/auth';
+import { time } from 'console';
 
 type TimeblockContextType = {
   timeBlocks: TimeBlock[];
@@ -42,7 +43,7 @@ export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
             Authorization: 'Bearer ' + token,
           }
         })
-        const sortedTimeBlocks = unpackData(response.data).sort(sortWithStartTime) 
+        const sortedTimeBlocks = unpackTTData(response.data).sort(sortWithStartTime) 
         setTimeBlocks(sortedTimeBlocks)
       } catch (error) {
         console.error('Error fetching time blocks:', error)
@@ -51,6 +52,26 @@ export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
 
     fetchTimeBlocks(token);
   }, [])
+
+  useEffect(() => {
+    const getUid = async () => currentUser?.uid
+    const updateTimeBlocks = async (updatedTimeBlocks: TimeBlock[]) => {
+      try {   
+        const uid = await getUid()
+        const reqBody = packTTData(updatedTimeBlocks) 
+        await axios.put(`/api/timetables/${uid}/0`, reqBody, {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        });
+        console.log('Timetable updated successfully!');
+      } catch (error) {
+        console.error('Error fetching time blocks:', error)
+      }
+    };
+
+    updateTimeBlocks(timeBlocks);
+  }, [timeBlocks])
 
   return (
     <TimeblockContext.Provider value={{ timeBlocks, setTimeBlocks }}>
