@@ -2,8 +2,15 @@
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface TodoContextType {
-  todos: any[]; //note here
+export interface Todo {
+  id: number; 
+  name: string;
+  description: string; 
+  deadline: Date;
+  priority: 'High' | 'Middle' | 'Low'; 
+}
+export interface TodoContextType {
+  todos: Todo[]; 
   addTodo: (todo: any) => void;
   deleteTodo: (id: number) => void;
 }

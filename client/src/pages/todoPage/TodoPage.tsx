@@ -1,55 +1,60 @@
-// pages/todoPage/TodoPage.tsx
-
 import React, { useState } from 'react';
-import { useTodos } from '../../contexts/TodoProvider';
+import { useTodos, Todo } from '../../contexts/TodoProvider';
 import { FaTrash } from 'react-icons/fa';
+import axios from 'axios';
 
 const TodoPage: React.FC = () => {
-  const { todos, addTodo, deleteTodo } = useTodos();
+  const { addTodo, deleteTodo, todos } = useTodos();
   const [showAddForm, setShowAddForm] = useState(false);
   const [todoName, setTodoName] = useState('');
   const [todoDescription, setTodoDescription] = useState('');
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
-  const [todoPriority, setTodoPriority] = useState('');
+  const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
 
-  const handleSubmitTodo = () => {
+  axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
+
+  const handleSubmitTodo = async () => {
     if (todoName.trim() !== '' && todoDeadline && todoPriority.trim() !== '') {
-      const newTodo = {
-        id: Date.now(),
+      const newTodo: Omit<Todo, 'id'> = {
         name: todoName,
         description: todoDescription,
         deadline: todoDeadline,
         priority: todoPriority,
       };
 
-      addTodo(newTodo);
+      try {
+        const response = await axios.post('/api/todos', newTodo);
+        addTodo(response.data);
+      } catch (error) {
+        console.error('Error adding todo:', error);
+        alert('Failed to add todo. Please try again.');
+      }
 
       setTodoName('');
       setTodoDescription('');
       setTodoDeadline(null);
-      setTodoPriority('');
-      setShowAddForm(false); // Hide the add form after adding todo
+      setTodoPriority('Low');
+      setShowAddForm(false);
     } else {
       alert('Please fill in all fields');
     }
   };
 
-  const handleDeleteTodo = (id: number) => {
-    deleteTodo(id);
+  const handleDeleteTodo = async (id: number) => {
+    try {
+      await axios.delete(`/api/todos/${id}`);
+      deleteTodo(id);
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+      alert('Failed to delete todo. Please try again.');
+    }
   };
 
-  // Function to filter and sort todos based on priority and date
   const filteredTodos = todos.slice().sort((a, b) => {
     if (a.priority === 'High' && b.priority !== 'High') return -1;
-    if (a.priority === 'Middle' && b.priority == 'Low') return -1;
+    if (a.priority === 'Middle' && b.priority === 'Low') return -1;
     if (a.priority !== 'High' && b.priority === 'High') return 1;
-
-    // When priority is the same, sort by date
-    if (a.priority === b.priority) {
-      return a.deadline.getTime() - b.deadline.getTime();
-    }
-
-    return 0;
+    return a.deadline.getTime() - b.deadline.getTime();
   });
 
   return (
@@ -83,10 +88,9 @@ const TodoPage: React.FC = () => {
             onChange={(e) => setTodoPriority(e.target.value as 'High' | 'Middle' | 'Low')}
             className="border border-gray-300 rounded-md px-3 py-2"
           >
-            <option value="">Select your priority level</option>
-            <option value="High">High</option>
-            <option value="Middle">Middle</option>
             <option value="Low">Low</option>
+            <option value="Middle">Middle</option>
+            <option value="High">High</option>
           </select>
           <div className="flex">
             <button
@@ -114,7 +118,7 @@ const TodoPage: React.FC = () => {
                   <div>
                     <h3 className="font-bold text-xl text-amber-950 pb-1">{todo.name}</h3>
                     <p className="text-lg text-gray-600">{todo.description}</p>
-                    <p className="text-lg text-gray-600">Deadline: {todo.deadline?.toLocaleDateString()}</p>
+                    <p className="text-lg text-gray-600">Deadline: {new Date(todo.deadline).toLocaleDateString()}</p>
                     <p className="text-lg text-gray-600">Priority: {todo.priority}</p>
                   </div>
                   <button
@@ -127,7 +131,7 @@ const TodoPage: React.FC = () => {
               ))}
             </ul>
           )}
-          <div className ='pt-4'>
+          <div className='pt-4'>
             <button
               onClick={() => setShowAddForm(true)}
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mb-4"

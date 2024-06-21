@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import { firestore } from "firebase-admin";
 import { handleGetTimetables, handleUpdateTimetables } from "../controllers/timetableController";
+import { createTodo, getTodos, getTodoById, updateTodo, deleteTodo } from "../controllers/todoController";
+
 const express = require('express');
 const router = express.Router();
 
@@ -15,6 +15,13 @@ const router = express.Router();
 router.get('/timetables/:id/:index', handleGetTimetables)
 
 router.put('/timetables/:id/:index', handleUpdateTimetables)
+
+//todo router
+router.post('/todos', createTodo); // Create a new todo
+router.get('/todos', getTodos); // Get all todos
+router.get('/todos/:id', getTodoById); // Get a specific todo by ID
+router.put('/todos/:id', updateTodo); // Update a todo by ID
+router.delete('/todos/:id', deleteTodo); // Delete a todo by ID
 
 // router.delete('/timetables/:id', async (req: Request, res: Response) => {
 //   // Delete timetable logic
