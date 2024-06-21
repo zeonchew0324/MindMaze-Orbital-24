@@ -41,6 +41,7 @@ const TodoPage: React.FC = () => {
   // Function to filter and sort todos based on priority and date
   const filteredTodos = todos.slice().sort((a, b) => {
     if (a.priority === 'High' && b.priority !== 'High') return -1;
+    if (a.priority === 'Middle' && b.priority == 'Low') return -1;
     if (a.priority !== 'High' && b.priority === 'High') return 1;
 
     // When priority is the same, sort by date
