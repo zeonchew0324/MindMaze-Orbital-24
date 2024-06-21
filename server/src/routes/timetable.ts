@@ -12,9 +12,9 @@ const router = express.Router();
 //   // Get all timetables logic
 // });
 
-router.get('/timetables/:id/:index', handleGetTimetables)
+router.get('/:id/:index', handleGetTimetables)
 
-router.put('/timetables/:id/:index', handleUpdateTimetables)
+router.put('/:id/:index', handleUpdateTimetables)
 
 // router.delete('/timetables/:id', async (req: Request, res: Response) => {
 //   // Delete timetable logic

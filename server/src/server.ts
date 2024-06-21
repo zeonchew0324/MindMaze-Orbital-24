@@ -21,7 +21,7 @@ app.use(express.urlencoded({extended: true}))
 // Serve react files
 app.use(express.static(path.join(__dirname, '../../client/build')))
 
-app.use('/api', timetableRouter);
+app.use('/api/timetables', timetableRouter);
 
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
