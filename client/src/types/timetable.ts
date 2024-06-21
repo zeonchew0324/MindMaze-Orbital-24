@@ -7,3 +7,11 @@ export interface TimeBlock {
   day: string; 
   userId?: string;    
 }
+
+export interface TimeBlockData {
+  id: string;
+  name: string;
+  startTime: string; 
+  endTime: string;
+  day: string;  
+}

@@ -23,7 +23,6 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, initializeUser)
-    console.log(`detected change: ${userLoggedIn}`)
     return unsubscribe
   }, [])
 
@@ -33,6 +32,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       setUserLoggedIn(true)
       user.getIdToken().then((token) => {
         setToken(token)
+        console.log(`UID: ${user.uid}`)
+        console.log(`TOKEN: ${token}`)
       })
     } else {
       setCurrentUser(null)

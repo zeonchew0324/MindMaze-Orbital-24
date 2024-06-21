@@ -1,4 +1,4 @@
-import { TimeBlock } from "../types/timetable";
+import { TimeBlock, TimeBlockData } from "../types/timetable";
 
 export function convertDurationToNumber(duration: string): number {
   const [hours, minutes] = duration.split(':').map(Number);
@@ -30,4 +30,11 @@ export function sortWithStartTime(a: TimeBlock, b: TimeBlock) {
   } else {
     return 0
   }
+}
+
+export function unpackData(arr: TimeBlockData[]) {
+  return arr.map(tb => ({
+      ...tb,
+      duration: calculateDuration(tb.startTime, tb.endTime)
+  }));
 }

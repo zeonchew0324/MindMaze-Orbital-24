@@ -1,5 +1,9 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react';
-import { TimeBlock } from '../types/timetable';
+import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react';
+import { TimeBlock, TimeBlockData } from '../types/timetable';
+import axios from 'axios';
+import { sortWithStartTime, unpackData } from '../utils/timetable';
+import { useAuth } from './AuthProvider';
+import { AuthTokenProp } from '../types/auth';
 
 type TimeblockContextType = {
   timeBlocks: TimeBlock[];
@@ -21,42 +25,32 @@ type TimeblockProviderProps = {
 };
 
 export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
-  const [timeBlocks, setTimeBlocks] = useState([
+  const [timeBlocks, setTimeBlocks] = useState<TimeBlock[]>([
     // TIMEBLOCKS NEED TO BE SORTED ACCORDING TO START TIME!!!!!!
     // FORMAT: HH:MM String
-    {
-      id: '0',
-      name: 'Lic',
-      startTime: '03:00',
-      duration: '03:00',
-      endTime: '06:00',
-      day: 'Tue',
-    },
-    { 
-      id: '1',
-      name: 'Mic',
-      startTime: '00:00',
-      duration: '03:00',
-      endTime: '03:00',
-      day: 'Tue',
-    },
-    {
-      id: '2',
-      name: 'Dig',
-      startTime: '13:00',
-      duration: '03:00',
-      endTime: '16:00',
-      day: 'Wed',
-    },
-    {
-      id: '10',
-      name: 'Mic',
-      startTime: '09:00',
-      duration: '03:00',
-      endTime: '12:00',
-      day: 'Mon',
-    },
   ]);
+
+  const { currentUser, token } = useAuth()
+
+  useEffect(() => {
+    const getUid = async () => currentUser?.uid
+    const fetchTimeBlocks = async (token: string) => {
+      try {
+        const uid = await getUid()
+        const response = await axios.get(`/api/timetables/${uid}/0`, {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          }
+        })
+        const sortedTimeBlocks = unpackData(response.data).sort(sortWithStartTime) 
+        setTimeBlocks(sortedTimeBlocks)
+      } catch (error) {
+        console.error('Error fetching time blocks:', error)
+      }
+    };
+
+    fetchTimeBlocks(token);
+  }, [])
 
   return (
     <TimeblockContext.Provider value={{ timeBlocks, setTimeBlocks }}>

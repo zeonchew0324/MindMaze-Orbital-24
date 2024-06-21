@@ -4,6 +4,7 @@ import path from "path";
 const { uploadTestData } = require("./firebase/firebase-config");
 const express = require('express')
 import { decodeToken } from './middleware/checkAuth';
+const timetableRouter = require('./routes/timetable');
 
 // Create an instance of Express
 const app = express()
@@ -20,10 +21,7 @@ app.use(express.urlencoded({extended: true}))
 // Serve react files
 app.use(express.static(path.join(__dirname, '../../client/build')))
 
-// Define default api route
-app.get('/api', (req: Request, res: Response) => {
-  res.json({'message': 'hello this is api!'})
-})
+app.use('/api', timetableRouter);
 
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
@@ -43,8 +41,6 @@ app.get('/test-upload', async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to upload test data.' })
   }
 })
-
-app.
 
 // Start the server
 app.listen(port, () => {
