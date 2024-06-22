@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useTodos, Todo } from '../../contexts/TodoProvider';
+import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
+import { Todo } from '../../types/todo';
 
 const TodoPage: React.FC = () => {
   const { addTodo, deleteTodo, todos } = useTodos();
@@ -10,39 +11,36 @@ const TodoPage: React.FC = () => {
   const [todoDescription, setTodoDescription] = useState('');
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
+  const userId = 'USER_ID'; // Replace with actual user ID
 
   axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
-  const handleSubmitTodo = async () => {
-    if (todoName.trim() !== '' && todoDeadline && todoPriority.trim() !== '') {
-      const newTodo: Omit<Todo, 'id'> = {
-        name: todoName,
-        description: todoDescription,
-        deadline: todoDeadline,
-        priority: todoPriority,
-      };
-
-      try {
-        const response = await axios.post('/api/todos', newTodo);
-        addTodo(response.data);
-      } catch (error) {
-        console.error('Error adding todo:', error);
-        alert('Failed to add todo. Please try again.');
+  const handleSubmitTodo = async (name: string, description: string, deadline: Date | null, priority: 'High' | 'Middle' | 'Low') => {
+    try {
+      if (name.trim() === '' || !deadline || priority.trim() === '') {
+        alert('Please fill in all fields');
+        return;
       }
 
+      const newTodo = { name, description, deadline, priority };
+
+      const response = await axios.post(`/api/todos/${userId}`, newTodo);
+      addTodo({ ...newTodo, id: response.data.id });
+      
       setTodoName('');
       setTodoDescription('');
       setTodoDeadline(null);
       setTodoPriority('Low');
       setShowAddForm(false);
-    } else {
-      alert('Please fill in all fields');
+    } catch (error) {
+      console.error('Error adding todo:', error);
+      alert('Failed to add todo. Please try again.');
     }
   };
 
   const handleDeleteTodo = async (id: number) => {
     try {
-      await axios.delete(`/api/todos/${id}`);
+      await axios.delete(`/api/todos/${userId}/${id}`);
       deleteTodo(id);
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -54,13 +52,13 @@ const TodoPage: React.FC = () => {
     if (a.priority === 'High' && b.priority !== 'High') return -1;
     if (a.priority === 'Middle' && b.priority === 'Low') return -1;
     if (a.priority !== 'High' && b.priority === 'High') return 1;
-    return a.deadline.getTime() - b.deadline.getTime();
+    return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
   });
 
   return (
     <div className="p-4 bg-gray-300 rounded-md">
       <h1 className="text-3xl text-black font-semibold mb-6">Todo List</h1>
-      
+
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
           <input
@@ -94,7 +92,7 @@ const TodoPage: React.FC = () => {
           </select>
           <div className="flex">
             <button
-              onClick={handleSubmitTodo}
+              onClick={() => handleSubmitTodo(todoName, todoDescription, todoDeadline, todoPriority)}
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mr-2"
             >
               Add
@@ -118,7 +116,7 @@ const TodoPage: React.FC = () => {
                   <div>
                     <h3 className="font-bold text-xl text-amber-950 pb-1">{todo.name}</h3>
                     <p className="text-lg text-gray-600">{todo.description}</p>
-                    <p className="text-lg text-gray-600">Deadline: {new Date(todo.deadline).toLocaleDateString()}</p>
+                    <p className="text-lg text-gray-600">Deadline: {todo.deadline ? new Date(todo.deadline).toLocaleDateString() : 'No deadline'}</p>
                     <p className="text-lg text-gray-600">Priority: {todo.priority}</p>
                   </div>
                   <button

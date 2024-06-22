@@ -1,19 +1,6 @@
-// contexts/TodoProvider.tsx
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-
-export interface Todo {
-  id: number; 
-  name: string;
-  description: string; 
-  deadline: Date;
-  priority: 'High' | 'Middle' | 'Low'; 
-}
-export interface TodoContextType {
-  todos: Todo[]; 
-  addTodo: (todo: any) => void;
-  deleteTodo: (id: number) => void;
-}
+import { Todo, TodoContextType } from '../types/todo';
 
 const TodoContext = createContext<TodoContextType | undefined>(undefined);
 
@@ -26,9 +13,9 @@ export const useTodos = (): TodoContextType => {
 };
 
 export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [todos, setTodos] = useState<any[]>([]); // Replace `any` with a specific type if needed
+  const [todos, setTodos] = useState<Todo[]>([]); 
 
-  const addTodo = (todo: any) => {
+  const addTodo = (todo: Todo) => {
     setTodos((prevTodos) => [...prevTodos, todo]);
   };
 
