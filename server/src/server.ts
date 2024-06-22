@@ -1,48 +1,53 @@
-import { Request, Response } from "express"
-import cors from 'cors'
-import path from "path";
-const { uploadTestData } = require("./firebase/firebase-config");
-const express = require('express')
+// Import necessary modules
+import { Request, Response } from 'express';
+import cors from 'cors';
+import path from 'path';
+import express from 'express';
 import { decodeToken } from './middleware/checkAuth';
+const { uploadTestData } = require('./firebase/firebase-config');
 const timetableRouter = require('./routes/timetable');
+const todoRouter = require('./routes/todo');
 
 // Create an instance of Express
-const app = express()
+const app = express();
 
 // Define a port number
-const port = 5000 //dev
+const port = 5000; // Adjust port number as needed
 
 // Middleware to parse JSON bodies
-app.use(express.json())
-app.use(cors())
-app.use('/api', decodeToken)
-app.use(express.urlencoded({extended: true}))
+app.use(express.json());
+app.use(cors());
+app.use('/api', decodeToken); // Applying decodeToken middleware for all routes under /api
+app.use(express.urlencoded({ extended: true }));
 
-// Serve react files
-app.use(express.static(path.join(__dirname, '../../client/build')))
+// Serve react files (assuming this is for production deployment)
+app.use(express.static(path.join(__dirname, '../../client/build')));
 
+// Mount routers
 app.use('/api/timetables', timetableRouter);
+app.use('/api/todos', todoRouter);    
 
+// Route to serve React frontend
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
 });
 
-// Define a basic route
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello, WoRLD')
-})
-
-// Test upload db
+// Test upload database route
 app.get('/test-upload', async (req: Request, res: Response) => {
   try {
-    await uploadTestData(); 
-    res.json([{ message: 'Test data uploaded successfully!' }])
+    await uploadTestData();
+    res.json([{ message: 'Test data uploaded successfully!' }]);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to upload test data.' })
+    res.status(500).json({ error: 'Failed to upload test data.' });
   }
-})
+});
+
+// Basic route
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello, World');
+});
 
 // Start the server
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
-})
+});

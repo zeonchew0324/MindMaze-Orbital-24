@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import { collection, doc, getDoc, query, updateDoc, where, setDoc, addDoc } from "firebase/firestore";
 const { firestoreDb } = require("../firebase/firebase-config") 
 
+
+
 export async function handleGetTimetables(req: Request, res: Response) {
   try {
     const db = firestoreDb
