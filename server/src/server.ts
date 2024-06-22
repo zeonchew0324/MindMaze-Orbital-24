@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, '../../client/build')));
 
 // Mount routers
 app.use('/api/timetables', timetableRouter);
-app.use('/api/todos', todoRouter);      
+app.use('/api/todos', todoRouter);    
 
 // Route to serve React frontend
 app.get('*', (req: Request, res: Response) => {
