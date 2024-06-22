@@ -4,9 +4,11 @@ import NavBar from "../../components/navBar/NavBar";
 import HabitsList from '../../components/habits/HabitsList';
 import { useHabits } from '../../contexts/HabitsProvider';
 import { CiSquarePlus } from 'react-icons/ci';
+import { sevenDays, unpackHabitData } from "../../utils/habits";
+import { useAuth } from "../../contexts/AuthProvider";
+import axios from "axios";
 
 const HabitsPage: React.FC = () => {
-  const sevenDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const [selectedDay, setSelectedDay] = useState<string>(sevenDays[new Date().getDay()]);
   const [showAddForm, setShowAddForm] = useState(false);
   const { addHabit, habits } = useHabits();
@@ -15,6 +17,7 @@ const HabitsPage: React.FC = () => {
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
   useEffect(() => { setSelectedDay(sevenDays[new Date().getDay()]); }, []);
+  const { currentUser, token } = useAuth()
 
   const handleAddHabit = () => {
     setShowAddForm(true);
@@ -32,14 +35,36 @@ const HabitsPage: React.FC = () => {
     );
   };
 
-  const handleSubmitHabit = () => {
+  const handleSubmitHabit = async () => {
     if (habitName.trim() !== '' && selectedDays.length > 0) {
-      selectedDays.forEach((day) => {
-        addHabit({ id: Date.now(), name: habitName, day });
-      });
       setHabitName('');
       setSelectedDays([]);
       setShowAddForm(false);
+
+      // Make post request here
+      const getUid = async () => currentUser?.uid
+      const dbAddHabit = async (token: string) => {
+        try {   
+          const uid = await getUid()
+          const reqBody = {
+            name: `${habitName}`,
+            day: selectedDays,
+            description: '' //Work in progress
+          }
+          const docId = await axios.put(`/api/habits/${uid}/0`, reqBody, {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          });
+          selectedDays.forEach((day) => {
+            addHabit({ id: docId.data.id, name: habitName, day });
+          });
+          console.log('Habit added successfully!');
+        } catch (error) {
+          console.error('Error adding habit:', error)
+        }
+      };
+      dbAddHabit(token)
     }
   };
 

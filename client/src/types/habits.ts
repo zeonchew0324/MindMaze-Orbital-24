@@ -1,10 +1,12 @@
 export interface Habit {
-  id: number
+  id: string
   name: string
+  day: string
 }
 
 export interface HabitData {
-  id: number
+  id: string
   name: string
   day: string[]
+  description?: string
 }

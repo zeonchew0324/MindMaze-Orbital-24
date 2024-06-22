@@ -68,9 +68,9 @@ export async function handleAddHabits(req: Request, res: Response) {
 
     // Get the habits subcollection
     const habitsDocRef = collection(db, `users/${id}/habitsCollection`);
-    await addDoc(habitsDocRef, newHabit);
+    const addedDoc = await addDoc(habitsDocRef, newHabit);
 
-    return res.json({ message: 'Added habit successfully!' });
+    return res.json({ id: addedDoc.id });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
