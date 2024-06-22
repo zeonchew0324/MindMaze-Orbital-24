@@ -1,5 +1,3 @@
-import { Request, Response } from "express";
-import { firestore } from "firebase-admin";
 import { handleGetTimetables, handleUpdateTimetables } from "../controllers/timetableController";
 const express = require('express');
 const router = express.Router();

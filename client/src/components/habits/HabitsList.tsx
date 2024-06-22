@@ -1,12 +1,7 @@
 import React from 'react';
 import { useHabits } from '../../contexts/HabitsProvider';
 import { FaTrash } from 'react-icons/fa';
-
-
-interface Habit {
-  id: number;
-  name: string;
-}
+import { Habit } from '../../types/habits';
 
 interface HabitsListProps {
   habits: Habit[];

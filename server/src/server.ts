@@ -5,6 +5,7 @@ const { uploadTestData } = require("./firebase/firebase-config");
 const express = require('express')
 import { decodeToken } from './middleware/checkAuth';
 const timetableRouter = require('./routes/timetable');
+const habitsRouter = require('./routes/habits')
 
 // Create an instance of Express
 const app = express()
@@ -22,6 +23,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.static(path.join(__dirname, '../../client/build')))
 
 app.use('/api/timetables', timetableRouter);
+app.use('/api/habits', habitsRouter);
 
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
