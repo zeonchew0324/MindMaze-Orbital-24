@@ -51,7 +51,7 @@ const HabitsPage: React.FC = () => {
             day: selectedDays,
             description: '' //Work in progress
           }
-          const docId = await axios.put(`/api/habits/${uid}/0`, reqBody, {
+          const docId = await axios.put(`/api/habits/${uid}`, reqBody, {
             headers: {
               Authorization: 'Bearer ' + token,
             },

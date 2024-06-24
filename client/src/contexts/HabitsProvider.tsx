@@ -36,9 +36,9 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       try {
         const uid = await getUid()
         console.log(uid)
-        const response = await axios.get(`/api/habits/O88bAP4mzfYKKtm41LqVHafNuVA2`, {
+        const response = await axios.get(`/api/habits/${uid}`, {
           headers: {
-            Authorization: "Bearer: eyJhbGciOiJSUzI1NiIsImtpZCI6ImYwOGU2ZTNmNzg4ZDYwMTk0MDA1ZGJiYzE5NDc0YmY5Mjg5ZDM5ZWEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiTmlnZXMiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWluZC1tYXplLThkYzYyIiwiYXVkIjoibWluZC1tYXplLThkYzYyIiwiYXV0aF90aW1lIjoxNzE5MDY4NDE1LCJ1c2VyX2lkIjoiTzg4YkFQNG16ZllLS3RtNDFMcVZIYWZOdVZBMiIsInN1YiI6Ik84OGJBUDRtemZZS0t0bTQxTHFWSGFmTnVWQTIiLCJpYXQiOjE3MTkwNjg0MTUsImV4cCI6MTcxOTA3MjAxNSwiZW1haWwiOiJ0ZXN0MkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsidGVzdDJAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.TE37DfXZnPGOQcXF8nOHmH825-H6pbY99Q0ZWJ9oFueqpBJj-ZqBTTxjJEfFjHc7cGGBVMx8mORoVNlQNdFTIirhMwScHtmhJP9mC85Ymko7vHILrkwnE783dvkGgHzfqqWU0EqQiJ4YvOXtgd28IYNjLVshS3QL5sPCsiQzBtRxrQvfxScHQe3JGUZLbVhcXguUhXEN5d7I5szBaDX8M51RHwANFxtQobDUuvd2OfO-9psL2WipbIwAzcFzuCJs7mBUW-wLKrtLm7AgIhqd4Hxr-CNCnHNSpnIocGrtEAjX7MdEC2bnUVH_mhXdJHgf2lRDPVnTWYGDwxIJb7DWgw"
+            Authorization: "Bearer " + token
           }
         })
         const habits = unpackHabitData(response.data)
@@ -61,7 +61,7 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     try {
       await axios.delete(`/api/habits/${uid}/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: "Bearer " + token,
         },
       });
       console.log(id + 'Habit deleted successfully!');
