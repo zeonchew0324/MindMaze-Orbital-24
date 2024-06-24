@@ -1,6 +1,8 @@
-
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import axios from 'axios';
 import { Todo, TodoContextType } from '../types/todo';
+import { useAuth } from './AuthProvider';
+import { unpackTodoData } from '../utils/todo';
 
 const TodoContext = createContext<TodoContextType | undefined>(undefined);
 
@@ -13,18 +15,68 @@ export const useTodos = (): TodoContextType => {
 };
 
 export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [todos, setTodos] = useState<Todo[]>([]); 
+  const { currentUser, token } = useAuth();
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    const getUid = async () => currentUser?.uid;
+    const fetchTodos = async (token: string) => {
+      try {
+        const uid = await getUid();
+        const response = await axios.get(`/api/todos/${uid}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const todos = unpackTodoData(response.data);
+        console.log('Fetch Todos Response:', response.data);
+        setTodos(todos); 
+        console.log('Successfully fetched todos');
+      } catch (error) {
+        console.error('Error fetching todos:', error);
+      }
+    };
+
+    
+    fetchTodos(token);
+    
+  }, [currentUser, token]);
 
   const addTodo = (todo: Todo) => {
     setTodos((prevTodos) => [...prevTodos, todo]);
   };
 
-  const deleteTodo = (id: number) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+  const deleteTodo = async (id: string) => {
+    const getUid = async () => currentUser?.uid;
+    try {
+      const uid = await getUid();
+      if (!uid) {
+        console.error('User ID not available.');
+        return;
+      }
+
+      await axios.delete(`/api/todos/${uid}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+      console.log(`${id} Todo deleted successfully!`);
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+      alert('Failed to delete todo. Please try again.');
+    }
+  };
+
+  const contextValue: TodoContextType = {
+    todos,
+    addTodo,
+    deleteTodo,
   };
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, deleteTodo }}>
+    <TodoContext.Provider value={contextValue}>
       {children}
     </TodoContext.Provider>
   );

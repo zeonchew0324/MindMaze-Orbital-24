@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
-import { Todo } from '../../types/todo';
+import { useAuth } from '../../contexts/AuthProvider'; 
 
 const TodoPage: React.FC = () => {
   const { addTodo, deleteTodo, todos } = useTodos();
@@ -11,43 +11,73 @@ const TodoPage: React.FC = () => {
   const [todoDescription, setTodoDescription] = useState('');
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
-  const userId = 'USER_ID'; // Replace with actual user ID
+  const { currentUser, token } = useAuth()
+
 
   axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
   const handleSubmitTodo = async (name: string, description: string, deadline: Date | null, priority: 'High' | 'Middle' | 'Low') => {
+    if (name.trim() === '' || !deadline || priority.trim() === '') {
+      alert('Please fill in all fields');
+      return;
+    }
+  
+    const getUid = async () => currentUser?.uid;
+    const dbAddTodo = async (token: string) => {
+      try {
+        const uid = await getUid();
+        if (!uid) {
+          console.error('User ID is not available.');
+          return;
+        }
+  
+        const reqBody = {
+          name: name,
+          description: description,
+          deadline: deadline.toISOString(), // Ensure deadline is a string
+          priority: priority,
+        };
+  
+        const response = await axios.put(`/api/todos/${uid}`, reqBody, {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        });
+        addTodo({ ...reqBody, id: response.data.id });
+        setShowAddForm(false);      
+        console.log('Todo added successfully!');
+      } catch (error) {
+        console.error('Error adding todo:', error);
+      }
+    };
+  
+    
+    dbAddTodo(token);
+    
+  };
+  
+
+  const handleDeleteTodo = async (id: string) => {
     try {
-      if (name.trim() === '' || !deadline || priority.trim() === '') {
-        alert('Please fill in all fields');
+      const uid = currentUser?.uid;
+      if (!uid) {
+        console.error('User ID is not available.');
         return;
       }
-
-      const newTodo = { name, description, deadline, priority };
-
-      const response = await axios.post(`/api/todos/${userId}`, newTodo);
-      addTodo({ ...newTodo, id: response.data.id });
-      
-      setTodoName('');
-      setTodoDescription('');
-      setTodoDeadline(null);
-      setTodoPriority('Low');
-      setShowAddForm(false);
-    } catch (error) {
-      console.error('Error adding todo:', error);
-      alert('Failed to add todo. Please try again.');
-    }
-  };
-
-  const handleDeleteTodo = async (id: number) => {
-    try {
-      await axios.delete(`/api/todos/${userId}/${id}`);
+      await axios.delete(`/api/todos/${uid}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
       deleteTodo(id);
+      console.log('todo deletd');
     } catch (error) {
       console.error('Error deleting todo:', error);
       alert('Failed to delete todo. Please try again.');
     }
   };
-
+  
   const filteredTodos = todos.slice().sort((a, b) => {
     if (a.priority === 'High' && b.priority !== 'High') return -1;
     if (a.priority === 'Middle' && b.priority === 'Low') return -1;

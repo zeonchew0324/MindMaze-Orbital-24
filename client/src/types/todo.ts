@@ -1,5 +1,5 @@
 export interface Todo {
-    id: number; 
+    id: string; 
     name: string;
     description: string; 
     deadline: Date;
@@ -9,5 +9,13 @@ export interface Todo {
 export interface TodoContextType {
     todos: Todo[]; 
     addTodo: (todo: any) => void;
-    deleteTodo: (id: number) => void;
+    deleteTodo: (id: string) => void;
+}
+
+export interface TodoData {
+    id: string; 
+    name: string;
+    description: string; 
+    deadline: string;
+    priority: 'High' | 'Middle' | 'Low'; 
 }
