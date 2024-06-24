@@ -6,6 +6,7 @@ import express from 'express';
 import { decodeToken } from './middleware/checkAuth';
 const { uploadTestData } = require('./firebase/firebase-config');
 const timetableRouter = require('./routes/timetable');
+const habitsRouter = require('./routes/habits')
 const todoRouter = require('./routes/todo');
 
 // Create an instance of Express
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, '../../client/build')));
 
 // Mount routers
 app.use('/api/timetables', timetableRouter);
+app.use('/api/habits', habitsRouter);
 app.use('/api/todos', todoRouter);    
 
 // Route to serve React frontend
