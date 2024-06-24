@@ -46,15 +46,10 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setTodos((prevTodos) => [...prevTodos, todo]);
   };
 
-  const deleteTodo = async (id: string) => {
+  /*const deleteTodo = async (id: string) => {
     const getUid = async () => currentUser?.uid;
     try {
       const uid = await getUid();
-      if (!uid) {
-        console.error('User ID not available.');
-        return;
-      }
-
       await axios.delete(`/api/todos/${uid}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -66,17 +61,15 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error) {
       console.error('Error deleting todo:', error);
       alert('Failed to delete todo. Please try again.');
-    }
+    }*/
+  const deleteTodo = (id: string) => {
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
   };
+  
 
-  const contextValue: TodoContextType = {
-    todos,
-    addTodo,
-    deleteTodo,
-  };
 
   return (
-    <TodoContext.Provider value={contextValue}>
+    <TodoContext.Provider value={{ todos, addTodo, deleteTodo}}>
       {children}
     </TodoContext.Provider>
   );

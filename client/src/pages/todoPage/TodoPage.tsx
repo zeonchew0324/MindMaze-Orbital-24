@@ -58,26 +58,42 @@ const TodoPage: React.FC = () => {
   
 
   const handleDeleteTodo = async (id: string) => {
+    const getUid = async () => currentUser?.uid;
+    const dbDeleteTodo = async (token: string) => {
+        try {
+            const uid = await getUid();
+            await axios.delete(`/api/todos/${uid}/${id}`, {
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            });
+            deleteTodo(id);
+            console.log('todo deletd');
+        } catch (error) {
+            console.error('Error deleting todo:', error);
+            alert('Failed to delete todo. Please try again.');
+        }
+    }
+    dbDeleteTodo(token);
+  };
+  
+  /*const deleteTodo = async (id: string) => {
+    const getUid = async () => currentUser?.uid;
     try {
-      const uid = currentUser?.uid;
-      if (!uid) {
-        console.error('User ID is not available.');
-        return;
-      }
+      const uid = await getUid();
       await axios.delete(`/api/todos/${uid}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
-      deleteTodo(id);
-      console.log('todo deletd');
+
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+      console.log(`${id} Todo deleted successfully!`);
     } catch (error) {
       console.error('Error deleting todo:', error);
       alert('Failed to delete todo. Please try again.');
-    }
-  };
-  
+    }*/
+
   const filteredTodos = todos.slice().sort((a, b) => {
     if (a.priority === 'High' && b.priority !== 'High') return -1;
     if (a.priority === 'Middle' && b.priority === 'Low') return -1;
