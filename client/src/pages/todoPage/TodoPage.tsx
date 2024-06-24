@@ -1,60 +1,64 @@
-// pages/todoPage/TodoPage.tsx
-
 import React, { useState } from 'react';
 import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash } from 'react-icons/fa';
+import axios from 'axios';
+import { Todo } from '../../types/todo';
 
 const TodoPage: React.FC = () => {
-  const { todos, addTodo, deleteTodo } = useTodos();
+  const { addTodo, deleteTodo, todos } = useTodos();
   const [showAddForm, setShowAddForm] = useState(false);
   const [todoName, setTodoName] = useState('');
   const [todoDescription, setTodoDescription] = useState('');
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
-  const [todoPriority, setTodoPriority] = useState('');
+  const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
+  const userId = 'USER_ID'; // Replace with actual user ID
 
-  const handleSubmitTodo = () => {
-    if (todoName.trim() !== '' && todoDeadline && todoPriority.trim() !== '') {
-      const newTodo = {
-        id: Date.now(),
-        name: todoName,
-        description: todoDescription,
-        deadline: todoDeadline,
-        priority: todoPriority,
-      };
+  axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
-      addTodo(newTodo);
+  const handleSubmitTodo = async (name: string, description: string, deadline: Date | null, priority: 'High' | 'Middle' | 'Low') => {
+    try {
+      if (name.trim() === '' || !deadline || priority.trim() === '') {
+        alert('Please fill in all fields');
+        return;
+      }
 
+      const newTodo = { name, description, deadline, priority };
+
+      const response = await axios.post(`/api/todos/${userId}`, newTodo);
+      addTodo({ ...newTodo, id: response.data.id });
+      
       setTodoName('');
       setTodoDescription('');
       setTodoDeadline(null);
-      setTodoPriority('');
-      setShowAddForm(false); // Hide the add form after adding todo
-    } else {
-      alert('Please fill in all fields');
+      setTodoPriority('Low');
+      setShowAddForm(false);
+    } catch (error) {
+      console.error('Error adding todo:', error);
+      alert('Failed to add todo. Please try again.');
     }
   };
 
-  const handleDeleteTodo = (id: number) => {
-    deleteTodo(id);
+  const handleDeleteTodo = async (id: number) => {
+    try {
+      await axios.delete(`/api/todos/${userId}/${id}`);
+      deleteTodo(id);
+    } catch (error) {
+      console.error('Error deleting todo:', error);
+      alert('Failed to delete todo. Please try again.');
+    }
   };
 
-  // Function to filter and sort todos based on priority and date
   const filteredTodos = todos.slice().sort((a, b) => {
     if (a.priority === 'High' && b.priority !== 'High') return -1;
+    if (a.priority === 'Middle' && b.priority === 'Low') return -1;
     if (a.priority !== 'High' && b.priority === 'High') return 1;
-
-    // When priority is the same, sort by date
-    if (a.priority === b.priority) {
-      return a.deadline.getTime() - b.deadline.getTime();
-    }
-
-    return 0;
+    return new Date(a.deadline).getTime() - new Date(b.deadline).getTime();
   });
 
   return (
     <div className="p-4 bg-gray-300 rounded-md">
       <h1 className="text-3xl text-black font-semibold mb-6">Todo List</h1>
-      
+
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
           <input
@@ -82,14 +86,13 @@ const TodoPage: React.FC = () => {
             onChange={(e) => setTodoPriority(e.target.value as 'High' | 'Middle' | 'Low')}
             className="border border-gray-300 rounded-md px-3 py-2"
           >
-            <option value="">Select your priority level</option>
-            <option value="High">High</option>
-            <option value="Middle">Middle</option>
             <option value="Low">Low</option>
+            <option value="Middle">Middle</option>
+            <option value="High">High</option>
           </select>
           <div className="flex">
             <button
-              onClick={handleSubmitTodo}
+              onClick={() => handleSubmitTodo(todoName, todoDescription, todoDeadline, todoPriority)}
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mr-2"
             >
               Add
@@ -113,7 +116,7 @@ const TodoPage: React.FC = () => {
                   <div>
                     <h3 className="font-bold text-xl text-amber-950 pb-1">{todo.name}</h3>
                     <p className="text-lg text-gray-600">{todo.description}</p>
-                    <p className="text-lg text-gray-600">Deadline: {todo.deadline?.toLocaleDateString()}</p>
+                    <p className="text-lg text-gray-600">Deadline: {todo.deadline ? new Date(todo.deadline).toLocaleDateString() : 'No deadline'}</p>
                     <p className="text-lg text-gray-600">Priority: {todo.priority}</p>
                   </div>
                   <button
@@ -126,7 +129,7 @@ const TodoPage: React.FC = () => {
               ))}
             </ul>
           )}
-          <div className ='pt-4'>
+          <div className='pt-4'>
             <button
               onClick={() => setShowAddForm(true)}
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mb-4"
