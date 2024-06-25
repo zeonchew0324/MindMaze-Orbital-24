@@ -30,4 +30,4 @@ function TimetableCell(props: Prop) {
   );
 }
 
-export default TimetableCell;
+export default TimetableCell

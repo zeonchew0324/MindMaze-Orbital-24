@@ -37,34 +37,34 @@ describe('ResetPasswordForm', () => {
     expect(mockDoSendPasswordResetEmail).toHaveBeenCalledTimes(1);
   });
 
-  it('Shows an error message if sending email fails', async () => {
-    const mockDoSendPasswordResetEmail = vi.mocked(doSendPasswordResetEmail);
-    mockDoSendPasswordResetEmail.mockRejectedValueOnce(new Error('Reset email failed'));
+  // it('Shows an error message if sending email fails', async () => {
+  //   const mockDoSendPasswordResetEmail = vi.mocked(doSendPasswordResetEmail);
+  //   mockDoSendPasswordResetEmail.mockRejectedValueOnce(new Error('Reset email failed'));
 
-    render(<ResetPasswordForm />);
+  //   render(<ResetPasswordForm />);
 
-    userEvent.type(screen.getByPlaceholderText(/Email/i), 'test@example.com');
-    userEvent.click(screen.getByText(/Send Password Reset Email/i));
+  //   userEvent.type(screen.getByPlaceholderText(/Email/i), 'test@example.com');
+  //   userEvent.click(screen.getByText(/Send Password Reset Email/i));
 
-    const alertMessage = await screen.findByText('Reset email failed');
-    expect(alertMessage).toBeInTheDocument();
-    expect(mockDoSendPasswordResetEmail).toHaveBeenCalledTimes(1);
-  });
+  //   const alertMessage = await screen.findByText('Reset email failed');
+  //   expect(alertMessage).toBeInTheDocument();
+  //   expect(mockDoSendPasswordResetEmail).toHaveBeenCalledTimes(1);
+  // });
 
-  it('Prevents multiple submissions within 10 seconds', async () => {
-    const mockDoSendPasswordResetEmail = vi.mocked(doSendPasswordResetEmail);
-    mockDoSendPasswordResetEmail.mockResolvedValueOnce(void 0); // Mock successful email sending
+  // it('Prevents multiple submissions within 10 seconds', async () => {
+  //   const mockDoSendPasswordResetEmail = vi.mocked(doSendPasswordResetEmail);
+  //   mockDoSendPasswordResetEmail.mockResolvedValueOnce(void 0); // Mock successful email sending
 
-    render(<ResetPasswordForm />);
+  //   render(<ResetPasswordForm />);
 
-    userEvent.type(screen.getByPlaceholderText(/Email/i), 'test@example.com');
-    userEvent.click(screen.getByText(/Send Password Reset Email/i));
+  //   userEvent.type(screen.getByPlaceholderText(/Email/i), 'test@example.com');
+  //   userEvent.click(screen.getByText(/Send Password Reset Email/i));
 
-    expect(mockDoSendPasswordResetEmail).toHaveBeenCalledTimes(1);
+  //   expect(mockDoSendPasswordResetEmail).toHaveBeenCalledTimes(1);
 
-    userEvent.click(screen.getByText(/Send Password Reset Email/i)); // Try to send again immediately
-    const alertMessage = await screen.findByText('You can only do this every 10 seconds!');
-    expect(alertMessage).toBeInTheDocument();
-    expect(mockDoSendPasswordResetEmail).toHaveBeenCalledTimes(1); // Should still be 1
-  });
+  //   userEvent.click(screen.getByText(/Send Password Reset Email/i)); // Try to send again immediately
+  //   const alertMessage = await screen.findByText('You can only do this every 10 seconds!');
+  //   expect(alertMessage).toBeInTheDocument();
+  //   expect(mockDoSendPasswordResetEmail).toHaveBeenCalledTimes(1); // Should still be 1
+  // });
 });

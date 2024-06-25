@@ -1,12 +1,11 @@
 import React from 'react';
-import { cleanup, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { MemoryRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterAll, vi } from "vitest";
 import userEvent from '@testing-library/user-event';
 import { doSignInWithEmailAndPassword } from '../../../src/firebase/auth';
 import LoginPage from '../../../src/pages/loginPage/LoginPage';
-import LoginForm from '../../../src/components/loginForm/LoginForm';
 import SignupPage from '../../../src/pages/signupPage/SignupPage';
 import ResetPasswordPage from '../../../src/pages/resetPasswordPage/ResetPasswordPage';
 
