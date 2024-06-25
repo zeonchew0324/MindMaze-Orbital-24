@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
-import { useAuth } from '../../contexts/AuthProvider'; 
+import { useAuth } from '../../contexts/AuthProvider';
 
 const TodoPage: React.FC = () => {
   const { addTodo, deleteTodo, todos } = useTodos();
@@ -12,7 +12,6 @@ const TodoPage: React.FC = () => {
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
   const { currentUser, token } = useAuth()
-
 
   axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
@@ -51,16 +50,12 @@ const TodoPage: React.FC = () => {
       }
     };
   
-    
     dbAddTodo(token);
-    
   };
-  
 
   const handleDeleteTodo = async (id: string) => {
     deleteTodo(id);
   };
-  
 
   const filteredTodos = todos.slice().sort((a, b) => {
     if (a.priority === 'High' && b.priority !== 'High') return -1;
@@ -75,27 +70,35 @@ const TodoPage: React.FC = () => {
 
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
+          <label htmlFor="todoName">Todo Name</label>
           <input
             type="text"
+            id="todoName"
             placeholder="Todo Name"
             value={todoName}
             onChange={(e) => setTodoName(e.target.value)}
             className="border border-gray-300 rounded-md px-3 py-2"
           />
+          <label htmlFor="todoDescription">Description</label>
           <textarea
+            id="todoDescription"
             placeholder="Description"
             value={todoDescription}
             onChange={(e) => setTodoDescription(e.target.value)}
             rows={3}
             className="border border-gray-300 rounded-md px-3 py-2"
           ></textarea>
+          <label htmlFor="todoDeadline">Deadline</label>
           <input
             type="date"
+            id="todoDeadline"
             value={todoDeadline ? todoDeadline.toISOString().substr(0, 10) : ''}
             onChange={(e) => setTodoDeadline(new Date(e.target.value))}
             className="border border-gray-300 rounded-md px-3 py-2"
           />
+          <label htmlFor="todoPriority">Priority</label>
           <select
+            id="todoPriority"
             value={todoPriority}
             onChange={(e) => setTodoPriority(e.target.value as 'High' | 'Middle' | 'Low')}
             className="border border-gray-300 rounded-md px-3 py-2"
@@ -133,7 +136,8 @@ const TodoPage: React.FC = () => {
                     <p className="text-lg text-gray-600">Deadline: {todo.deadline ? new Date(todo.deadline).toLocaleDateString() : 'No deadline'}</p>
                     <p className="text-lg text-gray-600">Priority: {todo.priority}</p>
                   </div>
-                  <button
+                  <button 
+                    aria-label='Trash-Icon'
                     onClick={() => handleDeleteTodo(todo.id)}
                     className="pl-8 text-red-500 hover:text-red-700"
                   >
