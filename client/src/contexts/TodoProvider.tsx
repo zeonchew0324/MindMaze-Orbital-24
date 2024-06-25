@@ -46,7 +46,7 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     setTodos((prevTodos) => [...prevTodos, todo]);
   };
 
-  /*const deleteTodo = async (id: string) => {
+  const deleteTodo = async (id: string) => {
     const getUid = async () => currentUser?.uid;
     try {
       const uid = await getUid();
@@ -61,10 +61,9 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error) {
       console.error('Error deleting todo:', error);
       alert('Failed to delete todo. Please try again.');
-    }*/
-  const deleteTodo = (id: string) => {
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
-  };
+  }
+  }
+  
   
 
 
