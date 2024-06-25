@@ -63,5 +63,26 @@ describe('TodoPage', () => {
     expect(screen.getByPlaceholderText('Description')).toBeInTheDocument();
     expect(screen.getByText('Add')).toBeInTheDocument();
     expect(screen.getByText('Cancel')).toBeInTheDocument();
+
+    
+  });
+
+  it('Add todo when add button is clicked', () => {
+    render(<TodoPage />);
+
+    fireEvent.click(screen.getByText('Add Todo'));
+    fireEvent.change(screen.getByPlaceholderText('Todo Name'), { target: { value: 'New Todo' } });
+    fireEvent.change(screen.getByPlaceholderText('Description'), { target: { value: 'New Description' } });
+    fireEvent.change(screen.getByLabelText(/Deadline/i), { target: { value: '2024-12-31' } });
+    fireEvent.change(screen.getByDisplayValue('Low'), { target: { value: 'High' } });
+
+    fireEvent.click(screen.getByText('Add'));
+
+    expect(mockAddTodo).toHaveBeenCalledWith({
+      name: 'New Todo',
+      description: 'New Description',
+      deadline: '2024-12-31T00:00:00.000Z',
+      priority: 'High',
+    });
   });
 });
