@@ -1,7 +1,7 @@
 import React from 'react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom'; // This provides matchers like toBeInTheDocument
+import '@testing-library/jest-dom'; 
 import TodoPage from '../../src/pages/todoPage/TodoPage';
 import { useTodos } from '../../src/contexts/TodoProvider';
 import { useAuth } from '../../src/contexts/AuthProvider';
@@ -18,6 +18,7 @@ vi.mock('../../src/contexts/AuthProvider', () => ({
 describe('TodoPage', () => {
   const mockAddTodo = vi.fn();
   const mockDeleteTodo = vi.fn();
+  //mock todos
   const mockTodos = [
     { id: '1', name: 'Test Todo', description: 'Test Description', deadline: new Date().toISOString(), priority: 'Low' },
   ];
@@ -43,7 +44,7 @@ describe('TodoPage', () => {
   it('renders the TodoPage with todos', () => {
     render(<TodoPage />);
 
-    // Verify TodoPage title
+    // Verify TodoList header
     expect(screen.getByText('Todo List')).toBeInTheDocument();
 
     // Verify rendered todos
