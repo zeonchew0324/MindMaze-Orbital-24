@@ -5,21 +5,18 @@ import TimetableDay from "../../../src/components/timetable/TimetableDay";
 import { TimeblockProvider } from "../../../src/contexts/TimeblockProvider";
 
 describe('TimetableDay Component', () => {
-  it('renders the day\'s name', () => {
+  beforeEach(() => {
     render(
       <TimeblockProvider>
-        <TimetableDay day="Mon" key={0} />
+        <TimetableDay day="Sun" key={0} />
       </TimeblockProvider>
     );
-    expect(screen.getByText('Mon')).toBeInTheDocument();
+  })
+  it('renders the day\'s name', () => {
+    expect(screen.getByText('Sun')).toBeInTheDocument();
   });
 
   it('renders the timetable row for the given day', () => {
-    render(
-      <TimeblockProvider>
-        <TimetableDay day="Mon" key={0} />
-      </TimeblockProvider>
-    );
     expect(screen.getByRole('listitem')).toBeInTheDocument();
   });
 });

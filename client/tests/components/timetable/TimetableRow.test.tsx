@@ -2,26 +2,31 @@ import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from 'vitest';
 import '@testing-library/jest-dom';
 import TimetableRow from "../../../src/components/timetable/TimetableRow";
-import { TimeblockProvider } from "../../../src/contexts/TimeblockProvider";
+import { TimeblockContext, TimeblockProvider } from "../../../src/contexts/TimeblockProvider";
 
 describe('TimetableRow Component', () => {
-  test('renders the background grid for the timetable', () => {
+  beforeEach(() => {
     render(
-      <TimeblockProvider>
+      <TimeblockContext.Provider value={[
+        {
+          id: '1',
+          name: 'Test Block',
+          day: 'Mon',
+          startTime: '09:00',
+          duration: '01:00',
+          endTime: '10:00'
+        }
+      ]}>
         <TimetableRow day="Mon" />
-      </TimeblockProvider>
+      </TimeblockContext.Provider>
     );
+  })
 
+  it('renders the background grid for the timetable', () => {
     expect(screen.getByRole('grid')).toBeInTheDocument();
   });
 
-  test('renders time blocks correctly', () => {
-    render(
-      <TimeblockProvider>
-        <TimetableRow day="Mon" />
-      </TimeblockProvider>
-    );
-
-    // Verify time blocks rendering logic
+  it('renders time blocks correctly', () => {
+    // WIP
   });
 });

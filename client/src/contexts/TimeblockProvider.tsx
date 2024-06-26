@@ -9,7 +9,7 @@ type TimeblockContextType = {
   setTimeBlocks: React.Dispatch<React.SetStateAction<TimeBlock[]>>;
 }
 
-const TimeblockContext = createContext<TimeblockContextType | undefined>(undefined);
+export const TimeblockContext = createContext<TimeblockContextType | undefined>(undefined);
 
 export const useTimeblock = () => {
   const context = useContext(TimeblockContext);
