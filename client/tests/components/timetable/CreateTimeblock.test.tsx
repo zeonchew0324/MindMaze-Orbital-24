@@ -88,7 +88,7 @@ describe('Create Timeblock', () => {
       '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'
     ];
 
-    const dayOptions = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayOptions = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     const startTimeSelect = screen.getByLabelText(/Start Time/i);
     const endTimeSelect = screen.getByLabelText(/End Time/i);
@@ -114,7 +114,7 @@ describe('Create Timeblock', () => {
     });
 
     dayOptions.forEach(option => {
-      const optionElement = daySelect.querySelector(`option[value="${option.toLowerCase()}"]`);
+      const optionElement = daySelect.querySelector(`option[value="${option}"]`);
       if (optionElement) {
         expect(optionElement).toBeInTheDocument()
       } else {

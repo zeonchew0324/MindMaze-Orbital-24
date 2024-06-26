@@ -97,7 +97,7 @@ function CreateTimeblock() {
     closePopup();
   };
 
-  const hourOptions = Array.from({ length: 24 }, (_, i) => {
+  const hourOptions = Array.from({ length: 25 }, (_, i) => {
     const hour = i.toString().padStart(2, '0');
     return `${hour}:00`;
   });
