@@ -9,6 +9,7 @@ import CreateTimeblock from "../../../src/components/timetable/CreateTimeblock";
 import TimetablePopup from "../../../src/components/timetable/TimetablePopup";
 import { clear } from "@testing-library/user-event/dist/clear";
 import { ButtonHTMLAttributes } from "react";
+import exp from "constants";
 
 describe('Create Timeblock', () => {
   beforeEach(() => {
@@ -70,6 +71,56 @@ describe('Create Timeblock', () => {
 
     expect(outsideButton).toBeInTheDocument();
     expect(test).toBeCalledTimes(0)
+  });
+
+  it('checks correct options in select dropdowns', () => {
+    const startTimeOptions = [
+      '00:00', '01:00', '02:00', '03:00', '04:00', '05:00',
+      '06:00', '07:00', '08:00', '09:00', '10:00', '11:00',
+      '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
+      '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'
+    ];
+
+    const endTimeOptions = [
+      '00:00', '01:00', '02:00', '03:00', '04:00', '05:00',
+      '06:00', '07:00', '08:00', '09:00', '10:00', '11:00',
+      '12:00', '13:00', '14:00', '15:00', '16:00', '17:00',
+      '18:00', '19:00', '20:00', '21:00', '22:00', '23:00', '24:00'
+    ];
+
+    const dayOptions = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    const startTimeSelect = screen.getByLabelText(/Start Time/i);
+    const endTimeSelect = screen.getByLabelText(/End Time/i);
+    const daySelect = screen.getByLabelText(/Day/i);
+
+    // Optimize this test case later PLEASE
+    startTimeOptions.forEach(option => {
+      const optionElement = startTimeSelect.querySelector(`option[value="${option}"]`);
+      if (optionElement) {
+        expect(optionElement).toBeInTheDocument()
+      } else {
+        expect(option).toEqual(0)
+      }
+    });
+
+    endTimeOptions.forEach(option => {
+      const optionElement = endTimeSelect.querySelector(`option[value="${option}"]`);
+      if (optionElement) {
+        expect(optionElement).toBeInTheDocument()
+      } else {
+        expect(option).toEqual(0)
+      }
+    });
+
+    dayOptions.forEach(option => {
+      const optionElement = daySelect.querySelector(`option[value="${option.toLowerCase()}"]`);
+      if (optionElement) {
+        expect(optionElement).toBeInTheDocument()
+      } else {
+        expect(option).toEqual(0)
+      }
+    });
   });
 
   it('validates that end time is after start time', () => {

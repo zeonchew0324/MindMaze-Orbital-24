@@ -6,7 +6,7 @@ import { useAuth } from './AuthProvider';
 
 type TimeblockContextType = {
   timeBlocks: TimeBlock[];
-  setTimeBlocks: React.Dispatch<React.SetStateAction<TimeBlock[]>>;
+  setTimeBlocks: (tb: TimeBlock[]) => void;
 }
 
 export const TimeblockContext = createContext<TimeblockContextType | undefined>(undefined);
@@ -24,10 +24,14 @@ type TimeblockProviderProps = {
 };
 
 export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
-  const [timeBlocks, setTimeBlocks] = useState<TimeBlock[]>([
+  const [timeBlocks, changeTimeBlocks] = useState<TimeBlock[]>([
     // TIMEBLOCKS NEED TO BE SORTED ACCORDING TO START TIME!!!!!!
     // FORMAT: HH:MM String
   ]);
+
+  const setTimeBlocks = (tb: TimeBlock[]) => {
+    changeTimeBlocks(tb)
+  }
 
   const { currentUser, token } = useAuth()
 
