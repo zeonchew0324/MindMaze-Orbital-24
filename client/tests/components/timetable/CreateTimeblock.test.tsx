@@ -7,9 +7,6 @@ import { TimeblockProvider } from "../../../src/contexts/TimeblockProvider";
 import { TimetablePopupProvider } from "../../../src/contexts/TimetablePopupProvider";
 import CreateTimeblock from "../../../src/components/timetable/CreateTimeblock";
 import TimetablePopup from "../../../src/components/timetable/TimetablePopup";
-import { clear } from "@testing-library/user-event/dist/clear";
-import { ButtonHTMLAttributes } from "react";
-import exp from "constants";
 
 describe('Create Timeblock', () => {
   beforeEach(() => {
