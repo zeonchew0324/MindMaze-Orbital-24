@@ -19,7 +19,7 @@ function TimetableRow(props: Props) {
 
   return (
     <>
-      <div className="flex relative w-[80vw]">
+      <div role="grid" className="flex relative w-[80vw]">
           <div className="absolute inset-0 grid grid-cols-24">
             {Array.from({ length: 24 }).map((_, i) => (
               <div

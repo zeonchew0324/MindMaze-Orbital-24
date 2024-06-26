@@ -106,10 +106,11 @@ function CreateTimeblock() {
     <div className="relative bg-white p-6 rounded-lg shadow-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">
+          <label htmlFor='name' className="block text-sm font-medium text-gray-700">
             Name
           </label>
           <input
+            id='name'
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -121,10 +122,11 @@ function CreateTimeblock() {
           <div key={index} className="space-y-2 border p-2 rounded-md">
             <div className="flex justify-between">
               <div className="flex-1 mr-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor={'start-time-' + index} className="block text-sm font-medium text-gray-700">
                   Start Time
                 </label>
                 <select
+                  id={'start-time-' + index}
                   value={timeframe.start}
                   onChange={(e) =>
                     handleTimeframeChange(index, 'start', e.target.value)
@@ -141,10 +143,11 @@ function CreateTimeblock() {
                 </select>
               </div>
               <div className="flex-1 ml-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label htmlFor={'end-time-' + index} className="block text-sm font-medium text-gray-700">
                   End Time
                 </label>
                 <select
+                  id={'end-time-' + index}
                   value={timeframe.end}
                   onChange={(e) =>
                     handleTimeframeChange(index, 'end', e.target.value)
@@ -165,10 +168,11 @@ function CreateTimeblock() {
               <p className="text-red-500 text-sm mt-2">{errors[index]}</p>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700">
+              <label htmlFor={'day-' + index} className="block text-sm font-medium text-gray-700">
                 Day
               </label>
               <select
+                id={'day-' + index}
                 value={timeframe.day}
                 onChange={(e) =>
                   handleTimeframeChange(index, 'day', e.target.value)
