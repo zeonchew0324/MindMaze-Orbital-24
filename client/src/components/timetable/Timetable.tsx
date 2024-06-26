@@ -12,13 +12,22 @@ function Timetable() {
   
   return (
     <>
-      <div>
-        <ol className="shadow-xl w-100% border border-blue-950 rounded-md overflow-hidden">
+      <div className='max-w-[80vw] overflow-auto border border-blue-950 rounded-md'>
+        {/* <ol className="shadow-xl w-100% border border-blue-950 rounded-md overflow-hidden ">
           <TimetableHeader/>
           {days.map((day, index) => (
             <TimetableDay day={day} key={index}/>
           ))}
-        </ol>
+        </ol> */}
+
+        <div className="min-w-[1200px] w-full">
+          <ol className="shadow-xl w-full overflow-hidden">
+            <TimetableHeader />
+            {days.map((day, index) => (
+              <TimetableDay day={day} key={index} />
+            ))}
+          </ol>
+        </div>
       </div>
       <div className="flex justify-end mt-2 mb-0">
         <button 

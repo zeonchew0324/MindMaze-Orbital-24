@@ -9,7 +9,7 @@ function TimetableHeader() {
             key={i}
             className="col-span-1 text-[10px]"
           >
-            {i === 0 ? undefined : i >= 11 ? (i - 1) + '00': '0' + (i - 1) + '00'} 
+            {i === 0 ? <div className='w-[40px]' /> : i >= 11 ? (i - 1) + '00': '0' + (i - 1) + '00'} 
           </div>
         ))}
       </div>
