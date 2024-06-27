@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { getCurrentUser, updateUsername, doPasswordChange, deleteAccount, getMazeCompleted } from '../../firebase/auth';
-import { updatePassword } from "firebase/auth";
 
 const ProfilePage: React.FC = () => {
     const [username, setUsername] = useState('');
