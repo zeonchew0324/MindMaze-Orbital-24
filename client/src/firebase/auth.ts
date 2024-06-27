@@ -1,13 +1,25 @@
 import {auth} from './firebase-config';
 
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, updateProfile, deleteUser } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, updateProfile, deleteUser, User } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 
 const db = getFirestore();
 
-export const doCreateUserWithEmailAndPassword = async (email: string, password: string) => {
-  return createUserWithEmailAndPassword(auth, email, password)
-}
+export const doCreateUser = async (email: string, password: string, username: string) => {
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(userCredential.user, {
+    displayName: username,
+  });
+  return userCredential;
+};
+
+// export const addUsername = async (username: string) => {
+//   const currentUser = auth.currentUser;
+//   if (currentUser) {
+//     const userDocRef = doc(db, 'users', currentUser.uid);
+//     await setDoc(userDocRef, { username: username, email: currentUser.email });
+//   }
+// }
 
 export const doSignInWithEmailAndPassword = async (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password)

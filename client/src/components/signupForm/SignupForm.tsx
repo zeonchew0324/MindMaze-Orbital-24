@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthProvider'
-import { doCreateUserWithEmailAndPassword } from '../../firebase/auth'
+import { doCreateUser, updateUsername } from '../../firebase/auth'
 
 function SignupForm() {
   const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,8 +18,8 @@ function SignupForm() {
       setIsSigningUp(true);
       setError(null); // Reset previous error
       try {
-        await doCreateUserWithEmailAndPassword(email, password);
-        navigate('/home');
+        await doCreateUser(email, password, username)
+        navigate('/home')
       } catch (error) {
         if (error instanceof Error) {
           alert('Error signing up, please enter valid email and password')
@@ -32,6 +33,14 @@ function SignupForm() {
     <div className="bg-black/40 p-6 rounded-lg shadow-lg text-center">
       <h2 className="text-2xl mb-6">Create an account</h2>
       <form onSubmit={onSubmit} method="POST">
+        <input
+          type="username"
+          name="username"
+          placeholder="Username"
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          className="w-full p-2 mb-4 text-black rounded-md"
+        />
         <input
           type="email"
           name="email"

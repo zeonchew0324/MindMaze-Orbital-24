@@ -20,7 +20,7 @@ function TimetableCell(props: Prop) {
   return (
     <>
       <button
-        className={`col-start-${start + 1} col-span-${span} rounded-md border-blue-600 border text-[10px] m-0 bg-blue-500 text-white min-h-11 h-full`}
+        className={`col-start-${start + 1} col-span-${span} rounded-md border-blue-600 border text-[10px] m-0 p-2 bg-blue-500 text-white min-h-11 h-full overflow-hidden whitespace-nowrap text-ellipsis`}
         style={{ gridColumn: `${start + 1} / span ${span}` }}
         onClick={handleEditClick}
       >
@@ -30,4 +30,4 @@ function TimetableCell(props: Prop) {
   );
 }
 
-export default TimetableCell;
+export default TimetableCell

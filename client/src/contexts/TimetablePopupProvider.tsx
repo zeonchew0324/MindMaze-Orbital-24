@@ -9,7 +9,7 @@ type TTPopupContextType = {
   popupContent: TimeBlock | undefined
 };
 
-const PopupContext = createContext<TTPopupContextType | undefined>(undefined);
+export const PopupContext = createContext<TTPopupContextType | undefined>(undefined);
 
 export const useTimetablePopup = () => {
   const context = useContext(PopupContext);
@@ -28,6 +28,7 @@ export const TimetablePopupProvider: React.FC<TTPopupProviderProps> = ({ childre
   const [popupContent, setPopupContent] = useState<TimeBlock | undefined>(undefined)
 
   const openPopup = (content: TimeBlock | undefined) => {
+    console.log('popup opened')
     setPopupContent(content)
     setPopupOpen(true)
   }
