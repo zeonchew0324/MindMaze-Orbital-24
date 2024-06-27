@@ -5,6 +5,9 @@ import '@testing-library/jest-dom';
 import TodoPage from '../../src/pages/todoPage/TodoPage';
 import { useTodos } from '../../src/contexts/TodoProvider';
 import { useAuth } from '../../src/contexts/AuthProvider';
+import { Todo } from '../../src/types/todo';
+import { TodoContext } from '../../src/contexts/TodoProvider';
+
 
 // Mock the useTodos and useAuth hooks
 vi.mock('../../src/contexts/TodoProvider', () => ({
@@ -15,8 +18,9 @@ vi.mock('../../src/contexts/AuthProvider', () => ({
   useAuth: vi.fn(),
 }));
 
+
 describe('TodoPage', () => {
-  const mockAddTodo = vi.fn();
+  const mockAddTodo = vi.fn((td: Todo) => {});
   const mockDeleteTodo = vi.fn();
   const mockTodos = [
     { id: '1', name: 'Test Todo 1', description: 'Test Description 1', deadline: new Date().toISOString(), priority: 'Low' },
@@ -26,6 +30,8 @@ describe('TodoPage', () => {
   const mockToken = 'mock-token';
 
   beforeEach(() => {
+     // Ensure to clear all mocks before each test
+    vi.clearAllMocks();
     (useTodos as unknown as vi.Mock).mockReturnValue({
       addTodo: mockAddTodo,
       deleteTodo: mockDeleteTodo,
@@ -37,9 +43,22 @@ describe('TodoPage', () => {
       token: mockToken,
     });
 
-    // Ensure to clear all mocks before each test
-    vi.clearAllMocks();
+   
+    
   });
+  
+
+  // beforeEach(() => {
+  //   render(
+  //     <TodoContext.Provider value = {{
+  //       todos: [],
+  //       addTodo: mockAddTodo,
+  //       deleteTodo: mockDeleteTodo
+  //     }}>
+  //       <TodoPage></TodoPage>
+  //     </TodoContext.Provider>
+  //   );
+  // })
 
   it('renders the TodoPage with todos', () => {
     render(<TodoPage />);
@@ -83,7 +102,7 @@ describe('TodoPage', () => {
     expect(screen.queryByPlaceholderText('Priority')).not.toBeInTheDocument();
   });
 
-  /*bug assertion error
+  
   it('adds a new todo when "Add" button is clicked', () => {
     render(<TodoPage />);
 
@@ -117,14 +136,16 @@ describe('TodoPage', () => {
     });
   });
 
-  */
+  
   it('deletes a todo when trash icon is clicked', () => {
     // Update the mockTodos array to include both todos
+    
     (useTodos as unknown as vi.Mock).mockReturnValue({
       addTodo: mockAddTodo,
       deleteTodo: mockDeleteTodo,
       todos: mockTodos,
     });
+    
 
     render(<TodoPage />);
 

@@ -4,7 +4,7 @@ import { Todo, TodoContextType } from '../types/todo';
 import { useAuth } from './AuthProvider';
 import { unpackTodoData } from '../utils/todo';
 
-const TodoContext = createContext<TodoContextType | undefined>(undefined);
+export const TodoContext = createContext<TodoContextType | undefined>(undefined);
 
 export const useTodos = (): TodoContextType => {
   const context = useContext(TodoContext);
