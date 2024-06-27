@@ -63,7 +63,7 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div className="flex justify-center items-center bg-black bg-opacity-60 border-stone-800 border-4 rounded-xl">
+        <div className="flex justify-center items-center bg-black bg-opacity-60 border-stone-800 border-4 rounded-xl mt-8 ">
           <div className="py-16 px-20 rounded-lg shadow-lg w-full max-w-lg">
             <h1 className="text-4xl font-bold mb-4 leading-relaxed">Profile Info</h1>
             <p className="mb-4 text-xl text-red-500">{message}</p>
