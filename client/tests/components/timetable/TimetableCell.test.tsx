@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import '@testing-library/jest-dom';
 import { TimeBlock } from "../../../src/types/timetable";
 import TimetableCell from "../../../src/components/timetable/TimetableCell";
-import { PopupContext, TimetablePopupProvider, useTimetablePopup } from "../../../src/contexts/TimetablePopupProvider";
+import { PopupContext } from "../../../src/contexts/TimetablePopupProvider";
 import userEvent from "@testing-library/user-event";
 
 describe('TimetableCell Component', () => {
