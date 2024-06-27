@@ -1,4 +1,3 @@
-import { time } from "console";
 import { Request, Response } from "express";
 import { collection, doc, getDoc, query, updateDoc, where, setDoc, addDoc } from "firebase/firestore";
 const { firestoreDb } = require("../firebase/firebase-config") 

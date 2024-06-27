@@ -8,7 +8,7 @@ import AuthProvider from './contexts/AuthProvider';
 
 const App: React.FC = () => {
   return (
-   <AuthProvider>
+    <AuthProvider>
       <HabitsProvider>
         <TodoProvider>
           <RouteHandler/>

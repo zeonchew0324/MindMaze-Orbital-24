@@ -1,10 +1,8 @@
 import React, { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { TimeBlock, TimeBlockData } from '../types/timetable';
+import { TimeBlock } from '../types/timetable';
 import axios from 'axios';
 import { packTTData, sortWithStartTime, unpackTTData } from '../utils/timetable';
 import { useAuth } from './AuthProvider';
-import { AuthTokenProp } from '../types/auth';
-
 
 type TimeblockContextType = {
   timeBlocks: TimeBlock[];
