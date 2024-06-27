@@ -19,6 +19,7 @@ function ResetPasswordForm() {
       } catch (error) {
         if (error instanceof Error) {
           alert('An error occured, try again later');
+          setIsSending(false);
         }
         setTimeout(() => setIsSending(false), 10000); // Reset signing-in state
       }

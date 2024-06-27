@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
-import { Todo } from '../../types/todo';
+import { useAuth } from '../../contexts/AuthProvider';
 
 const TodoPage: React.FC = () => {
   const { addTodo, deleteTodo, todos } = useTodos();
@@ -11,41 +11,50 @@ const TodoPage: React.FC = () => {
   const [todoDescription, setTodoDescription] = useState('');
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
-  const userId = 'USER_ID'; // Replace with actual user ID
+  const { currentUser, token } = useAuth()
 
   axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
   const handleSubmitTodo = async (name: string, description: string, deadline: Date | null, priority: 'High' | 'Middle' | 'Low') => {
-    try {
-      if (name.trim() === '' || !deadline || priority.trim() === '') {
-        alert('Please fill in all fields');
-        return;
-      }
-
-      const newTodo = { name, description, deadline, priority };
-
-      const response = await axios.post(`/api/todos/${userId}`, newTodo);
-      addTodo({ ...newTodo, id: response.data.id });
-      
-      setTodoName('');
-      setTodoDescription('');
-      setTodoDeadline(null);
-      setTodoPriority('Low');
-      setShowAddForm(false);
-    } catch (error) {
-      console.error('Error adding todo:', error);
-      alert('Failed to add todo. Please try again.');
+    if (name.trim() === '' || !deadline || priority.trim() === '') {
+      alert('Please fill in all fields');
+      return;
     }
+  
+    const getUid = async () => currentUser?.uid;
+    const dbAddTodo = async (token: string) => {
+      try {
+        const uid = await getUid();
+        if (!uid) {
+          console.error('User ID is not available.');
+          return;
+        }
+  
+        const reqBody = {
+          name: name,
+          description: description,
+          deadline: deadline.toISOString(), // Ensure deadline is a string
+          priority: priority,
+        };
+  
+        const response = await axios.put(`/api/todos/${uid}`, reqBody, {
+          headers: {
+            Authorization: 'Bearer ' + token,
+          },
+        });
+        addTodo({ ...reqBody, id: response.data.id });
+        setShowAddForm(false);      
+        console.log('Todo added successfully!');
+      } catch (error) {
+        console.error('Error adding todo:', error);
+      }
+    };
+  
+    dbAddTodo(token);
   };
 
-  const handleDeleteTodo = async (id: number) => {
-    try {
-      await axios.delete(`/api/todos/${userId}/${id}`);
-      deleteTodo(id);
-    } catch (error) {
-      console.error('Error deleting todo:', error);
-      alert('Failed to delete todo. Please try again.');
-    }
+  const handleDeleteTodo = async (id: string) => {
+    deleteTodo(id);
   };
 
   const filteredTodos = todos.slice().sort((a, b) => {
@@ -61,27 +70,35 @@ const TodoPage: React.FC = () => {
 
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
+          <label htmlFor="todoName">Todo Name</label>
           <input
             type="text"
+            id="todoName"
             placeholder="Todo Name"
             value={todoName}
             onChange={(e) => setTodoName(e.target.value)}
             className="border border-gray-300 rounded-md px-3 py-2"
           />
+          <label htmlFor="todoDescription">Description</label>
           <textarea
+            id="todoDescription"
             placeholder="Description"
             value={todoDescription}
             onChange={(e) => setTodoDescription(e.target.value)}
             rows={3}
             className="border border-gray-300 rounded-md px-3 py-2"
           ></textarea>
+          <label htmlFor="todoDeadline">Deadline</label>
           <input
             type="date"
+            id="todoDeadline"
             value={todoDeadline ? todoDeadline.toISOString().substr(0, 10) : ''}
             onChange={(e) => setTodoDeadline(new Date(e.target.value))}
             className="border border-gray-300 rounded-md px-3 py-2"
           />
+          <label htmlFor="todoPriority">Priority</label>
           <select
+            id="todoPriority"
             value={todoPriority}
             onChange={(e) => setTodoPriority(e.target.value as 'High' | 'Middle' | 'Low')}
             className="border border-gray-300 rounded-md px-3 py-2"
@@ -119,7 +136,8 @@ const TodoPage: React.FC = () => {
                     <p className="text-lg text-gray-600">Deadline: {todo.deadline ? new Date(todo.deadline).toLocaleDateString() : 'No deadline'}</p>
                     <p className="text-lg text-gray-600">Priority: {todo.priority}</p>
                   </div>
-                  <button
+                  <button 
+                    aria-label='Trash-Icon'
                     onClick={() => handleDeleteTodo(todo.id)}
                     className="pl-8 text-red-500 hover:text-red-700"
                   >

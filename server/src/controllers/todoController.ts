@@ -68,10 +68,10 @@ export async function handleDeleteTodos(req: Request, res: Response) {
       }
   
       // Get the todos subcollection
-      const todosDocRef = doc(collection(db, `users/${id}/habitsCollection`), todoId);
+      const todosDocRef = doc(collection(db, `users/${id}/todosCollection`), todoId);
       await deleteDoc(todosDocRef);
   
-      return res.json({ message: 'Deleted habit successfully!' });
+      return res.json({ message: 'Deleted todo successfully!' });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
