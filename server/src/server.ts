@@ -21,13 +21,13 @@ app.use(cors());
 app.use('/api', decodeToken); // Applying decodeToken middleware for all routes under /api
 app.use(express.urlencoded({ extended: true }));
 
-// Serve react files (assuming this is for production deployment)
-app.use(express.static(path.join(__dirname, '../../client/build')));
-
 // Mount routers
 app.use('/api/timetables', timetableRouter);
 app.use('/api/habits', habitsRouter);
 app.use('/api/todos', todoRouter);    
+
+// Serve react files (assuming this is for production deployment)
+app.use(express.static(path.join(__dirname, '../../client/build')));
 
 // Route to serve React frontend
 app.get('*', (req: Request, res: Response) => {
