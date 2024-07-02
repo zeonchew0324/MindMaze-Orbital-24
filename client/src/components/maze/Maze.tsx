@@ -118,6 +118,7 @@ const Maze: React.FC = () => {
   const [visibleMaze, setVisibleMaze] = useState<CellType[][]>([]);
   const [playerPosition, setPlayerPosition] = useState({ x: 1, y: 1 });
   const [fogGroups, setFogGroups] = useState<number[][]>([]);
+  const [hoveredGroup, setHoveredGroup] = useState<number | null>(null);
 
   const generateMaze = () => {
     const newMaze: CellType[][] = Array(31).fill(null).map(() => Array(31).fill('wall'));
@@ -225,6 +226,16 @@ const Maze: React.FC = () => {
     }
   };
 
+  const handleHoverStart = (x: number, y: number) => {
+    if (visibleMaze[y][x] === 'fog') {
+      setHoveredGroup(fogGroups[y][x]);
+    }
+  };
+
+  const handleHoverEnd = () => {
+    setHoveredGroup(null);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="border-2 border-gray-300">
@@ -237,10 +248,13 @@ const Maze: React.FC = () => {
                   cell === 'wall' ? 'bg-black' :
                   cell === 'player' ? 'bg-blue-500 border border-white' :
                   cell === 'exit' ? 'bg-green-500' :
+                  cell === 'fog' && fogGroups[y][x] === hoveredGroup ? 'bg-red-500' :
                   cell === 'fog' ? 'bg-gray-500' :
                   'bg-white'
                 }`}
                 onClick={() => handleCellClick(x, y)}
+                onMouseEnter={() => handleHoverStart(x, y)}
+                onMouseLeave={handleHoverEnd}
               />
             ))}
           </div>
