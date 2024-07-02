@@ -181,9 +181,13 @@ const Maze: React.FC = () => {
     if (maze[newY][newX] === 'wall' || visibleMaze[newY][newX] === 'fog') return;
 
     const newVisibleMaze = visibleMaze.map(row => [...row]);
-    newVisibleMaze[playerPosition.y][playerPosition.x] = maze[playerPosition.y][playerPosition.x];
+    const newestMaze = maze.map(row => [...row]);
+    newestMaze[playerPosition.y][playerPosition.x] = 'path';
+    newestMaze[newY][newX] = 'player';
+    newVisibleMaze[playerPosition.y][playerPosition.x] = 'path';
     newVisibleMaze[newY][newX] = 'player';
     setVisibleMaze(newVisibleMaze);
+    setMaze(newestMaze);
     setPlayerPosition({ x: newX, y: newY });
 
     if (newX === 29 && newY === 29) {
