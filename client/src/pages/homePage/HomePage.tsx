@@ -27,14 +27,13 @@ function HomePage() {
   return (
     <div>
       <button
-        className="absolute font-bold py-2 px-4 rounded bg-blue-500 text-white h-[50px] w-[100px]"
+        className="absolute z-50 bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-lg"
         onClick={(e) => onSignOut(e)}
       >
         Sign out
       </button>
       <div className="relative min-h-screen flex flex-col justify-center">
-        {/* <h1 className="relative text-xl p-4 top-[90px] right-[670px]">Welcome Back!</h1> */}
-        
+        <h1 className="relative text-xl p-4">Welcome Back!</h1>
         <Maze/>
       </div>
     </div>
