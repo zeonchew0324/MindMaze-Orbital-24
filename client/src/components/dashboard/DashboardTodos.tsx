@@ -3,38 +3,41 @@ import { useNavigate } from 'react-router-dom';
 import { useTodos } from '../../contexts/TodoProvider';
 
 const DashboardTodos: React.FC = () => {
-    const navigate = useNavigate();
-    const { todos } = useTodos();
-    const sortedTodos = todos.slice().sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
-    // Show top 5 upcoming todos
-    const upcomingTodos = sortedTodos.slice(0, 5);
-    //render habits page when clicked
-    const handleClick = () => { navigate('/todos') };
+  const navigate = useNavigate();
+  const { todos } = useTodos();
+  //get todos
+  const sortedTodos = todos.slice().sort((a, b) => new Date(a.deadline).getTime() - new Date(b.deadline).getTime());
+  const upcomingTodos = sortedTodos.slice(0, 5); // Show top 5 upcoming todos
 
-    return (
-        <div 
-      className="bg-white p-4 rounded-lg shadow cursor-pointer hover:bg-gray-50 transition-colors"
+  //render todo page when clicked
+  const handleClick = () => {
+    navigate('/todo');
+  };
+
+  return (
+    <div 
+      className="bg-white p-6 rounded-lg shadow cursor-pointer hover:bg-gray-50 transition-colors h-full"
       onClick={handleClick}
     >
-      <h2 className="text-xl font-bold mb-4">Upcoming Todos</h2>
+      <h2 className="text-2xl font-bold text-black mb-6">Upcoming Todos</h2>
       {upcomingTodos.length === 0 ? (
-        <p>No upcoming todos.</p>
+        <p className="text-lg text-black">No upcoming todos.</p>
       ) : (
-        <ul>
+        <ul className="space-y-4">
           {upcomingTodos.map((todo) => (
-            <li key={todo.id} className="mb-2">
+            <li key={todo.id} className="text-lg">
               <span className="font-semibold">{todo.name}</span>
               <br />
-              <span className="text-sm text-gray-600">
+              <span className="text-base text-gray-600">
                 Due: {new Date(todo.deadline).toLocaleDateString()}
               </span>
             </li>
           ))}
         </ul>
       )}
-      <p className="mt-4 text-sm text-blue-600">Click to view all todos</p>
+      <p className="mt-6 text-base text-blue-600">Click to view all todos</p>
     </div>
-    );
+  );
 };
 
 export default DashboardTodos;

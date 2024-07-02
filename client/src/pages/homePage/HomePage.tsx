@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthProvider'
-import DashboardHabit from '../../components/dashboard/dashboardhabits'
+import DashboardHabits from '../../components/dashboard/DashboardHabits'
 import DashboardTodos from '../../components/dashboard/DashboardTodos'
 
 
@@ -30,17 +30,19 @@ function HomePage() {
   }
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-6">Welcome Back</h1>
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="w-full md:w-1/2">
-          <DashboardHabit />
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Dashboard</h1>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="min-h-[400px]">
+          <DashboardHabits />
         </div>
-        <div className="w-full md:w-1/2">
+        <div className="min-h-[400px]">
           <DashboardTodos />
         </div>
       </div>
+      <button onClick={(e) => onSignOut(e)}> Sign out </button>;
     </div>
+
 
     
   )
