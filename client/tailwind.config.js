@@ -21,6 +21,7 @@ module.exports = {
         '23': 'repeat(23, minmax(0, 1fr))',
         '24': 'repeat(24, minmax(0, 1fr))',
         '25': 'repeat(25, minmax(0, 1fr))',
+        '31': 'repeat(31, minmax(0, 1fr))',
       },
     },
   },

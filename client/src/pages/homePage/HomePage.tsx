@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthProvider'
-
+import Maze from '../../components/maze/Maze'
 
 function HomePage() {
 
@@ -10,7 +9,6 @@ function HomePage() {
   const [isSigningOut, setIsSigningOut] = useState(false)
   const navigate = useNavigate()
 
-  const { token } = useAuth()
   const onSignOut = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isSigningOut) {
@@ -26,14 +24,21 @@ function HomePage() {
       }
     }
   }
-
   return (
-    <>
-      <h1 className='text-8xl'>Welcome Back!</h1>
-      <button onClick={(e) => onSignOut(e)}> Sign out </button>;
-
-    </>
-  )
+    <div>
+      <button
+        className="absolute font-bold py-2 px-4 rounded bg-blue-500 text-white h-[50px] w-[100px]"
+        onClick={(e) => onSignOut(e)}
+      >
+        Sign out
+      </button>
+      <div className="relative min-h-screen flex flex-col justify-center">
+        {/* <h1 className="relative text-xl p-4 top-[90px] right-[670px]">Welcome Back!</h1> */}
+        
+        <Maze/>
+      </div>
+    </div>
+  );
 }
 
 export default HomePage
