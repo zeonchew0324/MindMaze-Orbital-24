@@ -13,7 +13,7 @@ const TodoPage: React.FC = () => {
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
   const { currentUser, token } = useAuth()
 
-  axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
+  // axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
   const handleSubmitTodo = async (name: string, description: string, deadline: Date | null, priority: 'High' | 'Middle' | 'Low') => {
     if (name.trim() === '' || !deadline || priority.trim() === '') {
