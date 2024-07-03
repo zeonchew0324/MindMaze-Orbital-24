@@ -10,7 +10,7 @@ interface HabitsListProps {
 const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
   const { deleteHabit } = useHabits();
   return (
-    <div className="p-4 mb-2 text-xl overflow-y-auto max-h-[60vh]">
+    <div className="p-4 mb-2 text-xl">
       {habits.length === 0 ? (
         <h1>No habits recorded for this day.</h1>
       ) : (

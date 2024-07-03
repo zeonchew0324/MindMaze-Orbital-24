@@ -23,7 +23,7 @@ const WeeklyBar: React.FC<WeeklyBarProps> = ({ selectedDay, setSelectedDay }) =>
     };
 
     return (
-        <div className="mt-32">
+        <div>
             <div className="hidden sm:flex justify-between items-center mb-6 bg-white rounded-lg shadow overflow-x-auto">
                 {sevenDays.map((day) => (
                     <button
