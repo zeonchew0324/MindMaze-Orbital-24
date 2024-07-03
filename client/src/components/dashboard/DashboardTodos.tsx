@@ -26,7 +26,7 @@ const DashboardTodos: React.FC = () => {
         <ul className="space-y-4">
           {upcomingTodos.map((todo) => (
             <li key={todo.id} className="text-lg">
-              <span className="font-semibold">{todo.name}</span>
+              <span className="font-semibold text-black">{todo.name}</span>
               <br />
               <span className="text-base text-gray-600">
                 Due: {new Date(todo.deadline).toLocaleDateString()}

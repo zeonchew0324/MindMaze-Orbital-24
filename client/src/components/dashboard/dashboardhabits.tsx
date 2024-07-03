@@ -7,7 +7,7 @@ const DashboardHabits: React.FC = () => {
   const navigate = useNavigate();
   const { habits } = useHabits();
   //get todays habits
-  const today = sevenDays[new Date().getDay()];
+  const today = sevenDays[new Date().getDay() - 1];
   const todaysHabits = habits.filter((habit) => habit.day === today);
 
   //render habits page when clicked
@@ -26,7 +26,7 @@ const DashboardHabits: React.FC = () => {
       ) : (
         <ul className="space-y-4">
           {todaysHabits.map((habit) => (
-            <li key={habit.id} className="text-lg">
+            <li key={habit.id} className="text-lg text-black">
               {habit.name}
             </li>
           ))}
