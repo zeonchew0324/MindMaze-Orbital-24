@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { generateUnevenGrid } from '../../utils/maze';
+import { useEnergy } from '../../contexts/EnergyProvider';
+import MazePopup from './MazePopup';
 
 type CellType = 'wall' | 'path' | 'player' | 'exit' | 'fog';
 
@@ -9,6 +11,12 @@ const Maze: React.FC = () => {
   const [playerPosition, setPlayerPosition] = useState({ x: 1, y: 1 });
   const [fogGroups, setFogGroups] = useState<number[][]>([]);
   const [hoveredGroup, setHoveredGroup] = useState<number | null>(null);
+  const [popupData, setPopupData] = useState<{ isOpen: boolean; groupSize: number; groupId: number }>({
+    isOpen: false,
+    groupSize: 0,
+    groupId: 0,
+  });
+  const { energy, decreaseEnergy } = useEnergy()
 
   const generateMaze = () => {
     const newMaze: CellType[][] = Array(31).fill(null).map(() => Array(31).fill('wall'));
@@ -104,16 +112,35 @@ const Maze: React.FC = () => {
   const handleCellClick = (x: number, y: number) => {
     if (visibleMaze[y][x] === 'fog') {
       const groupId = fogGroups[y][x];
-      const newVisibleMaze = visibleMaze.map(row => [...row]);
+      let groupSize = 0;
       for (let fy = 0; fy < 31; fy++) {
         for (let fx = 0; fx < 31; fx++) {
           if (fogGroups[fy][fx] === groupId) {
-            newVisibleMaze[fy][fx] = maze[fy][fx];
+            groupSize++;
           }
         }
       }
-      setVisibleMaze(newVisibleMaze);
+      setPopupData({ isOpen: true, groupSize, groupId });
     }
+  };
+
+  const handleReveal = () => {
+    const { groupId } = popupData;
+    const newVisibleMaze = visibleMaze.map(row => [...row]);
+    for (let fy = 0; fy < 31; fy++) {
+      for (let fx = 0; fx < 31; fx++) {
+        if (fogGroups[fy][fx] === groupId) {
+          newVisibleMaze[fy][fx] = maze[fy][fx];
+        }
+      }
+    }
+    decreaseEnergy(popupData.groupSize)
+    setVisibleMaze(newVisibleMaze);
+    setPopupData({ isOpen: false, groupSize: 0, groupId: 0 });
+  };
+
+  const handleCancel = () => {
+    setPopupData({ isOpen: false, groupSize: 0, groupId: 0 });
   };
 
   const handleHoverStart = (x: number, y: number) => {
@@ -128,6 +155,9 @@ const Maze: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-100%">
+      <div>
+        Energy Points: {energy}
+      </div>
       <div className="border-2 border-gray-300">
         {visibleMaze.map((row, y) =>
           <div key={y} className="flex">
@@ -152,6 +182,12 @@ const Maze: React.FC = () => {
       </div>
       <div className="mt-4 text-sm">Use W, A, S, D keys to move the player (blue) to the exit (green)</div>
       <div className="mt-2 text-sm">Click on gray areas to clear fog groups</div>
+      <MazePopup 
+        isOpen={popupData.isOpen}
+        groupSize={popupData.groupSize}
+        onReveal={handleReveal}
+        onCancel={handleCancel}
+      />
     </div>
   );
 };
