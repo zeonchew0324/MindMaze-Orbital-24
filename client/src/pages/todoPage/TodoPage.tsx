@@ -65,9 +65,8 @@ const TodoPage: React.FC = () => {
   });
 
   return (
-    <div className="p-4 bg-gray-300 rounded-md">
+    <div className="mt-16 p-4 bg-gray-300 rounded-md max-h-[85vh] overflow-y-auto ">
       <h1 className="text-3xl text-black font-semibold mb-6">Todo List</h1>
-
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
           <label htmlFor="todoName">Todo Name</label>
@@ -123,7 +122,7 @@ const TodoPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className = 'overflow-y-auto max-h-full'>
           {filteredTodos.length === 0 ? (
             <p className="text-gray-700 text-2xl">No todos yet. Add a new todo!</p>
           ) : (
