@@ -13,13 +13,6 @@ function Timetable() {
   return (
     <>
       <div className='max-w-[80vw] overflow-auto border border-blue-950 rounded-md'>
-        {/* <ol className="shadow-xl w-100% border border-blue-950 rounded-md overflow-hidden ">
-          <TimetableHeader/>
-          {days.map((day, index) => (
-            <TimetableDay day={day} key={index}/>
-          ))}
-        </ol> */}
-
         <div className="min-w-[1200px] w-full">
           <ol className="shadow-xl w-full overflow-hidden">
             <TimetableHeader />
@@ -32,7 +25,7 @@ function Timetable() {
       <div className="flex justify-end mt-2 mb-0">
         <button 
           onClick={() => openPopup(undefined)} 
-          className="relative p-2 border border-1 bg-blue-500  text-gray-100 hover:text-gray-300">
+          className="relative mb-5 p-2 border border-1 bg-blue-500  text-gray-100 hover:text-gray-300">
           Add Activity
         </button>
       </div>
