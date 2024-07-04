@@ -10,6 +10,7 @@ export interface TodoContextType {
     todos: Todo[]; 
     addTodo: (todo: any) => void;
     deleteTodo: (id: string) => void;
+    fetchTodos: () => void
 }
 
 export interface TodoData {
