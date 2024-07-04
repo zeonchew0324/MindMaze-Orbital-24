@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { convertMazeToFrontendFormat, generateUnevenGrid } from '../../utils/maze';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { convertMazeToBackendFormat, convertMazeToFrontendFormat, generateUnevenGrid } from '../../utils/maze';
 import { useEnergy } from '../../contexts/EnergyProvider';
 import MazePopup from './MazePopup';
 import axios from 'axios';
-import debounce from 'lodash/debounce';
 import { useAuth } from '../../contexts/AuthProvider';
 
-export type CellType = 'wall' | 'path' | 'player' | 'exit' | 'fog';
+export type CellType = 'wall' | 'path' | 'exit' | 'fog';
 
 const Maze: React.FC = () => {
   const [maze, setMaze] = useState<CellType[][]>([[]]);
@@ -19,27 +18,58 @@ const Maze: React.FC = () => {
     groupSize: 0,
     groupId: 0,
   });
-  const [hasUnsavedPlayerMovement, setHasUnsavedPlayerMovement] = useState(false);
 
   const { energy, decreaseEnergy } = useEnergy()
   const { currentUser, token } = useAuth()
+
+  const latestPlayerPosition = useRef(playerPosition);
+  const saveTimeout = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     loadMazeState();
   }, []); 
 
+  useEffect(() => {
+    latestPlayerPosition.current = playerPosition;
+
+    if (saveTimeout.current) {
+      clearTimeout(saveTimeout.current);
+    }
+
+    saveTimeout.current = setTimeout(() => {
+      saveMazeState(true);
+    }, 5000);
+
+    return () => {
+      if (saveTimeout.current) {
+        clearTimeout(saveTimeout.current);
+      }
+    };
+  }, [playerPosition]);
+
+  useEffect(() => {
+    return () => {
+      if (saveTimeout.current) {
+        clearTimeout(saveTimeout.current);
+        saveMazeState(true);
+      }
+    };
+  }, []);
+
   const loadMazeState = async () => {
     const getUid = async () => currentUser?.uid
     try {
       const uid = await getUid()
-      const response = await axios.get(`/api/maze/${uid}`,{
+      const response = await axios.get(`/api/maze/${uid}`, {
         headers: {
           Authorization: "Bearer " + token
         }
       });
       const loadedState = response.data;
+      console.log("Loaded state from API:", loadedState);
       if (loadedState) {
         const formattedLoadedState = convertMazeToFrontendFormat(loadedState)
+        console.log("Formatted loaded state:", formattedLoadedState);
         setMaze(formattedLoadedState.maze);
         setVisibleMaze(formattedLoadedState.visibleMaze);
         setPlayerPosition(formattedLoadedState.playerPosition);
@@ -61,56 +91,30 @@ const Maze: React.FC = () => {
     try {
       const uid = await getUid()
       const stateToSave = onlyPlayerPosition 
-        ? { playerPosition }
-        : {
+        ? { playerPosition: latestPlayerPosition.current }
+        : convertMazeToBackendFormat({
             maze,
             visibleMaze,
             fogGroups,
-            playerPosition,
-            // ... other state variables you want to save
-          };
+            playerPosition: latestPlayerPosition.current
+          });
 
-      await axios.put(`/api/maze/${uid}`, {
-        mazeState: stateToSave
-      }, {
+      await axios.put(`/api/maze/${uid}`, stateToSave, {
         headers: {
           Authorization: "Bearer " + token
         }
       });
       console.log("Maze state saved successfully");
-      if (onlyPlayerPosition) {
-        setHasUnsavedPlayerMovement(false);
-      }
     } catch (error) {
       console.error("Failed to save maze state:", error);
     }
   };
-
-  const debouncedSavePlayerPosition = useCallback(
-    debounce(() => {
-      saveMazeState(true);
-    }, 5000),
-    [playerPosition]
-  );
-
-  useEffect(() => {
-    setHasUnsavedPlayerMovement(true);
-    debouncedSavePlayerPosition();
-  }, [playerPosition]);
 
   useEffect(() => {
     if (maze[0].length !== 0) {
       saveMazeState();
     }
   }, [maze, visibleMaze, fogGroups]);
-
-  useEffect(() => {
-    return () => {
-      if (hasUnsavedPlayerMovement) {
-        saveMazeState(true);
-      }
-    };
-  }, [hasUnsavedPlayerMovement]);
 
   const generateMaze = () => {
     const newMaze: CellType[][] = Array(31).fill(null).map(() => Array(31).fill('wall'));
@@ -143,7 +147,6 @@ const Maze: React.FC = () => {
       }
     }
 
-    newMaze[1][1] = 'player';
     newMaze[29][29] = 'exit';
 
     setMaze(newMaze);
@@ -155,7 +158,6 @@ const Maze: React.FC = () => {
 
     // Generate fog groups
     let newFogGroups: number[][] = [];
-    let groupId = 1;
     newFogGroups = generateUnevenGrid(31, 31, 25, 30)
     setFogGroups(newFogGroups);
 
@@ -166,28 +168,24 @@ const Maze: React.FC = () => {
     generateMaze();
   }, []);
 
-  const movePlayer = (dx: number, dy: number) => {
-    const newX = playerPosition.x + dx;
-    const newY = playerPosition.y + dy;
+  const movePlayer = useCallback((dx: number, dy: number) => {
+    setPlayerPosition(prevPos => {
+      const newX = prevPos.x + dx;
+      const newY = prevPos.y + dy;
 
-    if (newX <= 0 || newX >= 30 || newY <= 0 || newY >= 30) return;
-    if (maze[newY][newX] === 'wall' || visibleMaze[newY][newX] === 'fog') return;
+      if (newX <= 0 || newX >= 30 || newY <= 0 || newY >= 30) return prevPos;
+      if (maze[newY][newX] === 'wall' || visibleMaze[newY][newX] === 'fog') return prevPos;
 
-    const newVisibleMaze = visibleMaze.map(row => [...row]);
-    const newestMaze = maze.map(row => [...row]);
-    newestMaze[playerPosition.y][playerPosition.x] = 'path';
-    newestMaze[newY][newX] = 'player';
-    newVisibleMaze[playerPosition.y][playerPosition.x] = 'path';
-    newVisibleMaze[newY][newX] = 'player';
-    setVisibleMaze(newVisibleMaze);
-    setMaze(newestMaze);
-    setPlayerPosition({ x: newX, y: newY });
+      console.log("Moving player to:", { newX, newY });
 
-    if (newX === 29 && newY === 29) {
-      alert('You won! Generating new maze.');
-      generateMaze();
-    }
-  };
+      if (newX === 29 && newY === 29) {
+        alert('You won! Generating new maze.');
+        generateMaze();
+      }
+
+      return { x: newX, y: newY };
+    });
+  }, [maze, visibleMaze]);
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -201,7 +199,7 @@ const Maze: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [playerPosition, maze, visibleMaze]);
+  }, [movePlayer]);
 
   const handleCellClick = (x: number, y: number) => {
     if (visibleMaze[y][x] === 'fog') {
@@ -220,16 +218,18 @@ const Maze: React.FC = () => {
 
   const handleReveal = () => {
     const { groupId } = popupData;
-    const newVisibleMaze = visibleMaze.map(row => [...row]);
-    for (let fy = 0; fy < 31; fy++) {
-      for (let fx = 0; fx < 31; fx++) {
-        if (fogGroups[fy][fx] === groupId) {
-          newVisibleMaze[fy][fx] = maze[fy][fx];
+    setVisibleMaze(prevVisibleMaze => {
+      const newVisibleMaze = prevVisibleMaze.map(row => [...row]);
+      for (let fy = 0; fy < 31; fy++) {
+        for (let fx = 0; fx < 31; fx++) {
+          if (fogGroups[fy][fx] === groupId) {
+            newVisibleMaze[fy][fx] = maze[fy][fx];
+          }
         }
       }
-    }
+      return newVisibleMaze;
+    });
     decreaseEnergy(popupData.groupSize)
-    setVisibleMaze(newVisibleMaze);
     setPopupData({ isOpen: false, groupSize: 0, groupId: 0 });
   };
 
@@ -260,7 +260,7 @@ const Maze: React.FC = () => {
                 key={`${x}-${y}`}
                 className={`w-3 h-3 ${
                   cell === 'wall' ? 'bg-black' :
-                  cell === 'player' ? 'bg-blue-500 border border-white' :
+                  (x === playerPosition.x && y === playerPosition.y) ? 'bg-blue-500 border border-white' :
                   cell === 'exit' ? 'bg-green-500' :
                   cell === 'fog' && fogGroups[y][x] === hoveredGroup ? 'bg-red-500' :
                   cell === 'fog' ? 'bg-gray-500' :
