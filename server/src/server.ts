@@ -8,6 +8,7 @@ const { uploadTestData } = require('./firebase/firebase-config');
 const timetableRouter = require('./routes/timetable');
 const habitsRouter = require('./routes/habits')
 const todoRouter = require('./routes/todo');
+const energyRouter = require('./routes/energy')
 
 // Create an instance of Express
 const app = express();
@@ -24,7 +25,9 @@ app.use(express.urlencoded({ extended: true }));
 // Mount routers
 app.use('/api/timetables', timetableRouter);
 app.use('/api/habits', habitsRouter);
-app.use('/api/todos', todoRouter);    
+app.use('/api/todos', todoRouter);  
+// app.use('/api/maze', mazeRouter);
+app.use('/api/energy', energyRouter);  
 
 // Serve react files (assuming this is for production deployment)
 app.use(express.static(path.join(__dirname, '../../client/build')));

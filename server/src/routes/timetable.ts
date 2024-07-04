@@ -1,6 +1,5 @@
 import { handleGetTimetables, handleUpdateTimetables } from "../controllers/timetableController";
 
-
 const express = require('express');
 const router = express.Router();
 

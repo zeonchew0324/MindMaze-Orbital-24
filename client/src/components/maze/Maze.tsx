@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { generateUnevenGrid } from '../../utils/maze';
 import { useEnergy } from '../../contexts/EnergyProvider';
 import MazePopup from './MazePopup';
+import axios from 'axios';
+import debounce from 'lodash/debounce';
+import { useAuth } from '../../contexts/AuthProvider';
 
 type CellType = 'wall' | 'path' | 'player' | 'exit' | 'fog';
 
@@ -16,7 +19,88 @@ const Maze: React.FC = () => {
     groupSize: 0,
     groupId: 0,
   });
+  const [hasUnsavedPlayerMovement, setHasUnsavedPlayerMovement] = useState(false);
+
   const { energy, decreaseEnergy } = useEnergy()
+  const { currentUser, token } = useAuth()
+
+  useEffect(() => {
+    loadMazeState();
+  }, []); 
+
+  const loadMazeState = async () => {
+    const getUid = async () => currentUser?.uid
+    try {
+      const uid = await getUid()
+      const response = await axios.get(`/api/maze/${uid}`,{
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+      const loadedState = response.data;
+      setMaze(loadedState.maze);
+      setVisibleMaze(loadedState.visibleMaze);
+      setPlayerPosition(loadedState.playerPosition);
+      setFogGroups(loadedState.fogGroups);
+    } catch (error) {
+      console.error("Failed to load maze state:", error);
+      generateMaze(); 
+    }
+  };
+
+  const saveMazeState = async (onlyPlayerPosition = false) => {
+    const getUid = async () => currentUser?.uid
+    try {
+      const uid = await getUid()
+      const stateToSave = onlyPlayerPosition 
+        ? { playerPosition }
+        : {
+            maze,
+            visibleMaze,
+            fogGroups,
+            playerPosition,
+            // ... other state variables you want to save
+          };
+
+      await axios.put(`/api/maze/${uid}`, {
+        mazeState: stateToSave
+      }, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      });
+      console.log("Maze state saved successfully");
+      if (onlyPlayerPosition) {
+        setHasUnsavedPlayerMovement(false);
+      }
+    } catch (error) {
+      console.error("Failed to save maze state:", error);
+    }
+  };
+
+  const debouncedSavePlayerPosition = useCallback(
+    debounce(() => {
+      saveMazeState(true);
+    }, 5000),
+    [playerPosition]
+  );
+
+  useEffect(() => {
+    setHasUnsavedPlayerMovement(true);
+    debouncedSavePlayerPosition();
+  }, [playerPosition]);
+
+  useEffect(() => {
+    saveMazeState();
+  }, [maze, visibleMaze, fogGroups]);
+
+  useEffect(() => {
+    return () => {
+      if (hasUnsavedPlayerMovement) {
+        saveMazeState(true);
+      }
+    };
+  }, [hasUnsavedPlayerMovement]);
 
   const generateMaze = () => {
     const newMaze: CellType[][] = Array(31).fill(null).map(() => Array(31).fill('wall'));
