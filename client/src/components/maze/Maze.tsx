@@ -1,18 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { generateUnevenGrid } from '../../utils/maze';
+import { convertMazeToFrontendFormat, generateUnevenGrid } from '../../utils/maze';
 import { useEnergy } from '../../contexts/EnergyProvider';
 import MazePopup from './MazePopup';
 import axios from 'axios';
 import debounce from 'lodash/debounce';
 import { useAuth } from '../../contexts/AuthProvider';
 
-type CellType = 'wall' | 'path' | 'player' | 'exit' | 'fog';
+export type CellType = 'wall' | 'path' | 'player' | 'exit' | 'fog';
 
 const Maze: React.FC = () => {
-  const [maze, setMaze] = useState<CellType[][]>([]);
-  const [visibleMaze, setVisibleMaze] = useState<CellType[][]>([]);
+  const [maze, setMaze] = useState<CellType[][]>([[]]);
+  const [visibleMaze, setVisibleMaze] = useState<CellType[][]>([[]]);
   const [playerPosition, setPlayerPosition] = useState({ x: 1, y: 1 });
-  const [fogGroups, setFogGroups] = useState<number[][]>([]);
+  const [fogGroups, setFogGroups] = useState<number[][]>([[]]);
   const [hoveredGroup, setHoveredGroup] = useState<number | null>(null);
   const [popupData, setPopupData] = useState<{ isOpen: boolean; groupSize: number; groupId: number }>({
     isOpen: false,
@@ -38,13 +38,21 @@ const Maze: React.FC = () => {
         }
       });
       const loadedState = response.data;
-      setMaze(loadedState.maze);
-      setVisibleMaze(loadedState.visibleMaze);
-      setPlayerPosition(loadedState.playerPosition);
-      setFogGroups(loadedState.fogGroups);
-    } catch (error) {
-      console.error("Failed to load maze state:", error);
-      generateMaze(); 
+      if (loadedState) {
+        const formattedLoadedState = convertMazeToFrontendFormat(loadedState)
+        setMaze(formattedLoadedState.maze);
+        setVisibleMaze(formattedLoadedState.visibleMaze);
+        setPlayerPosition(formattedLoadedState.playerPosition);
+        setFogGroups(formattedLoadedState.fogGroups);
+      } else {
+        generateMaze(); 
+      }
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.log("Hi Axios error:", error.response?.status, error.response?.data);
+      } else {
+        console.log("Unexpected error:", error);
+      }
     }
   };
 
@@ -91,7 +99,9 @@ const Maze: React.FC = () => {
   }, [playerPosition]);
 
   useEffect(() => {
-    saveMazeState();
+    if (maze[0].length !== 0) {
+      saveMazeState();
+    }
   }, [maze, visibleMaze, fogGroups]);
 
   useEffect(() => {

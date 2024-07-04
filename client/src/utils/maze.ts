@@ -1,3 +1,21 @@
+import { CellType } from "../components/maze/Maze";
+
+// Define the input type
+export type FrontendMazeData = {
+  maze: CellType[][];
+  visibleMaze: CellType[][];
+  playerPosition: {x: number, y: number};
+  fogGroups: number[][];
+};
+
+// Define the output type
+export type BackendMazeData = {
+  maze: { [key: string]: CellType[] };
+  visibleMaze: { [key: string]: CellType[] };
+  playerPosition: {x: number, y: number};
+  fogGroups: { [key: string]: number[] };
+};
+
 export function generateUnevenGrid(rows: number, cols: number, minSize: number, maxSize: number): number[][] {
   const grid: number[][] = Array.from({ length: rows }, () => Array(cols).fill(0));
   let groupId = 1;
@@ -82,4 +100,24 @@ export function generateUnevenGrid(rows: number, cols: number, minSize: number, 
   mergeSmallGroups(minSize);
 
   return grid;
+}
+
+// Function to convert from input format to output format
+export function convertMazeToBackendFormat(input: FrontendMazeData): BackendMazeData {
+  return {
+    maze: Object.fromEntries(input.maze.map((row, index) => [index.toString(), row])),
+    visibleMaze: Object.fromEntries(input.visibleMaze.map((row, index) => [index.toString(), row])),
+    playerPosition: input.playerPosition,
+    fogGroups: Object.fromEntries(input.fogGroups.map((group, index) => [index.toString(), group])),
+  };
+}
+
+// Function to convert from output format back to input format
+export function convertMazeToFrontendFormat(output: BackendMazeData): FrontendMazeData {
+  return {
+    maze: Object.values(output.maze),
+    visibleMaze: Object.values(output.visibleMaze),
+    playerPosition: output.playerPosition,
+    fogGroups: Object.values(output.fogGroups),
+  };
 }

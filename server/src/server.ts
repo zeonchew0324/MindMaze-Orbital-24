@@ -9,6 +9,7 @@ const timetableRouter = require('./routes/timetable');
 const habitsRouter = require('./routes/habits')
 const todoRouter = require('./routes/todo');
 const energyRouter = require('./routes/energy')
+const mazeRouter = require('./routes/maze')
 
 // Create an instance of Express
 const app = express();
@@ -26,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/timetables', timetableRouter);
 app.use('/api/habits', habitsRouter);
 app.use('/api/todos', todoRouter);  
-// app.use('/api/maze', mazeRouter);
+app.use('/api/maze', mazeRouter);
 app.use('/api/energy', energyRouter);  
 
 // Serve react files (assuming this is for production deployment)
