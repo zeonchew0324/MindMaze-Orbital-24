@@ -1,15 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TimetableDay from './TimetableDay'
 import TimetablePopup from './TimetablePopup';
 import CreateTimeblock from './CreateTimeblock';
 import { useTimetablePopup } from '../../contexts/TimetablePopupProvider';
 import TimetableHeader from './TimetableHeader';
+import { useTimeblock } from '../../contexts/TimeblockProvider';
 
 const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
 function Timetable() {
   const { isPopupOpen, openPopup, closePopup } = useTimetablePopup()
+  const {fetchTimeBlocks} = useTimeblock()
   
+  useEffect(() => {
+    fetchTimeBlocks()
+  }, [])
+
   return (
     <>
       <div className='max-w-[80vw] overflow-auto border border-blue-950 rounded-md'>

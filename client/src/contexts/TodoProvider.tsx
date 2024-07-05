@@ -18,29 +18,23 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const { currentUser, token } = useAuth();
   const [todos, setTodos] = useState<Todo[]>([]);
 
-  useEffect(() => {
-    const getUid = async () => currentUser?.uid;
-    const fetchTodos = async (token: string) => {
-      try {
-        const uid = await getUid();
-        const response = await axios.get(`/api/todos/${uid}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const todos = unpackTodoData(response.data);
-        console.log('Fetch Todos Response:', response.data);
-        setTodos(todos); 
-        console.log('Successfully fetched todos');
-      } catch (error) {
-        console.error('Error fetching todos:', error);
-      }
-    };
-
-    
-    fetchTodos(token);
-    
-  }, [currentUser, token]);
+  const getUid = async () => currentUser?.uid;
+  const fetchTodos = async () => {
+    try {
+      const uid = await getUid();
+      const response = await axios.get(`/api/todos/${uid}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const todos = unpackTodoData(response.data);
+      console.log('Fetch Todos Response:', response.data);
+      setTodos(todos); 
+      console.log('Successfully fetched todos');
+    } catch (error) {
+      console.error('Error fetching todos:', error);
+    }
+  }
 
   const addTodo = (todo: Todo) => {
     setTodos((prevTodos) => [...prevTodos, todo]);
@@ -61,14 +55,11 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } catch (error) {
       console.error('Error deleting todo:', error);
       alert('Failed to delete todo. Please try again.');
+    }
   }
-  }
-  
-  
-
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, deleteTodo}}>
+    <TodoContext.Provider value={{ todos, addTodo, deleteTodo, fetchTodos}}>
       {children}
     </TodoContext.Provider>
   );

@@ -1,17 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash } from 'react-icons/fa';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthProvider';
 
 const TodoPage: React.FC = () => {
-  const { addTodo, deleteTodo, todos } = useTodos();
+  const { addTodo, deleteTodo, todos, fetchTodos } = useTodos();
   const [showAddForm, setShowAddForm] = useState(false);
   const [todoName, setTodoName] = useState('');
   const [todoDescription, setTodoDescription] = useState('');
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
   const { currentUser, token } = useAuth()
+
+  useEffect(() => {
+    fetchTodos()
+  }, [])
 
   // axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
