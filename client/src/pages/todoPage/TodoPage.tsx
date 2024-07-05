@@ -1,56 +1,80 @@
 import React, { useState } from 'react';
 import { useTodos } from '../../contexts/TodoProvider';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaPencil } from 'react-icons/fa6';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthProvider';
 
 const TodoPage: React.FC = () => {
-  const { addTodo, deleteTodo, todos } = useTodos();
+  const { addTodo, deleteTodo, updateTodo, todos } = useTodos();
   const [showAddForm, setShowAddForm] = useState(false);
+  const [todoId, setTodoId] = useState<string | null>(null);
   const [todoName, setTodoName] = useState('');
   const [todoDescription, setTodoDescription] = useState('');
   const [todoDeadline, setTodoDeadline] = useState<Date | null>(null);
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
-  const { currentUser, token } = useAuth()
+  const { currentUser, token } = useAuth();
 
   axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
-  const handleSubmitTodo = async (name: string, description: string, deadline: Date | null, priority: 'High' | 'Middle' | 'Low') => {
-    if (name.trim() === '' || !deadline || priority.trim() === '') {
+  const handleSubmitTodo = async () => {
+    if (todoName.trim() === '' || !todoDeadline || todoPriority.trim() === '') {
       alert('Please fill in all fields');
       return;
     }
-  
+
     const getUid = async () => currentUser?.uid;
-    const dbAddTodo = async (token: string) => {
+    const dbAddOrUpdateTodo = async (token: string) => {
       try {
         const uid = await getUid();
         if (!uid) {
           console.error('User ID is not available.');
           return;
         }
-  
+
         const reqBody = {
-          name: name,
-          description: description,
-          deadline: deadline.toISOString(), // Ensure deadline is a string
-          priority: priority,
+          name: todoName,
+          description: todoDescription,
+          deadline: todoDeadline.toISOString(), // Ensure deadline is a string
+          priority: todoPriority,
         };
-  
-        const response = await axios.put(`/api/todos/${uid}`, reqBody, {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        });
-        addTodo({ ...reqBody, id: response.data.id });
-        setShowAddForm(false);      
-        console.log('Todo added successfully!');
+
+        if (todoId) {
+          // Update todo
+          await axios.put(`/api/todos/${uid}/${todoId}`, reqBody, {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          });
+          updateTodo({ ...reqBody, id: todoId });
+          console.log('Todo updated successfully!');
+        } else {
+          // Add new todo
+          const response = await axios.put(`/api/todos/${uid}`, reqBody, {
+            headers: {
+              Authorization: 'Bearer ' + token,
+            },
+          });
+          addTodo({ ...reqBody, id: response.data.id });
+          console.log('Todo added successfully!');
+        }
+
+        setShowAddForm(false);
       } catch (error) {
-        console.error('Error adding todo:', error);
+        console.log(todoId);
+        console.error('Error adding/updating todo:', error);
       }
     };
-  
-    dbAddTodo(token);
+
+    dbAddOrUpdateTodo(token);
+  };
+
+  const handleEditTodo = (todo: any) => {
+    setTodoId(todo.id);
+    setTodoName(todo.name);
+    setTodoDescription(todo.description);
+    setTodoDeadline(new Date(todo.deadline));
+    setTodoPriority(todo.priority);
+    setShowAddForm(true);
   };
 
   const handleDeleteTodo = async (id: string) => {
@@ -65,7 +89,7 @@ const TodoPage: React.FC = () => {
   });
 
   return (
-    <div className="p-4 bg-gray-300 rounded-md">
+    <div className="p-4 bg-gray-300 rounded-md max-h-[80vh] overflow-y-auto">
       <h1 className="text-3xl text-black font-semibold mb-6">Todo List</h1>
 
       {showAddForm ? (
@@ -109,10 +133,10 @@ const TodoPage: React.FC = () => {
           </select>
           <div className="flex">
             <button
-              onClick={() => handleSubmitTodo(todoName, todoDescription, todoDeadline, todoPriority)}
+              onClick={handleSubmitTodo}
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mr-2"
             >
-              Add
+              {todoId ? 'Update' : 'Add'}
             </button>
             <button
               onClick={() => setShowAddForm(false)}
@@ -123,7 +147,7 @@ const TodoPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div>
+        <div className="overflow-y-auto max-h-full">
           {filteredTodos.length === 0 ? (
             <p className="text-gray-700 text-2xl">No todos yet. Add a new todo!</p>
           ) : (
@@ -137,6 +161,13 @@ const TodoPage: React.FC = () => {
                     <p className="text-lg text-gray-600">Priority: {todo.priority}</p>
                   </div>
                   <button 
+                    aria-label='Pencil-Icon'
+                    onClick={() => handleEditTodo(todo)}
+                    className="pl-8 text-green-500 hover:text-green-700"
+                  >
+                    <FaPencil />
+                  </button>
+                  <button 
                     aria-label='Trash-Icon'
                     onClick={() => handleDeleteTodo(todo.id)}
                     className="pl-8 text-red-500 hover:text-red-700"
@@ -149,7 +180,14 @@ const TodoPage: React.FC = () => {
           )}
           <div className='pt-4'>
             <button
-              onClick={() => setShowAddForm(true)}
+              onClick={() => {
+                setTodoId(null);
+                setTodoName('');
+                setTodoDescription('');
+                setTodoDeadline(null);
+                setTodoPriority('Low');
+                setShowAddForm(true);
+              }}
               className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mb-4"
             >
               Add Todo
