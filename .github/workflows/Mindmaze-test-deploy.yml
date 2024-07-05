@@ -11,7 +11,9 @@ jobs:
         with:
           node-version: '18.x'
       - run: npm install
+        working-directory: ./client
       - run: npm run build 
+        working-directory: ./client
       
   test: 
     needs: build
@@ -23,5 +25,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
-      - run: npm install
+      - run: npm install  
+        working-directory: ./client
       - run: npm run test
+        working-directory: ./client
