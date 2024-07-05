@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHabits } from '../../contexts/HabitsProvider';
 import { FaTrash } from 'react-icons/fa';
 import { Habit } from '../../types/habits';
@@ -8,9 +8,13 @@ interface HabitsListProps {
 }
 
 const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
-  const { deleteHabit } = useHabits();
+  const { deleteHabit, fetchHabits } = useHabits();
+  useEffect(() => {
+    fetchHabits()
+  }, [])
+
   return (
-    <div className="p-4 pb-10 text-xl ">
+    <div className="p-4 mb-2 text-xl">
       {habits.length === 0 ? (
         <h1>No habits recorded for this day.</h1>
       ) : (

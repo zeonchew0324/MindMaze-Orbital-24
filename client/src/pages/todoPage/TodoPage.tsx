@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash, FaPencil } from 'react-icons/fa6';
 import axios from 'axios';
@@ -14,7 +14,11 @@ const TodoPage: React.FC = () => {
   const [todoPriority, setTodoPriority] = useState<'High' | 'Middle' | 'Low'>('Low');
   const { currentUser, token } = useAuth();
 
-  axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
+  useEffect(() => {
+    fetchTodos()
+  }, [])
+
+  // axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
   const handleSubmitTodo = async () => {
     if (todoName.trim() === '' || !todoDeadline || todoPriority.trim() === '') {
@@ -91,7 +95,6 @@ const TodoPage: React.FC = () => {
   return (
     <div className="p-4 bg-gray-300 rounded-md max-h-[80vh] overflow-y-auto">
       <h1 className="text-3xl text-black font-semibold mb-6">Todo List</h1>
-
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
           <label htmlFor="todoName">Todo Name</label>
