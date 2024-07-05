@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthProvider'
-import DashboardHabits from '../../components/dashboard/DashboardHabits'
+import DashboardHabits from '../../components/dashboard/dashboardhabits'
 import DashboardTodos from '../../components/dashboard/DashboardTodos'
 import DashboardReminder from '../../components/dashboard/DashboardReminder'
 

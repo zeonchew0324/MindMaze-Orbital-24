@@ -79,7 +79,7 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, deleteTodo, updateTodo}}>
+    <TodoContext.Provider value={{ todos, addTodo, deleteTodo, updateTodo, fetchTodos}}>
       {children}
     </TodoContext.Provider>
   );

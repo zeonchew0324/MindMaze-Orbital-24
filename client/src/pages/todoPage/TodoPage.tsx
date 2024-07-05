@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useAuth } from '../../contexts/AuthProvider';
 
 const TodoPage: React.FC = () => {
-  const { addTodo, deleteTodo, updateTodo, todos } = useTodos();
+  const { addTodo, deleteTodo, updateTodo, fetchTodos ,todos } = useTodos();
   const [showAddForm, setShowAddForm] = useState(false);
   const [todoId, setTodoId] = useState<string | null>(null);
   const [todoName, setTodoName] = useState('');
