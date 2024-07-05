@@ -53,6 +53,31 @@ export async function handleAddTodos(req: Request, res: Response) {
     }
 }
 
+export async function handleEditTodos(req: Request, res: Response) {
+  try {
+    const db = firestoreDb;
+    const { id, todoId } = req.params;
+    const updatedTodo = req.body;
+
+    // Get the user document using the provided UID
+    const userRef = doc(db, 'users', id);
+    const userDoc = await getDoc(userRef);
+    const userData = userDoc.data();
+
+    if (!userData) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Get the todo document in the todos subcollection
+    const todoDocRef = doc(collection(db, `users/${id}/todosCollection`), todoId);
+    await updateDoc(todoDocRef, updatedTodo);
+
+    return res.json({ message: 'Updated todo successfully!' });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
+
 export async function handleDeleteTodos(req: Request, res: Response) {
     try {
       const db = firestoreDb

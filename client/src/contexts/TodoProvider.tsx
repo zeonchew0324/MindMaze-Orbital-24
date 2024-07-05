@@ -39,6 +39,26 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const addTodo = (todo: Todo) => {
     setTodos((prevTodos) => [...prevTodos, todo]);
   };
+ 
+  const updateTodo = async (updatedTodo: Todo) => {
+    const getUid = async () => currentUser?.uid;
+    try {
+      const uid = await getUid();
+      await axios.put(`/api/todos/${uid}/${updatedTodo.id}`, updatedTodo, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setTodos((prevTodos) => prevTodos.map((todo) =>
+        todo.id === updatedTodo.id ? updatedTodo : todo
+      ));
+      console.log(`${updatedTodo.id} Todo updated successfully!`);
+    } catch (error) {
+      console.error('Error updating todo:', error);
+      alert('Failed to update todo. Please try again.');
+    }
+  };
 
   const deleteTodo = async (id: string) => {
     const getUid = async () => currentUser?.uid;
@@ -59,7 +79,7 @@ export const TodoProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }
 
   return (
-    <TodoContext.Provider value={{ todos, addTodo, deleteTodo, fetchTodos}}>
+    <TodoContext.Provider value={{ todos, addTodo, deleteTodo, updateTodo}}>
       {children}
     </TodoContext.Provider>
   );
