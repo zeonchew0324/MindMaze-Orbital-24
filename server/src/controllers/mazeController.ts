@@ -13,7 +13,7 @@ export async function handleGetMaze(req: Request, res: Response) {
     const mazeData = mazeDoc.data();
 
     if (!mazeData) {
-      return res.status(404).json({ error: 'Maze not found' });
+      return res.status(200).json({ warning: 'Maze not found' });
     }
 
     return res.json(mazeData)

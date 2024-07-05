@@ -3,6 +3,7 @@ import axios from 'axios';
 import { convertMazeToBackendFormat, convertMazeToFrontendFormat, generateUnevenGrid } from '../../utils/maze';
 import { useAuth } from '../../contexts/AuthProvider';
 import { CellType } from '../../components/maze/Maze';
+import { useEnergy } from '../../contexts/EnergyProvider';
 
 export const useMaze = () => {
   const [maze, setMaze] = useState<CellType[][]>([[]]);
@@ -13,6 +14,7 @@ export const useMaze = () => {
   const { currentUser, token } = useAuth();
   const latestPlayerPosition = useRef(playerPosition);
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
+  const { fetchEnergy } = useEnergy()
 
   useEffect(() => {
     loadMazeState();
@@ -34,6 +36,7 @@ export const useMaze = () => {
   }, [playerPosition]);
 
   useEffect(() => {
+    fetchEnergy()
     return () => {
       if (saveTimeout.current) {
         clearTimeout(saveTimeout.current);
@@ -58,7 +61,7 @@ export const useMaze = () => {
           }
         });
         const loadedState = response.data;
-        if (loadedState) {
+        if (loadedState.maze) {
           const formattedLoadedState = convertMazeToFrontendFormat(loadedState);
           setMaze(formattedLoadedState.maze);
           setVisibleMaze(formattedLoadedState.visibleMaze);
