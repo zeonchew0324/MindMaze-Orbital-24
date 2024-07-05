@@ -8,6 +8,7 @@ const { uploadTestData } = require('./firebase/firebase-config');
 const timetableRouter = require('./routes/timetable');
 const habitsRouter = require('./routes/habits')
 const todoRouter = require('./routes/todo');
+const userRouter = require('./routes/user')
 
 // Create an instance of Express
 const app = express();
@@ -22,6 +23,7 @@ app.use('/api', decodeToken); // Applying decodeToken middleware for all routes 
 app.use(express.urlencoded({ extended: true }));
 
 // Mount routers
+app.use('/api/user', userRouter)
 app.use('/api/timetables', timetableRouter);
 app.use('/api/habits', habitsRouter);
 app.use('/api/todos', todoRouter);    

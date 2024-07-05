@@ -1,9 +1,7 @@
+import axios from 'axios';
 import {auth} from './firebase-config';
 
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, updateProfile, deleteUser, User, UserCredential } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-
-const db = getFirestore();
 
 export const doCreateUser = async (email: string, password: string, username: string) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -31,32 +29,35 @@ export const doPasswordChange = (password: string) => {
 }
 
 export const updateUsername = async (cred: User | null = auth.currentUser, newUsername: string) => {
-  const currentUser = cred;
-  if (currentUser) {
-    try {
-      await updateProfile(currentUser, { displayName: newUsername }); 
-      const userDocRef = doc(db, 'users', currentUser.uid);
-      const userDoc = await getDoc(userDocRef);
-      
-      if (userDoc.exists()) {
-        await updateDoc(userDocRef, { username: newUsername });
-      } else {
-        await setDoc(userDocRef, { username: newUsername, email: currentUser.email });
+  try {
+    const uid = cred?.uid
+    const reqBody = {username: newUsername}
+    await axios.put(`/api/habits/${uid}`, reqBody, {
+      headers: {
+        Authorization: "Bearer " + cred?.getIdToken()
       }
-
-    } catch (error) {
-      console.error('Error updating username:', error);
-      throw error; 
-    }
+    })
+    console.log('Successfully updated username')
+  } catch (error) {
+    console.error('Error updating username:', error)
   }
 }
 
 export const deleteAccount = async () => {
-  const currentUser = auth.currentUser;
-  if (currentUser) {
-    await deleteUser(currentUser);
-    const userDoc = doc(db, 'users', currentUser.uid);
-    await updateDoc(userDoc, {deleted : true});
+  try {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      await deleteUser(currentUser);
+      const uid = auth.currentUser?.uid
+      await axios.get(`/api/habits/${uid}`, {
+        headers: {
+          Authorization: "Bearer " + auth.currentUser?.getIdToken()
+        }
+      })
+      console.log('Successfully deleted account')
+    }
+  } catch (error) {
+    console.error('Error deleting account:', error)
   }
 }
 
