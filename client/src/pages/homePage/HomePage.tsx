@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthProvider'
 import DashboardHabits from '../../components/dashboard/DashboardHabits'
 import DashboardTodos from '../../components/dashboard/DashboardTodos'
+import DashboardReminder from '../../components/dashboard/DashboardReminder'
 
 
 function HomePage() {
@@ -39,6 +40,9 @@ function HomePage() {
         <div className="min-h-[400px]">
           <DashboardTodos />
         </div>
+      </div>
+      <div> 
+        <DashboardReminder />
       </div>
       <button onClick={(e) => onSignOut(e)}> Sign out </button>;
     </div>

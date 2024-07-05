@@ -16,7 +16,7 @@ const DashboardTodos: React.FC = () => {
 
   return (
     <div 
-      className="bg-white p-6 rounded-lg shadow cursor-pointer hover:bg-gray-50 transition-colors h-full"
+      className="bg-white p-6 rounded-lg shadow cursor-pointer hover:bg-gray-200 transition-colors h-full"
       onClick={handleClick}
     >
       <h2 className="text-2xl font-bold text-black mb-6">Upcoming Todos</h2>
