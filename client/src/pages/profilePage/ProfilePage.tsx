@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getCurrentUser, updateUsername, doPasswordChange, deleteAccount, getMazeCompleted } from '../../firebase/auth';
+import { useAuth } from "../../contexts/AuthProvider";
 
 const ProfilePage: React.FC = () => {
     const [username, setUsername] = useState('');
@@ -9,23 +10,24 @@ const ProfilePage: React.FC = () => {
     const [message, setMessage] = useState('');
     const [showUsernameInput, setShowUsernameInput] = useState(false);
     const [showPasswordInput, setShowPasswordInput] = useState(false);
+    const {currentUser} = useAuth()
 
     useEffect(() => {
-        const fetchUserData = async () => {
-          const user = getCurrentUser();
-          if (user) {
-            setUsername(user.displayName || '');
-            const completedMazes = await getMazeCompleted();
-            setMazeCompleted(completedMazes);
-          }
-        };
-    
-        fetchUserData();
-      }, []);
+      const fetchUserData = async () => {
+        const user = getCurrentUser();
+        if (user) {
+          setUsername(user.displayName || '');
+          const completedMazes = await getMazeCompleted();
+          setMazeCompleted(completedMazes);
+        }
+      };
+  
+      fetchUserData();
+    }, []);
 
     const handleUsernameChange = async () => {
         try {
-            await updateUsername(newUsername);
+            await updateUsername(currentUser, newUsername);
             setUsername(newUsername);
             setNewUsername('');
             setShowUsernameInput(false);
