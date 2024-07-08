@@ -7,11 +7,10 @@ const { firestoreDb } = require("../firebase/firebase-config")
 export async function handleSignup(req: Request, res: Response) {
   try {
     const db = firestoreDb;
-    const formInfo = req.body
+    const {formInfo, cred} = req.body
 
-    const userCredential = await createUserWithEmailAndPassword(auth, formInfo.email, formInfo.password);
-    const currentUser = userCredential.user
-    if (userCredential) {
+    const currentUser = cred.user
+    if (cred) {
       const userDocRef = doc(db, 'users', currentUser.uid);
       await setDoc(userDocRef, { username: formInfo.username, email: currentUser.email });
     }

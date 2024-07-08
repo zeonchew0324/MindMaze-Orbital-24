@@ -1,11 +1,27 @@
 import axios from 'axios';
 import {auth} from './firebase-config';
 
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, updateProfile, deleteUser, User, UserCredential } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, deleteUser, User } from "firebase/auth";
 
 export const doCreateUser = async (email: string, password: string, username: string) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  await updateUsername(userCredential.user, username)
+  try {
+    const reqBody = {
+      formInfo: {
+        username: username,
+        email: email
+      },
+      cred: userCredential
+    }
+    await axios.post(`/api/user/signup`, reqBody, {
+      headers: {
+        Authorization: "Bearer " + userCredential.user.getIdToken()
+      }
+    })
+    console.log('Successfully signed up')
+  } catch (error) {
+    console.error('Error signing up:', error)
+  }
   return userCredential;
 };
 
