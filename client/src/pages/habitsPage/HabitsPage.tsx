@@ -6,6 +6,7 @@ import { CiSquarePlus } from "react-icons/ci";
 import { sevenDays, unpackHabitData } from "../../utils/habits";
 import { useAuth } from "../../contexts/AuthProvider";
 import axios from "axios";
+import { Habit } from "../../types/habits";
 
 const HabitsPage: React.FC = () => {
   const [selectedDay, setSelectedDay] = useState<string>(
@@ -13,7 +14,9 @@ const HabitsPage: React.FC = () => {
   );
   const [showAddForm, setShowAddForm] = useState(false);
   const { addHabit, habits } = useHabits();
-  const filteredHabits = habits.filter((habit) => habit.day === selectedDay);
+  const filteredHabits: Habit[] = habits.filter(
+    (habit: Habit) => habit.day === selectedDay
+  );
   const [habitName, setHabitName] = useState("");
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
@@ -61,7 +64,7 @@ const HabitsPage: React.FC = () => {
             },
           });
           selectedDays.forEach((day) => {
-            addHabit({ id: docId.data.id, name: habitName, day });
+            addHabit({ id: docId.data.id, name: habitName, day, streak: 0 });
           });
           console.log("Habit added successfully!");
         } catch (error) {

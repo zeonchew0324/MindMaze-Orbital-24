@@ -13,6 +13,7 @@ interface Habit {
   id: string;
   name: string;
   day: string;
+  streak: number;
 }
 
 interface HabitsContextType {
