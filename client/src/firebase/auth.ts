@@ -13,16 +13,16 @@ export const doCreateUser = async (email: string, password: string, username: st
       },
       cred: userCredential
     }
-    await axios.post(`/api/user/signup`, reqBody, {
+    await axios.post(`/user/signup`, reqBody, {
       headers: {
         Authorization: "Bearer " + userCredential.user.getIdToken()
       }
     })
     console.log('Successfully signed up')
+    return userCredential;
   } catch (error) {
     console.error('Error signing up:', error)
   }
-  return userCredential;
 };
 
 export const doSignInWithEmailAndPassword = async (email: string, password: string) => {

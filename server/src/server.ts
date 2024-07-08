@@ -23,7 +23,7 @@ app.use('/api', decodeToken); // Applying decodeToken middleware for all routes 
 app.use(express.urlencoded({ extended: true }));
 
 // Mount routers
-app.use('/api/user', userRouter)
+app.use('/user', userRouter);
 app.use('/api/timetables', timetableRouter);
 app.use('/api/habits', habitsRouter);
 app.use('/api/todos', todoRouter);    
