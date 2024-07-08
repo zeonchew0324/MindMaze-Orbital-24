@@ -19,7 +19,7 @@ export function unpackHabitData(res: HabitData[]) {
       id: `${data.id}`,
       name: `${data.name}`,
       day: `${day}`,
-      streak: data.streak,
+      streak: data.streak || 0,
     }));
     result = result.concat(array);
   };

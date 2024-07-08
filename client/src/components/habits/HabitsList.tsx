@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useHabits } from "../../contexts/HabitsProvider";
-import { FaTrash, FaCheck } from "react-icons/fa";
+import { FaTrash, FaCheck, FaFire } from "react-icons/fa";
 import { Habit } from "../../types/habits";
 import { calculateHabitStreak } from "../../utils/habits";
 
@@ -15,13 +15,14 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
   }, []);
 
   const handleCompleteHabit = (habit: Habit) => {
-    const updatedStreak = calculateHabitStreak(habit);
+    const updatedStreak = habit.streak + 1;
     const updatedHabit = {
       ...habit,
       streak: updatedStreak,
       day: new Date().toISOString(),
     };
     updateHabits(updatedHabit);
+    deleteHabit(habit.id);
   };
 
   return (
@@ -35,7 +36,8 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
               <span className="flex-grow text-xl text-white font-bold pr-52">
                 {habit.name}
               </span>
-              <span className="text-sm text-gray-400 mr-2">
+              <span className="text-lg text-white mr-2 flex items-center">
+                <FaFire className="mr-2 text-red-500" />
                 Streak: {calculateHabitStreak(habit)}
               </span>
               <button
