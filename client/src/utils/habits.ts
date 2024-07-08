@@ -24,7 +24,7 @@ export function unpackHabitData(res: HabitData[]) {
     result = result.concat(array);
   };
 
-  res.forEach((habit) => helper(habit));
+  res.map((habit) => helper(habit));
 
   return result;
 }
