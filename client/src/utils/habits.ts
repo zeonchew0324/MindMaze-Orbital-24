@@ -33,10 +33,15 @@ export function calculateHabitStreak(habit: Habit): number {
   const today = new Date();
   const habitDay = new Date(habit.day);
 
-  if (today.getDay() === habitDay.getDay()) {
-    return habit.streak + 1;
+  // Reset the time part of the dates to compare only the dates
+  today.setHours(0, 0, 0, 0);
+  habitDay.setHours(0, 0, 0, 0);
+
+  if (today.getTime() === habitDay.getTime()) {
+    return habit.streak + 1; // Increment streak if completed today
+  } else if (today > habitDay) {
+    return 0; // Reset streak if habit day has passed and not completed
   }
 
-  //reset streak
-  return 1;
+  return habit.streak; // Otherwise, return current streak
 }
