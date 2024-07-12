@@ -8,8 +8,10 @@ function TimetablePage() {
         <>
             <TimeblockProvider>
                 <TimetablePopupProvider>
-                    <h1> Timetable </h1>
-                    <Timetable/>
+                    <div className="pt-[100px] pb-[100px] h-screen">
+                        <h1> Timetable </h1>
+                        <Timetable/>
+                    </div>
                 </TimetablePopupProvider>
             </TimeblockProvider>
         </>

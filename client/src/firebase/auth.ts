@@ -1,25 +1,25 @@
+import axios from 'axios';
 import {auth} from './firebase-config';
 
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, updateProfile, deleteUser, User } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
-
-const db = getFirestore();
+import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, deleteUser, User } from "firebase/auth";
 
 export const doCreateUser = async (email: string, password: string, username: string) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-  await updateProfile(userCredential.user, {
-    displayName: username,
-  });
-  return userCredential;
+  try {
+    const reqBody = {
+      formInfo: {
+        username: username,
+        email: email
+      },
+      cred: userCredential
+    }
+    await axios.post(`/user/signup`, reqBody, {})
+    console.log('Successfully signed up')
+    return userCredential;
+  } catch (error) {
+    console.error('Error signing up:', error)
+  }
 };
-
-// export const addUsername = async (username: string) => {
-//   const currentUser = auth.currentUser;
-//   if (currentUser) {
-//     const userDocRef = doc(db, 'users', currentUser.uid);
-//     await setDoc(userDocRef, { username: username, email: currentUser.email });
-//   }
-// }
 
 export const doSignInWithEmailAndPassword = async (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password)
@@ -40,33 +40,36 @@ export const doPasswordChange = (password: string) => {
   }
 }
 
-export const updateUsername = async (newUsername: string) => {
-  const currentUser = auth.currentUser;
-  if (currentUser) {
-    try {
-      await updateProfile(currentUser, { displayName: newUsername }); 
-      const userDocRef = doc(db, 'users', currentUser.uid);
-      const userDoc = await getDoc(userDocRef);
-      
-      if (userDoc.exists()) {
-        await updateDoc(userDocRef, { username: newUsername });
-      } else {
-        await setDoc(userDocRef, { username: newUsername, email: currentUser.email });
+export const updateUsername = async (cred: User | null = auth.currentUser, newUsername: string) => {
+  try {
+    const uid = cred?.uid
+    const reqBody = {username: newUsername}
+    await axios.put(`/api/habits/${uid}`, reqBody, {
+      headers: {
+        Authorization: "Bearer " + cred?.getIdToken()
       }
-
-    } catch (error) {
-      console.error('Error updating username:', error);
-      throw error; 
-    }
+    })
+    console.log('Successfully updated username')
+  } catch (error) {
+    console.error('Error updating username:', error)
   }
 }
 
 export const deleteAccount = async () => {
-  const currentUser = auth.currentUser;
-  if (currentUser) {
-    await deleteUser(currentUser);
-    const userDoc = doc(db, 'users', currentUser.uid);
-    await updateDoc(userDoc, {deleted : true});
+  try {
+    const currentUser = auth.currentUser;
+    if (currentUser) {
+      await deleteUser(currentUser);
+      const uid = auth.currentUser?.uid
+      await axios.get(`/api/habits/${uid}`, {
+        headers: {
+          Authorization: "Bearer " + auth.currentUser?.getIdToken()
+        }
+      })
+      console.log('Successfully deleted account')
+    }
+  } catch (error) {
+    console.error('Error deleting account:', error)
   }
 }
 

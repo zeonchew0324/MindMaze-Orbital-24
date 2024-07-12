@@ -13,6 +13,7 @@ interface HabitsContextType {
   habits: Habit[];
   addHabit: (habit: Habit) => void;
   deleteHabit: (id: string) => void
+  fetchHabits: () => void
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined);
@@ -30,27 +31,23 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const { currentUser, token } = useAuth()
   const [habits, setHabits] = useState<Habit[]>([]);
 
-  useEffect(() => {
-    const getUid = async () => currentUser?.uid
-    const fetchHabits = async (token: string) => {
-      try {
-        const uid = await getUid()
-        console.log(uid)
-        const response = await axios.get(`/api/habits/${uid}`, {
-          headers: {
-            Authorization: "Bearer " + token
-          }
-        })
-        const habits = unpackHabitData(response.data)
-        setHabits(habits)
-        console.log('Successfully fetched habits')
-      } catch (error) {
-        console.error('Error fetching habits:', error)
-      }
-    };
-  
-    fetchHabits(token);
-  }, [])
+  const getUid = async () => currentUser?.uid
+  const fetchHabits = async () => {
+    try {
+      const uid = await getUid()
+      console.log(uid)
+      const response = await axios.get(`/api/habits/${uid}`, {
+        headers: {
+          Authorization: "Bearer " + token
+        }
+      })
+      const habits = unpackHabitData(response.data)
+      setHabits(habits)
+      console.log('Successfully fetched habits')
+    } catch (error) {
+      console.error('Error fetching habits:', error)
+    }
+  };
 
   const addHabit = (habit: Habit) => {
     setHabits((prevHabits) => [...prevHabits, habit]);
@@ -72,7 +69,7 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   };
 
   return (
-    <HabitsContext.Provider value={{ habits, addHabit, deleteHabit}}>
+    <HabitsContext.Provider value={{ habits, addHabit, deleteHabit, fetchHabits}}>
       {children}
     </HabitsContext.Provider>
   );

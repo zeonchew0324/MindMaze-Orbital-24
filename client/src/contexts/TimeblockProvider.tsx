@@ -7,6 +7,7 @@ import { useAuth } from './AuthProvider';
 type TimeblockContextType = {
   timeBlocks: TimeBlock[];
   setTimeBlocks: (tb: TimeBlock[]) => void;
+  fetchTimeBlocks: () => void;
 }
 
 export const TimeblockContext = createContext<TimeblockContextType | undefined>(undefined);
@@ -35,28 +36,24 @@ export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
 
   const { currentUser, token } = useAuth()
 
-  useEffect(() => {
-    const getUid = async () => currentUser?.uid
-    const fetchTimeBlocks = async (token: string) => {
-      try {
-        const uid = await getUid()
-        const response = await axios.get(`/api/timetables/${uid}/0`, {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          }
-        })
-        const sortedTimeBlocks = unpackTTData(response.data).sort(sortWithStartTime) 
-        setTimeBlocks(sortedTimeBlocks)
-      } catch (error) {
-        console.error('Error fetching time blocks:', error)
-      }
-    };
-
-    fetchTimeBlocks(token);
-  }, [])
+  const getUid = async () => currentUser?.uid
+  const fetchTimeBlocks = async () => {
+    try {
+      const uid = await getUid()
+      const response = await axios.get(`/api/timetables/${uid}/0`, {
+        headers: {
+          Authorization: 'Bearer ' + token,
+        }
+      })
+      const sortedTimeBlocks = unpackTTData(response.data).sort(sortWithStartTime) 
+      setTimeBlocks(sortedTimeBlocks)
+      console.log('Timeblock loaded')
+    } catch (error) {
+      console.error('Error fetching time blocks:', error)
+    }
+  };
 
   useEffect(() => {
-    const getUid = async () => currentUser?.uid
     const updateTimeBlocks = async (updatedTimeBlocks: TimeBlock[]) => {
       try {   
         const uid = await getUid()
@@ -76,7 +73,7 @@ export const TimeblockProvider = ({ children }: TimeblockProviderProps) => {
   }, [timeBlocks])
 
   return (
-    <TimeblockContext.Provider value={{ timeBlocks, setTimeBlocks }}>
+    <TimeblockContext.Provider value={{ timeBlocks, setTimeBlocks, fetchTimeBlocks }}>
       {children}
     </TimeblockContext.Provider>
   );

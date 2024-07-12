@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthProvider'
-import { doCreateUser, updateUsername } from '../../firebase/auth'
+import { doCreateUser } from '../../firebase/auth'
 
 function SignupForm() {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const navigate = useNavigate();
 
@@ -16,13 +15,13 @@ function SignupForm() {
     e.preventDefault();
     if (!isSigningUp) {
       setIsSigningUp(true);
-      setError(null); // Reset previous error
+      setError(undefined); // Reset previous error
       try {
         await doCreateUser(email, password, username)
         navigate('/home')
       } catch (error) {
         if (error instanceof Error) {
-          alert('Error signing up, please enter valid email and password')
+          setError('Error signing up, please enter valid email and password')
         }
         setIsSigningUp(false); // Reset signing-in state
       }
@@ -57,6 +56,9 @@ function SignupForm() {
           required
           className="w-full p-2 mb-4 text-black rounded-md"
         />
+        <div className='text-red-600'>
+          {error}
+        </div>
         <button
           type="submit"
           className="bg-blue-600 text-white p-2 mt-4 rounded-md hover:bg-blue-700 transition-colors duration-300 ease-in-out"

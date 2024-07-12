@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthProvider'
+import DashboardHabits from '../../components/dashboard/dashboardhabits'
+import DashboardTodos from '../../components/dashboard/DashboardTodos'
+import DashboardReminder from '../../components/dashboard/DashboardReminder'
 import Maze from '../../components/maze/Maze'
 
 function HomePage() {
@@ -25,19 +29,26 @@ function HomePage() {
     }
   }
   return (
-    <div>
-      <button
-        className="absolute z-50 bottom-4 right-4 px-4 py-2 bg-red-500 text-white rounded-lg"
-        onClick={(e) => onSignOut(e)}
-      >
-        Sign out
-      </button>
-      <div className="relative min-h-screen flex flex-col justify-center">
-        <h1 className="relative text-xl p-4">Welcome Back!</h1>
-        <Maze/>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Welcome Back</h1>
+      <Maze/>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="min-h-[400px]">
+          <DashboardHabits />
+        </div>
+        <div className="min-h-[400px]">
+          <DashboardTodos />
+        </div>
       </div>
+      <div> 
+        <DashboardReminder />
+      </div>
+      <button onClick={(e) => onSignOut(e)}> Sign out </button>;
     </div>
-  );
+
+
+    
+  )
 }
 
 export default HomePage

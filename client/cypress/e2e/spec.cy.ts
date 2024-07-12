@@ -1,7 +1,7 @@
 describe('My First Test', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:3000/login');
+    cy.visit('http://localhost:5000/login');
   });
 
   it('login MindMaze fail (user not signed up)', () => {
