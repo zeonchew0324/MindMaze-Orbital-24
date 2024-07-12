@@ -13,11 +13,7 @@ export const doCreateUser = async (email: string, password: string, username: st
       },
       cred: userCredential
     }
-    await axios.post(`/user/signup`, reqBody, {
-      headers: {
-        Authorization: "Bearer " + userCredential.user.getIdToken()
-      }
-    })
+    await axios.post(`/user/signup`, reqBody, {})
     console.log('Successfully signed up')
     return userCredential;
   } catch (error) {

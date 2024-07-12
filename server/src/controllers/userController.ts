@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
-import { collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, updateProfile, deleteUser, User, UserCredential } from "firebase/auth";
+import { collection, doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc } from "firebase/firestore";
 
 const { firestoreDb } = require("../firebase/firebase-config") 
 
@@ -14,8 +13,9 @@ export async function handleSignup(req: Request, res: Response) {
       const userDocRef = doc(db, 'users', currentUser.uid);
       await setDoc(userDocRef, { username: formInfo.username, email: currentUser.email });
     }
+    res.json({ message: "Signup successful!" });
   } catch (error: any) {
-      res.status(500).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 }
 
@@ -33,7 +33,7 @@ export async function handleChangeName(req: Request, res: Response) {
         await updateDoc(userRef, { username: newName.username });
       }
   
-      return res.json({ message: 'Added todo successfully!' });
+      return res.json({ message: 'Changed username successfully!' });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
@@ -49,7 +49,7 @@ export async function handleDeleteAccount(req: Request, res: Response) {
       const userDoc = await getDoc(userRef)
   
       if (userDoc.exists()) {
-        await setDoc(userDoc, {deleted : true});
+        await setDoc(userRef, {deleted : true});
       }
 
       return res.json({ message: 'Deleted account successfully!' });
