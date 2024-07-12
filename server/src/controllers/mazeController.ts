@@ -14,9 +14,9 @@ export async function handleGetMaze(req: Request, res: Response) {
 
     if (!mazeData) {
       return res.status(200).json({ warning: 'Maze not found' });
+    } else {
+      return res.json(mazeData)
     }
-
-    return res.json(mazeData)
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -33,12 +33,11 @@ export async function handleUpdateMaze(req: Request, res: Response) {
 
     if (!mazeDoc.exists()) {
       await setDoc(mazeRef, mazeState)
-      res.status(200).json({ message: `User ${id} updated successfully.` });
     } else {
       await updateDoc(mazeRef, mazeState);
     }
-
     res.status(200).json({ message: `User ${id} updated successfully.` });
+    
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
