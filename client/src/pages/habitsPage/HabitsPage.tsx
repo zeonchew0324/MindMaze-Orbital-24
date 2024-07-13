@@ -57,6 +57,7 @@ const HabitsPage: React.FC = () => {
             day: selectedDays,
             description: "", //Work in progress
             streak: 0,
+            completed: false,
           };
           const docId = await axios.put(`/api/habits/${uid}`, reqBody, {
             headers: {
@@ -64,7 +65,13 @@ const HabitsPage: React.FC = () => {
             },
           });
           selectedDays.forEach((day) => {
-            addHabit({ id: docId.data.id, name: habitName, day, streak: 0 });
+            addHabit({
+              id: docId.data.id,
+              name: habitName,
+              day,
+              streak: 0,
+              completed: false,
+            });
           });
           console.log("Habit added successfully!");
         } catch (error) {

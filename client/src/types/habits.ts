@@ -3,6 +3,7 @@ export interface Habit {
   name: string;
   day: string;
   streak: number;
+  completed: boolean;
 }
 
 export interface HabitData {
@@ -11,4 +12,5 @@ export interface HabitData {
   day: string[];
   description?: string;
   streak: number;
+  completed: boolean;
 }

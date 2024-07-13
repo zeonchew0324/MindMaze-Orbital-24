@@ -3,6 +3,8 @@ import { useHabits } from "../../contexts/HabitsProvider";
 import { FaTrash, FaCheck, FaFire } from "react-icons/fa";
 import { Habit } from "../../types/habits";
 import { calculateHabitStreak } from "../../utils/habits";
+import { useState } from "react";
+import { sevenDays } from "../../utils/habits";
 
 interface HabitsListProps {
   habits: Habit[];
@@ -14,15 +16,19 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
     fetchHabits();
   }, []);
 
+  const [selectedDay, setSelectedDay] = useState<string>(
+    sevenDays[new Date().getDay()]
+  );
+
   const handleCompleteHabit = (habit: Habit) => {
-    const updatedStreak = habit.streak + 1;
+    const currstate = habit.completed;
+    const updatedStreak = currstate ? habit.streak - 1 : habit.streak + 1;
     const updatedHabit = {
       ...habit,
       streak: updatedStreak,
-      day: new Date().toISOString(),
+      completed: !currstate,
     };
     updateHabits(updatedHabit);
-    deleteHabit(habit.id);
   };
 
   return (
@@ -47,13 +53,15 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
                 <FaTrash className="mr-2" />
                 Delete
               </button>
-              <button
-                className="text-white rounded-xl bg-green-500 hover:bg-green-700 p-2 ml-10 flex items-center"
-                onClick={() => handleCompleteHabit(habit)}
-              >
-                <FaCheck className="mr-2" />
-                Complete
-              </button>
+              {habit.day === selectedDay && (
+                <button
+                  className="text-white rounded-xl bg-green-500 hover:bg-green-700 p-2 ml-10 flex items-center"
+                  onClick={() => handleCompleteHabit(habit)}
+                >
+                  <FaCheck className="mr-2" />
+                  {habit.completed ? "Completed" : "Complete"}
+                </button>
+              )}
             </li>
           ))}
         </ul>

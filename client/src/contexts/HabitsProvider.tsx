@@ -14,6 +14,7 @@ interface Habit {
   name: string;
   day: string;
   streak: number;
+  completed: boolean;
 }
 
 interface HabitsContextType {

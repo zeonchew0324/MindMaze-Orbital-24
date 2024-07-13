@@ -20,6 +20,7 @@ export function unpackHabitData(res: HabitData[]) {
       name: `${data.name}`,
       day: `${day}`,
       streak: data.streak || 0,
+      completed: false,
     }));
     result = result.concat(array);
   };
