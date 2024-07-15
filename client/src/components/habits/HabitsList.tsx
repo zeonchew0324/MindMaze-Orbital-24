@@ -16,9 +16,11 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
     fetchHabits();
   }, []);
 
-  const [selectedDay, setSelectedDay] = useState<string>(
-    sevenDays[new Date().getDay()]
-  );
+  let today = new Date().getDay();
+  today = today == 0 ? 7 : today - 1;
+  console.log(today);
+
+  const [selectedDay, setSelectedDay] = useState<string>(sevenDays[today]);
 
   const handleCompleteHabit = (habit: Habit) => {
     const currstate = habit.completed;

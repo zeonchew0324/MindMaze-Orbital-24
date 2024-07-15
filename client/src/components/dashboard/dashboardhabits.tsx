@@ -1,22 +1,24 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useHabits } from '../../contexts/HabitsProvider';
-import { sevenDays } from '../../utils/habits';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useHabits } from "../../contexts/HabitsProvider";
+import { sevenDays } from "../../utils/habits";
 
 const DashboardHabits: React.FC = () => {
   const navigate = useNavigate();
   const { habits } = useHabits();
   //get todays habits
-  const today = sevenDays[new Date().getDay() - 1];
-  const todaysHabits = habits.filter((habit) => habit.day === today);
+  let today = new Date().getDay() - 1;
+  today = today === 0 ? 7 : today - 1;
+  const newToday = sevenDays[today];
+  const todaysHabits = habits.filter((habit) => habit.day === newToday);
 
   //render habits page when clicked
   const handleClick = () => {
-    navigate('/habits');
+    navigate("/habits");
   };
 
   return (
-    <div 
+    <div
       className="bg-white p-6 rounded-lg shadow cursor-pointer hover:bg-gray-200 transition-colors h-full"
       onClick={handleClick}
     >
