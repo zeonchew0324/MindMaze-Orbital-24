@@ -52,20 +52,18 @@ const HabitsPage: React.FC = () => {
         try {
           const uid = await getUid();
           const reqBody = {
-            name: `${habitName}`,
+            name: habitName,
             day: selectedDays,
             description: "", //Work in progress
             streak: 0,
             completed: false,
+          };
 
           const docId = await axios.put(`/api/habits/${uid}`, reqBody, {
             headers: {
               Authorization: "Bearer " + token,
             },
           });
-
-          selectedDays.map((day) => {
-            addHabit({ id: docId.data.id, name: habitName, day });
 
           selectedDays.forEach((day) => {
             addHabit({
@@ -76,6 +74,7 @@ const HabitsPage: React.FC = () => {
               completed: false,
             });
           });
+
           console.log("Habit added successfully!");
         } catch (error) {
           console.error("Error adding habit:", error);
