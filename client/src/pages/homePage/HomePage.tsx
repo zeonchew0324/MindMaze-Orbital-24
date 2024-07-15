@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { doSignOut } from '../../firebase/auth'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../contexts/AuthProvider'
 import DashboardHabits from '../../components/dashboard/dashboardhabits'
 import DashboardTodos from '../../components/dashboard/DashboardTodos'
 import DashboardReminder from '../../components/dashboard/DashboardReminder'
-
+import Maze from '../../components/maze/Maze'
 
 function HomePage() {
 
@@ -13,7 +12,6 @@ function HomePage() {
   const [isSigningOut, setIsSigningOut] = useState(false)
   const navigate = useNavigate()
 
-  const { token } = useAuth()
   const onSignOut = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!isSigningOut) {
@@ -29,10 +27,10 @@ function HomePage() {
       }
     }
   }
-
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 h-[100vh]">
       <h1 className="text-3xl font-bold mb-8">Welcome Back</h1>
+      <Maze/>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="min-h-[400px]">
           <DashboardHabits />

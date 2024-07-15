@@ -86,7 +86,6 @@ export async function handleUpdateTimetables(req: Request, res: Response) {
     const timetableId = timetableIdArr[Number(index)]
 
     // Get the timwtable document using the provided UID
-    // Expensive and inefficient, implement real CRUD later to optimize
     const ttbRef = doc(db, `users/${id}/timetableCollection`, timetableId);
     const ttbDoc = await getDoc(ttbRef)
     const ttbData = ttbDoc.data();
