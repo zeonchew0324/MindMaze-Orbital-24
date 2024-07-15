@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import WeeklyBar from "../../components/habits/WeeklyBar";
+import NavBar from "../../components/navBar/NavBar";
 import HabitsList from "../../components/habits/HabitsList";
 import { useHabits } from "../../contexts/HabitsProvider";
 import { CiSquarePlus } from "react-icons/ci";
@@ -14,9 +15,7 @@ const HabitsPage: React.FC = () => {
   );
   const [showAddForm, setShowAddForm] = useState(false);
   const { addHabit, habits } = useHabits();
-  const filteredHabits: Habit[] = habits.filter(
-    (habit: Habit) => habit.day === selectedDay
-  );
+  const filteredHabits = habits.filter((habit) => habit.day === selectedDay);
   const [habitName, setHabitName] = useState("");
   const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
@@ -58,12 +57,16 @@ const HabitsPage: React.FC = () => {
             description: "", //Work in progress
             streak: 0,
             completed: false,
-          };
+
           const docId = await axios.put(`/api/habits/${uid}`, reqBody, {
             headers: {
               Authorization: "Bearer " + token,
             },
           });
+
+          selectedDays.map((day) => {
+            addHabit({ id: docId.data.id, name: habitName, day });
+
           selectedDays.forEach((day) => {
             addHabit({
               id: docId.data.id,
