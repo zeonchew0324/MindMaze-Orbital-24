@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { doSignInWithEmailAndPassword } from '../../firebase/auth';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { doSignInWithEmailAndPassword } from "../../firebase/auth";
 
 function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);
 
   const navigate = useNavigate();
@@ -15,10 +15,10 @@ function LoginForm() {
       setIsSigningIn(true);
       try {
         await doSignInWithEmailAndPassword(email, password);
-        navigate('/home');
+        navigate("/home");
       } catch (error) {
         if (error instanceof Error) {
-          alert('Error: Invalid credentials');
+          alert("Error: Invalid credentials");
         }
         setIsSigningIn(false); // Reset signing-in state
       }
@@ -49,18 +49,26 @@ function LoginForm() {
           <button
             type="submit"
             disabled={isSigningIn}
-            className={`bg-blue-500 text-white p-2 rounded-lg ${isSigningIn ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 transition duration-300'}`}
+            className={`bg-blue-500 text-white p-2 rounded-lg ${
+              isSigningIn
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-blue-700 transition duration-300"
+            }`}
           >
-            {isSigningIn ? 'Signing In...' : 'Login'}
+            {isSigningIn ? "Signing In..." : "Login"}
           </button>
         </form>
         <p className="mt-4">
-          Don't have an account?{' '}
-          <Link to="/signup" className="text-blue-500 hover:underline">Sign up</Link>
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-500 hover:underline">
+            Sign up
+          </Link>
         </p>
         <p className="mt-2">
-          Forgot your password?{' '}
-          <Link to="/reset-password" className="text-blue-500 hover:underline">Reset password</Link>
+          Forgot your password?{" "}
+          <Link to="/reset-password" className="text-blue-500 hover:underline">
+            Reset password
+          </Link>
         </p>
       </div>
     </div>
