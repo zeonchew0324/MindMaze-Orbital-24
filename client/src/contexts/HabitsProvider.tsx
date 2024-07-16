@@ -15,6 +15,7 @@ interface Habit {
   day: string;
   streak: number;
   completed: boolean;
+  lastCompleted?: Date;
 }
 
 interface HabitsContextType {

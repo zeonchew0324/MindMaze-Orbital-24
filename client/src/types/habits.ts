@@ -4,6 +4,7 @@ export interface Habit {
   day: string;
   streak: number;
   completed: boolean;
+  lastCompleted?: Date;
 }
 
 export interface HabitData {
@@ -13,4 +14,5 @@ export interface HabitData {
   description?: string;
   streak: number;
   completed: boolean;
+  lastCompleted: Date;
 }

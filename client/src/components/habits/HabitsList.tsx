@@ -21,9 +21,35 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
 
   let today = new Date().getDay();
   today = today == 0 ? 7 : today - 1;
-  console.log(today);
+
+  // Assuming Sunday (day 0) as the start of the week
+  const startOfWeek = 0;
 
   const [selectedDay, setSelectedDay] = useState<string>(sevenDays[today]);
+
+  // Function to check if the habit should be reset
+  const shouldResetHabit = (habit: Habit) => {
+    if (!habit.lastCompleted) return false;
+    const lastCompletedDate = new Date(habit.lastCompleted);
+    const today = new Date();
+    const daysSinceLastCompletion = Math.floor(
+      (today.getTime() - lastCompletedDate.getTime()) / (1000 * 3600 * 24)
+    );
+    return daysSinceLastCompletion >= today.getDay() - startOfWeek;
+  };
+
+  // Reset completed status for habits if the week has passed since last completion
+  useEffect(() => {
+    habits.forEach((habit) => {
+      if (shouldResetHabit(habit)) {
+        const updatedHabit = {
+          ...habit,
+          completed: false,
+        };
+        updateHabits(updatedHabit);
+      }
+    });
+  }, [habits]);
 
   const handleCompleteHabit = (habit: Habit) => {
     const currstate = habit.completed;
@@ -32,6 +58,7 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
       ...habit,
       streak: updatedStreak,
       completed: !currstate,
+      lastCompleted: !currstate ? new Date() : habit.lastCompleted,
     };
     updateHabits(updatedHabit);
     if (!currstate) {
@@ -65,6 +92,7 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
                 <button
                   className="text-white rounded-xl bg-green-500 hover:bg-green-700 p-2 ml-10 flex items-center"
                   onClick={() => handleCompleteHabit(habit)}
+                  disabled={habit.completed}
                 >
                   <FaCheck className="mr-2" />
                   {habit.completed ? "Completed" : "Complete"}
