@@ -5,6 +5,7 @@ import { Habit } from "../../types/habits";
 import { calculateHabitStreak } from "../../utils/habits";
 import { useState } from "react";
 import { sevenDays } from "../../utils/habits";
+import { useEnergy } from "../../contexts/EnergyProvider";
 
 interface HabitsListProps {
   habits: Habit[];
@@ -12,6 +13,8 @@ interface HabitsListProps {
 
 const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
   const { deleteHabit, fetchHabits, updateHabits } = useHabits();
+  const { increaseEnergy } = useEnergy();
+
   useEffect(() => {
     fetchHabits();
   }, []);
@@ -31,6 +34,9 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
       completed: !currstate,
     };
     updateHabits(updatedHabit);
+    if (!currstate) {
+      increaseEnergy(10);
+    }
   };
 
   return (
