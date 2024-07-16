@@ -42,7 +42,7 @@ function HomePage() {
       <div> 
         <DashboardReminder />
       </div>
-      <button onClick={(e) => onSignOut(e)}> Sign out </button>;
+      {/* <button onClick={(e) => onSignOut(e)}> Sign out </button>; */}
     </div>
 
 

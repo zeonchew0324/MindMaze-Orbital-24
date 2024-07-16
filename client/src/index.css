@@ -10,8 +10,8 @@ code {
 
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #aa581d, #d49144);
-  color: #ffffff;
+  background: whitesmoke;
+  color: black;
   display: flex;
   justify-content: center;
   align-items: center;

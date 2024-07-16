@@ -8,12 +8,12 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
-    <>
+    <div className='h-svh w-svw'>
       <Navbar />
-      <main className='w-full h-full'>
+      <main className='w-full h-full mt-[150px]'>
         {children}
       </main>
-    </>
+    </div>
   );
 };
 
