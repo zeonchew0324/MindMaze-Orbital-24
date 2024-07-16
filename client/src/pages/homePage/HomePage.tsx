@@ -31,7 +31,7 @@ function HomePage() {
     <div className="container mx-auto px-4 py-8 h-[100vh]">
       <h1 className="text-3xl font-bold mb-8">Welcome Back</h1>
       <Maze/>
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mt-5">
         <div className="min-h-[400px]">
           <DashboardHabits />
         </div>
@@ -39,8 +39,11 @@ function HomePage() {
           <DashboardTodos />
         </div>
       </div>
-      <div> 
+      <div className='mb-5'> 
         <DashboardReminder />
+      </div>
+      <div className='text-gray-50'>
+        .
       </div>
       {/* <button onClick={(e) => onSignOut(e)}> Sign out </button>; */}
     </div>

@@ -9,7 +9,7 @@ const DashboardReminder: React.FC = () => {
   const remainingTodos = todos.filter(todo => new Date(todo.deadline).setHours(0, 0, 0, 0) === today).length;
 
   return (
-    <div className="bg-gray-100 mt-4 p-6 rounded-lg shadow hover:bg-gray-200 transition-colors h-full">
+    <div className="bg-white mt-4 p-6 rounded-lg shadow hover:bg-gray-200 transition-colors h-full">
       <p className="text-lg text-black font-bold">
         You have {remainingTodos} remaining todo{remainingTodos !== 1 ? 's' : ''} for today.
       </p>
