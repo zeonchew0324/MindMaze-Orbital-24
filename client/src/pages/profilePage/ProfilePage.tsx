@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { getCurrentUser, updateUsername, doPasswordChange, deleteAccount, getMazeCompleted } from '../../firebase/auth';
 import { useAuth } from "../../contexts/AuthProvider";
+import { User, Lock, Trash2 } from "lucide-react";
 
-const ProfilePage: React.FC = () => {
+const ProfilePage = () => {
     const [username, setUsername] = useState('');
     const [newUsername, setNewUsername] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -10,7 +11,8 @@ const ProfilePage: React.FC = () => {
     const [message, setMessage] = useState('');
     const [showUsernameInput, setShowUsernameInput] = useState(false);
     const [showPasswordInput, setShowPasswordInput] = useState(false);
-    const {currentUser} = useAuth()
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const { currentUser } = useAuth();
 
     useEffect(() => {
       const fetchUserData = async () => {
@@ -53,69 +55,87 @@ const ProfilePage: React.FC = () => {
         try {
           await deleteAccount();
           setMessage('Account deleted successfully');
+          setShowDeleteConfirm(false);
         } catch (error) {
           setMessage('Error deleting account');
         }
-      };
-
-    /*no complete logic */
-    const getMazeCompleted = async () => {
-        return 0;
     };
 
     return (
-        <div className="flex justify-center items-center bg-black bg-opacity-60 border-stone-800 border-4 rounded-xl mt-8 ">
-          <div className="py-16 px-20 rounded-lg shadow-lg w-full max-w-lg">
-            <h1 className="text-4xl font-bold mb-4 leading-relaxed">Profile Info</h1>
-            <p className="mb-4 text-xl text-red-500">{message}</p>
-            <div className="border-t border-white my-4"></div>
-            <div className="mb-4">
-              <h2 className="text-2xl mb-2 leading-relaxed">Username: {username}</h2>
-              <div className="mb-4">
-              <div className="border-t border-white my-4"></div>
-              <h2 className="text-2xl leading-relaxed">Mazes Completed: {mazeCompleted}</h2>
-            </div>
-              <div className="border-t border-white my-4"></div>
-              {showUsernameInput ? (
-                <div className="flex items-center space-x-2">
-                  <input
-                    type="text"
-                    placeholder="New Username"
-                    value={newUsername}
-                    onChange={(e) => setNewUsername(e.target.value)}
-                    className="p-2 m-2 rounded-lg border w-full text-black"
-                  />
-                  <button onClick={handleUsernameChange} className="bg-blue-500 text-white p-2 my-1.5 leading-relaxed rounded-lg">Save</button>
-                </div>
-              ) : (
-                <button onClick={() => setShowUsernameInput(true)} className="bg-blue-500 text-white p-2 my-1.5 leading-relaxed rounded-lg">Change Username</button>
-              )}
-            </div>
-            <div className="border-t border-white my-4"></div>
-            <div className="mb-4">
-              {showPasswordInput ? (
-                <div className="flex items-center text-black space-x-2">
-                  <input
-                    type="password"
-                    placeholder="New Password"
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="p-2 m-2 rounded-lg border w-full"
-                  />
-                  <button onClick={handlePasswordChange} className="bg-blue-500 text-white my-1.5 leading-relaxed p-2 rounded-lg">Save</button>
-                </div>
-              ) : (
-                <button onClick={() => setShowPasswordInput(true)} className="bg-blue-500 text-white my-1.5 leading-relaxed p-2 rounded-lg">Change Password</button>
-              )}
-            </div>
+        <div className="flex justify-center items-center mb-0 pt-[50px] bg-gray-100">
+          <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <h1 className="text-2xl font-bold mb-4">Profile Info</h1>
+            {message && <p className="mb-4 text-sm text-red-500">{message}</p>}
             
-            <div className="mb-4">
-              <div className="border-t border-white my-4"></div>
-              <button onClick={handleAccountDeletion} className="bg-red-500 mt-2 text-xl leading-relaxed text-white p-2 rounded-lg">Delete Account</button>
+            <div className="space-y-4">
+              <div>
+                <h2 className="text-lg font-semibold">Username: {username}</h2>
+                {showUsernameInput ? (
+                  <div className="flex items-center space-x-2 mt-2">
+                    <input
+                      type="text"
+                      placeholder="New Username"
+                      value={newUsername}
+                      onChange={(e) => setNewUsername(e.target.value)}
+                      className="border p-2 rounded"
+                    />
+                    <button onClick={handleUsernameChange} className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                  </div>
+                ) : (
+                  <button onClick={() => setShowUsernameInput(true)} className="flex items-center mt-2 text-blue-500">
+                    <User className="mr-2 h-4 w-4" />
+                    Change Username
+                  </button>
+                )}
+              </div>
+
+              <div>
+                <h2 className="text-lg font-semibold">Mazes Completed: {mazeCompleted}</h2>
+              </div>
+
+              <div>
+                {showPasswordInput ? (
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="password"
+                      placeholder="New Password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="border p-2 rounded"
+                    />
+                    <button onClick={handlePasswordChange} className="bg-blue-500 text-white px-4 py-2 rounded">Save</button>
+                  </div>
+                ) : (
+                  <button onClick={() => setShowPasswordInput(true)} className="flex items-center text-blue-500">
+                    <Lock className="mr-2 h-4 w-4" />
+                    Change Password
+                  </button>
+                )}
+              </div>
+
+              <div>
+                <button onClick={() => setShowDeleteConfirm(true)} className="flex items-center text-red-500">
+                  <Trash2 className="mr-2 h-4 w-4" />
+                  Delete Account
+                </button>
+              </div>
+
+              {showDeleteConfirm && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                  <div className="bg-white p-6 rounded-lg">
+                    <h2 className="text-xl font-bold mb-4">Are you sure you want to delete your account?</h2>
+                    <p className="mb-4">This action cannot be undone. All your data will be permanently deleted.</p>
+                    <div className="flex justify-end space-x-2">
+                      <button onClick={() => setShowDeleteConfirm(false)} className="px-4 py-2 border rounded">Cancel</button>
+                      <button onClick={handleAccountDeletion} className="px-4 py-2 bg-red-500 text-white rounded">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
-      );
+    );
 }
 
 export default ProfilePage;

@@ -13,7 +13,7 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className="bg-white shadow-md py-4 px-6 fixed top-0 left-0 right-0 z-50 pl-[80px] pr-[80px]">
+    <nav className="bg-white shadow-md py-4 px-6 fixed top-0 left-0 right-0 z-50 pl-[80px] pr-[80px] bg-opacity-50 backdrop-filter backdrop-blur-lg">
       <ul className="flex justify-between items-center">
         {navItems.map(({ to, icon: Icon, label }) => (
           <li key={to}>

@@ -93,7 +93,7 @@ const TodoPage: React.FC = () => {
   });
 
   return (
-    <div className="p-4 bg-gray-300 rounded-md max-h-[80vh] overflow-y-auto">
+    <div className="p-4 bg-gray-300 rounded-md">
       <h1 className="text-3xl text-black font-semibold mb-6">Todo List</h1>
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
@@ -150,7 +150,7 @@ const TodoPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="overflow-y-auto max-h-full">
+        <div>
           {filteredTodos.length === 0 ? (
             <p className="text-gray-700 text-2xl">No todos yet. Add a new todo!</p>
           ) : (

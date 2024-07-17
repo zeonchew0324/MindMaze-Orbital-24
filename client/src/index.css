@@ -10,7 +10,7 @@ code {
 
 body {
   font-family: Arial, sans-serif;
-  background: whitesmoke;
+  background: linear-gradient(to right, #bfdbfe, #f97316);
   color: black;
   display: flex;
   justify-content: center;

@@ -85,7 +85,7 @@ const HabitsPage: React.FC = () => {
   };
 
   return (
-    <div className="pt-[100px] h-screen">
+    <div className="pt-[30px] h-screen">
       <div className="flex flex-col items-center justify-center w-[98vw]">
         <WeeklyBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
         <HabitsList habits={filteredHabits} />

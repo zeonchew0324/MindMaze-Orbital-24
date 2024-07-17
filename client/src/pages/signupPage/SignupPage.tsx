@@ -5,7 +5,6 @@ import Title from '../../components/title/Title'
 function SignupPage() {
   return (
     <>
-      <Title />
       <SignupForm />
     </>
   )
