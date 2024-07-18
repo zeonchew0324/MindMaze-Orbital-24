@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      height: {
+        'screen-minus-150': 'calc(100vh + 150px)',
+      },
       gridTemplateColumns: {
         // Add custom grid columns configuration
         '13': 'repeat(13, minmax(0, 1fr))',

@@ -20,7 +20,7 @@ function TimetableCell(props: Prop) {
   return (
     <>
       <button
-        className={`col-start-${start + 1} col-span-${span} rounded-md border-blue-600 border text-[10px] m-0 p-2 bg-blue-500 text-white min-h-11 h-full overflow-hidden whitespace-nowrap text-ellipsis`}
+        className={`col-start-${start + 1} col-span-${span} rounded-md text-[10px] ml-[2px] my-[1px] p-2 bg-orange-500 text-white min-h-11 whitespace-nowrap text-ellipsis`}
         style={{ gridColumn: `${start + 1} / span ${span}` }}
         onClick={handleEditClick}
       >

@@ -10,8 +10,8 @@ function TimetableDay(props: Props) {
   const { day, key } = props
   
   return (
-    <li className="flex border-b border-blue-950 last:border-0" key={key}>
-      <div className="bg-amber-600 items-center pl-2 pt-3 pb-3 font-medium border-r border-blue-950 w-[50px]">
+    <li className="flex border-b border-gray-300 last:border-0" key={key}>
+      <div className="flex bg-orange-500 items-center pl-2.5 pt-3 pb-3 text-sm w-[50px] min-h-[50px] text-white">
         {day} 
       </div>
       <TimetableRow day={day}/>

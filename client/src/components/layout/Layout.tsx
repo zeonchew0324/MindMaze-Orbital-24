@@ -10,7 +10,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className='w-[99vw]'>
       <Navbar />
-      <main className='w-full h-full mt-[150px]'>
+      <main className='w-full h-full mt-[150px] mb-0'>
         {children}
       </main>
     </div>
