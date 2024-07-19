@@ -52,6 +52,7 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
           Authorization: "Bearer " + token,
         },
       });
+      console.log("Response data:", response.data);
       const habits = unpackHabitData(response.data);
       setHabits(habits);
       console.log("Successfully fetched habits");
