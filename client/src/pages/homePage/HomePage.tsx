@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="h-svh bg-gradient-to-r from-blue-200 to-orange-500">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8"> 
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold text-gray-800">Welcome to MindMaze</h1>

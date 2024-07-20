@@ -62,7 +62,7 @@ const ProfilePage = () => {
     };
 
     return (
-        <div className="flex justify-center items-center mb-0 pt-[50px] bg-gray-100">
+        <div className="flex justify-center items-center">
           <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
             <h1 className="text-2xl font-bold mb-4">Profile Info</h1>
             {message && <p className="mb-4 text-sm text-red-500">{message}</p>}
