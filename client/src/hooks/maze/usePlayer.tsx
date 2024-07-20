@@ -1,5 +1,6 @@
 import { useEffect, useCallback, useState } from 'react';
 import { CellType } from '../../components/maze/Maze';
+import { useEnergy } from '../../contexts/EnergyProvider';
 
 export const usePlayer = (
   maze: CellType[][],
@@ -8,6 +9,7 @@ export const usePlayer = (
   generateMaze: () => void
 ) => {
   const [showPopup, setShowPopup] = useState(false);
+  const { completeMaze } = useEnergy()
 
   const movePlayer = useCallback(
     (dx: number, dy: number) => {
@@ -20,6 +22,7 @@ export const usePlayer = (
 
         if (newX === 29 && newY === 29) {
           setShowPopup(true);
+          completeMaze()
           return { x: 1, y: 1 }; // Reset position or handle accordingly
         }
 

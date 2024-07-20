@@ -14,7 +14,7 @@ export const useMaze = () => {
   const { currentUser, token } = useAuth();
   const latestPlayerPosition = useRef(playerPosition);
   const saveTimeout = useRef<NodeJS.Timeout | null>(null);
-  const { fetchEnergy } = useEnergy()
+  const { fetchInfo } = useEnergy()
 
   useEffect(() => {
     loadMazeState();
@@ -36,7 +36,7 @@ export const useMaze = () => {
   }, [playerPosition]);
 
   useEffect(() => {
-    fetchEnergy()
+    fetchInfo()
     return () => {
       if (saveTimeout.current) {
         clearTimeout(saveTimeout.current);
