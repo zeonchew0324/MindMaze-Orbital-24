@@ -6,7 +6,9 @@ interface EnergyContextType {
   energy: number;
   increaseEnergy: (num: number) => void;
   decreaseEnergy: (num: number) => void;
-  fetchEnergy: () => void
+  fetchInfo: () => void;
+  completeMaze: () => void;
+  completedNum: number;
 }
 
 const EnergyContext = createContext<EnergyContextType | undefined>(undefined);
@@ -22,9 +24,10 @@ export const useEnergy = () => {
 export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentUser, token } = useAuth()
   const [energy, setEnergy] = useState<number>(99999999);
+  const [completedNum, setCompletedNum] = useState(0)
 
   const getUid = async () => currentUser?.uid
-  const fetchEnergy = async () => {
+  const fetchInfo = async () => {
     try {
       const uid = await getUid()
       console.log(uid)
@@ -34,7 +37,8 @@ export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         }
       })
       setEnergy(response.data.energy)
-      console.log('Successfully fetched habits')
+      setCompletedNum(response.data.completedNum)
+      console.log('Successfully fetched energy info')
     } catch (error) {
       console.error('Error fetching energy:', error)
     }
@@ -46,20 +50,20 @@ export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       try {
         const uid = await getUid()
         console.log(uid)
-        const reqBody = { value: energy }
+        const reqBody = { value: energy, completedNum: completedNum }
         await axios.put(`/api/energy/${uid}`, reqBody, {
           headers: {
             Authorization: "Bearer " + token
           }
         })
-        console.log('Successfully updated energy')
+        console.log('Successfully updated energy info')
       } catch (error) {
-        console.error('Error fetching energy:', error)
+        console.error('Error updating energy and info', error)
       }
     };
   
     updateEnergy(token);
-  }, [energy])
+  }, [energy, completedNum])
 
   const increaseEnergy = (num: number) => {
     setEnergy(x => x + num);
@@ -69,8 +73,12 @@ export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     setEnergy(x => x - num);
   };
 
+  const completeMaze = () => {
+    setCompletedNum(x => x + 1)
+  }
+
   return (
-    <EnergyContext.Provider value={{energy, increaseEnergy, decreaseEnergy, fetchEnergy}}>
+    <EnergyContext.Provider value={{energy, increaseEnergy, decreaseEnergy, fetchInfo, completeMaze, completedNum}}>
       {children}
     </EnergyContext.Provider>
   );

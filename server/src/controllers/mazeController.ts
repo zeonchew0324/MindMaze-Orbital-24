@@ -42,3 +42,33 @@ export async function handleUpdateMaze(req: Request, res: Response) {
     res.status(500).json({ error: error.message });
   }
 }
+
+export async function handleCompleteMaze(req: Request, res: Response) {
+  try {
+    const db = firestoreDb
+    const { id } = req.params;
+
+    const userRef = doc(db, 'users', id);
+    const userDoc = await getDoc(userRef)
+    const userData = userDoc.data();
+
+    if (!userData) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const completedNumber = userData.mazeCompleted
+
+    if (!completedNumber) {
+      await updateDoc(userRef, {
+        mazeCompleted: 1
+      })
+    }  else {
+      await updateDoc(userRef, {
+        mazeCompleted: completedNumber + 1
+      })
+    }
+
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+}
