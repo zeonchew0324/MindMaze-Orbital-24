@@ -16,11 +16,11 @@ export async function handleGetEnergy(req: Request, res: Response) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    if (!userData.energy) {
-      return res.json({ energy: 0 }); // Default value is 0
-    }
+    let replyEnergy = userData.energy || 0
+    let replyCompletedNum = userData.completedNum || 0
 
-    return res.json({ energy: userData.energy })
+    return res.json({ energy: replyEnergy, completedNum: replyCompletedNum })
+
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -30,11 +30,12 @@ export async function handleUpdateEnergy(req: Request, res: Response) {
   try {
     const db = firestoreDb
     const { id } = req.params;
-    const { value } = req.body
+    const { value, completedNum } = req.body
 
     const userRef = doc(db, 'users', id);
     await updateDoc(userRef, {
-      energy: value
+      energy: value,
+      completedNum: completedNum
     });
 
     res.status(200).send(`User ${id} updated successfully.`);

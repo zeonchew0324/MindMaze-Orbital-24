@@ -9,6 +9,7 @@ describe("calculateHabitStreak", () => {
       name: "Test Habit",
       day: new Date().toISOString(), // Setting the day to today
       streak: 5,
+      completed: false,
     };
     const newStreak = calculateHabitStreak(habit);
     expect(newStreak).toBe(6);
@@ -20,6 +21,7 @@ describe("calculateHabitStreak", () => {
       name: "Another Habit",
       day: new Date(Date.now() - 86400000).toISOString(), // Setting the day to yesterday
       streak: 3,
+      completed: false,
     };
     const newStreak = calculateHabitStreak(habit);
     expect(newStreak).toBe(0);
@@ -31,6 +33,7 @@ describe("calculateHabitStreak", () => {
       name: "New Habit",
       day: new Date().toISOString(), // Setting the day to today
       streak: 0,
+      completed: false,
     };
     const newStreak = calculateHabitStreak(habit);
     expect(newStreak).toBe(1);
@@ -42,6 +45,7 @@ describe("calculateHabitStreak", () => {
       name: "Another New Habit",
       day: new Date(Date.now() - 86400000).toISOString(), // Setting the day to yesterday
       streak: 0,
+      completed: false,
     };
     const newStreak = calculateHabitStreak(habit);
     expect(newStreak).toBe(0);

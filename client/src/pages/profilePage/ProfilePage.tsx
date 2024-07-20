@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { getCurrentUser, updateUsername, doPasswordChange, deleteAccount, getMazeCompleted } from '../../firebase/auth';
+import {
+  getCurrentUser,
+  updateUsername,
+  doPasswordChange,
+  deleteAccount,
+  getMazeCompleted,
+} from "../../firebase/auth";
 import { useAuth } from "../../contexts/AuthProvider";
 import { User, Lock, Trash2 } from "lucide-react";
 
@@ -14,42 +20,16 @@ const ProfilePage = () => {
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const { currentUser } = useAuth();
 
-    useEffect(() => {
-      const fetchUserData = async () => {
-        const user = getCurrentUser();
-        if (user) {
-          setUsername(user.displayName || '');
-          const completedMazes = await getMazeCompleted();
-          setMazeCompleted(completedMazes);
-        }
-      };
-  
-      fetchUserData();
-    }, []);
-
-    const handleUsernameChange = async () => {
-        try {
-            await updateUsername(currentUser, newUsername);
-            setUsername(newUsername);
-            setNewUsername('');
-            setShowUsernameInput(false);
-            setMessage('Username updated successfully');
-        } catch (error) {
-            setMessage('Error updating username');
-        }
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const user = getCurrentUser();
+      if (user) {
+        setUsername(user.displayName || "");
+      }
     };
 
-    const handlePasswordChange = async () => {
-        try {
-            await doPasswordChange(newPassword);
-            setNewPassword('');
-            setShowPasswordInput(false);
-            setMessage('Password changed successfully');
-        } catch (error) {
-            console.error(error);
-            setMessage('Error changing password');
-        }
-    };
+    fetchUserData();
+  }, []);
 
     const handleAccountDeletion = async () => {
         try {
@@ -137,5 +117,6 @@ const ProfilePage = () => {
         </div>
     );
 }
+
 
 export default ProfilePage;

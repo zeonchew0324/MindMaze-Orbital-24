@@ -3,12 +3,14 @@ import { useEnergy } from '../../contexts/EnergyProvider';
 import MazePopup from './MazePopup';
 import { useMaze } from '../../hooks/maze/useMaze';
 import { usePlayer } from '../../hooks/maze/usePlayer';
+import CompletionPopup from './CompletionPopup';
 
 export type CellType = 'wall' | 'path' | 'exit' | 'fog';
 
 const Maze: React.FC = () => {
   const { maze, visibleMaze, playerPosition, fogGroups, setPlayerPosition, generateMaze, setVisibleMaze } = useMaze();
-  const { movePlayer } = usePlayer(maze, visibleMaze, setPlayerPosition, generateMaze);
+  const { showPopup, setShowPopup } = usePlayer(maze, visibleMaze, setPlayerPosition, generateMaze);
+
   const { energy, decreaseEnergy } = useEnergy();
   const [hoveredGroup, setHoveredGroup] = useState<number | null>(null);
   const [popupData, setPopupData] = useState<{ isOpen: boolean; groupSize: number; groupId: number }>({
@@ -98,6 +100,7 @@ const Maze: React.FC = () => {
         onReveal={handleReveal}
         onCancel={handleCancel}
       />
+    {showPopup && <CompletionPopup onClose={() => setShowPopup(false)} onGenerateMaze={generateMaze} />}
     </div>
   );
 };

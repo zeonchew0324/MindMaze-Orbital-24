@@ -10,22 +10,25 @@ export const sevenDays = [
   "Sunday",
 ];
 
-export function unpackHabitData(res: HabitData[]) {
-  // Add description when adding the decription feature
+export function unpackHabitData(res: HabitData[]): Habit[] {
   let result: Habit[] = [];
 
   const helper = (data: HabitData) => {
-    const array = data.day.map((day) => ({
-      id: `${data.id}`,
-      name: `${data.name}`,
-      day: `${day}`,
+    // Ensure day is an array
+    const days = Array.isArray(data.day) ? data.day : [data.day];
+
+    const array = days.map((day) => ({
+      id: data.id,
+      name: data.name,
+      day: day,
       streak: data.streak || 0,
-      completed: false,
+      completed: data.completed || false,
     }));
+
     result = result.concat(array);
   };
 
-  res.map((habit) => helper(habit));
+  res.forEach((habit) => helper(habit));
 
   return result;
 }
