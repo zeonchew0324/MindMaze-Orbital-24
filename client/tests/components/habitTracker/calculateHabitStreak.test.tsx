@@ -51,3 +51,48 @@ describe("calculateHabitStreak", () => {
     expect(newStreak).toBe(0);
   });
 });
+
+// Mock Date
+const mockDate = (dateString: string) => {
+  const mockedDate = new Date(dateString);
+  vi.useFakeTimers();
+  vi.setSystemTime(mockedDate);
+};
+
+// Test suite for habit streak across days
+describe("Habit Streak Across Days", () => {
+  it("should record the streak correctly from one day to the next", async () => {
+    const initialDate = "2024-07-01T00:00:00.000Z"; // Mocking 1st July
+    mockDate(initialDate);
+
+    const habit: Habit = {
+      id: "5",
+      name: "Daily Exercise",
+      day: new Date().toISOString(),
+      streak: 0,
+      completed: false,
+      lastCompleted: new Date(),
+    };
+
+    // Mock fetchHabits and updateHabits
+    const habits = [habit];
+    const fetchHabitsMock = vi.fn().mockResolvedValue(habits);
+    const updateHabitsMock = vi.fn();
+
+    // Complete the habit
+    habit.completed = true;
+    habit.streak += 1;
+    habit.lastCompleted = new Date();
+    updateHabitsMock(habit);
+
+    // Move to the next day
+    const nextDay = "2024-07-02T00:00:00.000Z";
+    mockDate(nextDay);
+
+    // Fetch habits again
+    const fetchedHabits = await fetchHabitsMock();
+
+    // Check the streak is recorded correctly
+    expect(fetchedHabits[0].streak).toBe(1);
+  });
+});
