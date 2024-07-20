@@ -30,7 +30,30 @@ const ProfilePage = () => {
 
     fetchUserData();
   }, []);
+  
+  const handleUsernameChange = async () => {
+    try {
+        await updateUsername(currentUser, newUsername);
+        setUsername(newUsername);
+        setNewUsername('');
+        setShowUsernameInput(false);
+        setMessage('Username updated successfully');
+    } catch (error) {
+        setMessage('Error updating username');
+    }
+};
 
+const handlePasswordChange = async () => {
+    try {
+        await doPasswordChange(newPassword);
+        setNewPassword('');
+        setShowPasswordInput(false);
+        setMessage('Password changed successfully');
+    } catch (error) {
+        console.error(error);
+        setMessage('Error changing password');
+    }
+};
     const handleAccountDeletion = async () => {
         try {
           await deleteAccount();
