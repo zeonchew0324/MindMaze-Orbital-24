@@ -20,7 +20,7 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
   }, []);
 
   let today = new Date().getDay();
-  today = today == 0 ? 7 : today - 1;
+  today = today == 0 ? 6 : today - 1;
 
   // Assuming Sunday (day 0) as the start of the week
   const startOfWeek = 0;
