@@ -23,8 +23,8 @@ export const useEnergy = () => {
 
 export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentUser, token } = useAuth()
-  const [energy, setEnergy] = useState<number>(0);
-  const [completedNum, setCompletedNum] = useState(0)
+  const [energy, setEnergy] = useState<number>(-1);
+  const [completedNum, setCompletedNum] = useState(-1)
 
   const getUid = async () => currentUser?.uid
   const fetchInfo = async () => {
@@ -46,6 +46,7 @@ export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   useEffect(() => {
     const getUid = async () => currentUser?.uid
+
     const updateEnergy = async (token: string) => {
       try {
         const uid = await getUid()
@@ -61,8 +62,9 @@ export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         console.error('Error updating energy and info', error)
       }
     };
-  
-    updateEnergy(token);
+    if (completedNum >= 0 && energy >= 0) {
+      updateEnergy(token);
+    }
   }, [energy, completedNum])
 
   const increaseEnergy = (num: number) => {
