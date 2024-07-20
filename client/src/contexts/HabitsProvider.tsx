@@ -15,6 +15,7 @@ interface Habit {
   day: string;
   streak: number;
   completed: boolean;
+  lastCompleted?: Date;
 }
 
 interface HabitsContextType {
@@ -51,6 +52,7 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
           Authorization: "Bearer " + token,
         },
       });
+      console.log("Response data:", response.data);
       const habits = unpackHabitData(response.data);
       setHabits(habits);
       console.log("Successfully fetched habits");
@@ -78,12 +80,31 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const updateHabits = (updatedHabit: Habit) => {
-    setHabits((prevHabits) =>
-      prevHabits.map((habit) =>
-        habit.id === updatedHabit.id ? updatedHabit : habit
-      )
-    );
+  // const updateHabits = (updatedHabit: Habit) => {
+  //   setHabits((prevHabits) =>
+  //     prevHabits.map((habit) =>
+  //       habit.id === updatedHabit.id ? updatedHabit : habit
+  //     )
+  //   );
+  //};
+
+  const updateHabits = async (updatedHabit: Habit) => {
+    const uid = currentUser?.uid;
+    try {
+      await axios.put(`/api/habits/${uid}/${updatedHabit.id}`, updatedHabit, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log("Habit updated successfully!");
+      setHabits((prevHabits) =>
+        prevHabits.map((habit) =>
+          habit.id === updatedHabit.id ? updatedHabit : habit
+        )
+      );
+    } catch (error) {
+      console.error("Error updating habit:", error);
+    }
   };
 
   return (
