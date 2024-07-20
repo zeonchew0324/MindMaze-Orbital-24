@@ -24,8 +24,7 @@ function TimetableRow(props: Props) {
             {Array.from({ length: 24 }).map((_, i) => (
               <div
                 key={i}
-                className="col-span-1 border-r last:border-0 border-blue-950"
-                style={{ backgroundColor: `${i % 2 === 0 ? 'moccasin' : 'papayawhip'}` }}
+                className="col-span-1 border-r last:border-0 border-gray-300 bg-white"
               > 
               </div>
             ))}

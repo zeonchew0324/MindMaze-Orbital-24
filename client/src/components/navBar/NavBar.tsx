@@ -1,71 +1,37 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { Home, Calendar, CheckSquare, User, List } from 'lucide-react';
 import './NavBar.css';
 
-const NavBar: React.FC = () => {
+const NavBar = () => {
+  const navItems = [
+    { to: "/home", icon: Home, label: "Home" },
+    { to: "/habits", icon: List, label: "Habits" },
+    { to: "/timetable", icon: Calendar, label: "Timetable" },
+    { to: "/todo", icon: CheckSquare, label: "To-Do" },
+    { to: "/profile", icon: User, label: "Profile" },
+  ];
+
   return (
-    <nav className="bg-black bg-opacity-40 py-4 shadow-lg flex justify-center items-center fixed w-full top-0 left-0 z-50 transition duration-300 ease-in-out">
-      <ul className="flex list-none m-0 p-0 w-full">
-        <li className="flex-1 text-center border-r-4 border-stone-800">
-          <NavLink 
-            to="/home" 
-            className={({ isActive }) => 
-              `text-black no-underline py-2.5 text-xl rounded-lg transition duration-300 ease-in-out font-extrabold relative block ${
-                isActive ? 'active' : ''
-              } hover:bg-black hover:bg-opacity-20 hover:text-white`
-            }
-          >
-            Home
-          </NavLink>
-        </li>
-        <li className="flex-1 text-center border-r-4 border-stone-800">
-          <NavLink 
-            to="/habits" 
-            className={({ isActive }) => 
-              `text-black no-underline py-2.5 text-xl rounded-lg transition duration-300 ease-in-out font-extrabold relative block ${
-                isActive ? 'active' : ''
-              } hover:bg-black hover:bg-opacity-20 hover:text-white`
-            }
-          >
-            Habits
-          </NavLink>
-        </li>
-        <li className="flex-1 text-center border-r-4 border-stone-800">
-          <NavLink 
-            to="/timetable" 
-            className={({ isActive }) => 
-              `text-black no-underline py-2.5 text-xl rounded-lg transition duration-300 ease-in-out font-extrabold relative block ${
-                isActive ? 'active' : ''
-              } hover:bg-black hover:bg-opacity-20 hover:text-white`
-            }
-          >
-            Timetable
-          </NavLink>
-        </li>
-        <li className="flex-1 text-center border-r-4 border-stone-800">
-          <NavLink 
-            to="/todo" 
-            className={({ isActive }) => 
-              `text-black no-underline py-2.5 text-xl rounded-lg transition duration-300 ease-in-out font-extrabold relative block ${
-                isActive ? 'active' : ''
-              } hover:bg-black hover:bg-opacity-20 hover:text-white`
-            }
-          >
-            To-Do
-          </NavLink>
-        </li>
-        <li className="flex-1 text-center ">
-          <NavLink 
-            to="/profile" 
-            className={({ isActive }) => 
-              `text-black no-underline py-2.5 text-xl rounded-lg transition duration-300 ease-in-out font-extrabold relative block ${
-                isActive ? 'active' : ''
-              } hover:bg-black hover:bg-opacity-20 hover:text-white`
-            }
-          >
-            Profile
-          </NavLink>
-        </li>
+    <nav className="bg-white shadow-md py-4 px-6 fixed top-0 left-0 right-0 z-50 pl-[80px] pr-[80px] bg-opacity-65 backdrop-filter backdrop-blur-lg">
+      <ul className="flex justify-between items-center">
+        {navItems.map(({ to, icon: Icon, label }) => (
+          <li key={to}>
+            <NavLink
+              to={to}
+              className={({ isActive }) =>
+                `flex flex-col items-center text-sm font-medium transition-colors duration-300 ${
+                  isActive
+                    ? 'text-orange-600'
+                    : 'text-gray-500 hover:text-orange-600'
+                }`
+              }
+            >
+              <Icon className="w-6 h-6 mb-1" />
+              <span>{label}</span>
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </nav>
   );

@@ -18,10 +18,12 @@ function Timetable() {
 
   return (
     <>
-      <div className='max-w-[80vw] overflow-auto border border-blue-950 rounded-md'>
+      <div className='max-w-[80vw] overflow-auto border p-1 bg-white rounded-md shadow-md'>
         <div className="min-w-[1200px] w-full">
-          <ol className="shadow-xl w-full overflow-hidden">
+          <ol className="w-full  bg-white rounded-md overflow-hidden">
             <TimetableHeader />
+          </ol>
+          <ol className="w-full  bg-white rounded-md overflow-hidden">
             {days.map((day, index) => (
               <TimetableDay day={day} key={index} />
             ))}
@@ -31,7 +33,7 @@ function Timetable() {
       <div className="flex justify-end mt-2 mb-0">
         <button 
           onClick={() => openPopup(undefined)} 
-          className="relative mb-5 p-2 border border-1 bg-blue-500  text-gray-100 hover:text-gray-300">
+          className="relative rounded-md my-3 p-2.5 bg-orange-500  text-gray-100 hover:text-gray-300 hover:shadow-inner">
           Add Activity
         </button>
       </div>

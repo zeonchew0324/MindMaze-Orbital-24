@@ -85,7 +85,7 @@ const HabitsPage: React.FC = () => {
   };
 
   return (
-    <div className="pt-[100px] h-screen">
+    <div className="pt-[30px] h-screen">
       <div className="flex flex-col items-center justify-center w-[98vw]">
         <WeeklyBar selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
         <HabitsList habits={filteredHabits} />
@@ -93,7 +93,7 @@ const HabitsPage: React.FC = () => {
           {!showAddForm && (
             <button
               onClick={handleAddHabit}
-              className="text-white bg-lime-500 rounded-xl hover:bg-green-700 p-2 mt-2 ml-1 mr-2 mb-5 flex items-center"
+              className="text-white bg-orange-600 rounded-xl hover:bg-orange-700 p-2 mt-2 ml-1 mr-2 mb-5 flex items-center"
             >
               <CiSquarePlus size={20} className="mr-2" />
               Add new habit

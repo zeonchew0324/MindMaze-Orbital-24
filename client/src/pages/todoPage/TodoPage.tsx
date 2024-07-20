@@ -3,6 +3,7 @@ import { useTodos } from '../../contexts/TodoProvider';
 import { FaTrash, FaPencil } from 'react-icons/fa6';
 import axios from 'axios';
 import { useAuth } from '../../contexts/AuthProvider';
+import TodoBlock from '../../components/todo/TodoBlock';
 
 const TodoPage: React.FC = () => {
   const { addTodo, deleteTodo, updateTodo, fetchTodos ,todos } = useTodos();
@@ -93,8 +94,8 @@ const TodoPage: React.FC = () => {
   });
 
   return (
-    <div className="p-4 bg-gray-300 rounded-md max-h-[80vh] overflow-y-auto">
-      <h1 className="text-3xl text-black font-semibold mb-6">Todo List</h1>
+    <div className="px-[20vw] mt-[120px]">
+      <h1 className="text-4xl text-white font-semibold mb-6">Todo List</h1>
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
           <label htmlFor="todoName">Todo Name</label>
@@ -150,35 +151,18 @@ const TodoPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="overflow-y-auto max-h-full">
+        <div>
           {filteredTodos.length === 0 ? (
             <p className="text-gray-700 text-2xl">No todos yet. Add a new todo!</p>
           ) : (
             <ul className="space-y-4">
-              {filteredTodos.map((todo) => (
-                <li key={todo.id} className="flex items-center justify-between border-b py-2">
-                  <div>
-                    <h3 className="font-bold text-xl text-amber-950 pb-1">{todo.name}</h3>
-                    <p className="text-lg text-gray-600">{todo.description}</p>
-                    <p className="text-lg text-gray-600">Deadline: {todo.deadline ? new Date(todo.deadline).toLocaleDateString() : 'No deadline'}</p>
-                    <p className="text-lg text-gray-600">Priority: {todo.priority}</p>
-                  </div>
-                  <button 
-                    aria-label='Pencil-Icon'
-                    onClick={() => handleEditTodo(todo)}
-                    className="pl-8 text-green-500 hover:text-green-700"
-                  >
-                    <FaPencil />
-                  </button>
-                  <button 
-                    aria-label='Trash-Icon'
-                    onClick={() => handleDeleteTodo(todo.id)}
-                    className="pl-8 text-red-500 hover:text-red-700"
-                  >
-                    <FaTrash />
-                  </button>
-                </li>
-              ))}
+              {filteredTodos.map((todo) => 
+                <TodoBlock
+                todo={todo} 
+                handleEditTodo={handleEditTodo} 
+                handleDeleteTodo={handleDeleteTodo}
+                />
+              )}
             </ul>
           )}
           <div className='pt-4'>
@@ -191,7 +175,7 @@ const TodoPage: React.FC = () => {
                 setTodoPriority('Low');
                 setShowAddForm(true);
               }}
-              className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md mb-4"
+              className="bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 rounded-md mb-4"
             >
               Add Todo
             </button>

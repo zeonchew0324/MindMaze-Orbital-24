@@ -23,7 +23,7 @@ export const useEnergy = () => {
 
 export const EnergyProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentUser, token } = useAuth()
-  const [energy, setEnergy] = useState<number>(99999999);
+  const [energy, setEnergy] = useState<number>(0);
   const [completedNum, setCompletedNum] = useState(0)
 
   const getUid = async () => currentUser?.uid
