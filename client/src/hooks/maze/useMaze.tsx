@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { convertMazeToBackendFormat, convertMazeToFrontendFormat, generateUnevenGrid } from '../../utils/maze';
 import { useAuth } from '../../contexts/AuthProvider';
