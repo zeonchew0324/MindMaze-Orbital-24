@@ -94,7 +94,7 @@ const TodoPage: React.FC = () => {
   });
 
   return (
-    <div className="px-[20vw] mt-[120px]">
+    <div className="px-[20vw] h-full mt-[220px]">
       <h1 className="text-4xl text-white font-semibold mb-6">Todo List</h1>
       {showAddForm ? (
         <div className="flex flex-col space-y-6 text-black">
