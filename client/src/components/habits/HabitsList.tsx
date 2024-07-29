@@ -53,12 +53,12 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
 
   const handleCompleteHabit = (habit: Habit) => {
     const currstate = habit.completed;
-    const updatedStreak = currstate ? habit.streak - 1 : habit.streak + 1;
+    const updatedStreak = habit.streak + 1;
     const updatedHabit = {
       ...habit,
       streak: updatedStreak,
-      completed: !currstate,
-      lastCompleted: !currstate ? new Date() : habit.lastCompleted,
+      completed: true,
+      lastCompleted: new Date(),
     };
     updateHabits(updatedHabit);
     if (!currstate) {
