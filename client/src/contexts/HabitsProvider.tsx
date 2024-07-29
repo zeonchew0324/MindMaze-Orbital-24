@@ -80,14 +80,6 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  // const updateHabits = (updatedHabit: Habit) => {
-  //   setHabits((prevHabits) =>
-  //     prevHabits.map((habit) =>
-  //       habit.id === updatedHabit.id ? updatedHabit : habit
-  //     )
-  //   );
-  //};
-
   const updateHabits = async (updatedHabit: Habit) => {
     const uid = currentUser?.uid;
     try {
