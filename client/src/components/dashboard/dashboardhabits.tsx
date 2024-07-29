@@ -8,7 +8,7 @@ const DashboardHabits: React.FC = () => {
   const { habits } = useHabits();
   //get todays habits
   let today = new Date().getDay() - 1;
-  today = today === -1 ? 6 : today - 1;
+  today = today === -1 ? 6 : today;
   const newToday = sevenDays[today];
   const todaysHabits = habits.filter((habit) => habit.day === newToday);
 
