@@ -7,6 +7,8 @@ import { useState } from "react";
 import { sevenDays } from "../../utils/habits";
 import { useEnergy } from "../../contexts/EnergyProvider";
 import HabitBlock from "./HabitBlock";
+import axios from "axios";
+import { useAuth } from "../../contexts/AuthProvider";
 
 interface HabitsListProps {
   habits: Habit[];
@@ -15,6 +17,8 @@ interface HabitsListProps {
 const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
   const { deleteHabit, fetchHabits, completeHabit } = useHabits();
   const { increaseEnergy } = useEnergy();
+
+  const { token } = useAuth()
 
   useEffect(() => {
     fetchHabits();
@@ -56,7 +60,8 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
     const currstate = habit.completed;
     const updatedHabit = {
       ...habit,
-      completed: true
+      completed: true,
+      streak: habit.streak + 1
     }
     completeHabit(updatedHabit);
     if (!currstate) {

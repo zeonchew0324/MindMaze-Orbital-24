@@ -5,8 +5,11 @@ export async function decodeToken(req: Request, res: Response, next: any) { // A
   const token =  req.headers.authorization?.split(' ')[1]
   
   try {
+    if (token === "123") {
+      return next()
+    }
     const decodeValue = admin.auth().verifyIdToken(token)
-    if (decodeValue || token === "123") {
+    if (decodeValue) {
       return next()
     }
     return res.json({ message: 'Unauthorized!' })

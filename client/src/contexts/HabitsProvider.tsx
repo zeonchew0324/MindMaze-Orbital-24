@@ -90,11 +90,17 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
   const completeHabit = async (updatedHabit: Habit) => {
     const uid = currentUser?.uid;
     try {
-      await axios.put(`/api/habits/${uid}/${updatedHabit.id}`, {
+      // await axios.put(`/api/habits/${uid}/${updatedHabit.id}`, {
+      //   headers: {
+      //     Authorization: "Bearer " + token,
+      //   },
+      // });
+      await axios.put(`/api/habits/${uid}/${updatedHabit.id}`, {}, {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: 'Bearer ' + token,
         },
       });
+      console.log(uid, updatedHabit.id)
       console.log("Habit updated successfully!");
       setHabits((prevHabits) =>
         prevHabits.map((habit) =>

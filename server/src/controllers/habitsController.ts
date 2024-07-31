@@ -119,8 +119,9 @@ export async function handleUpdateHabits(req: Request, res: Response) {
     // Update the habit document
     await updateDoc(habitDocRef, {
       completed: true,
-      lastCompleted: Date()
-    });
+      lastCompleted: Date(),
+      streak: habitDoc.data().streak + 1
+    }); 
 
     return res.json({ message: "Habit updated successfully!" });
   } catch (error: any) {
