@@ -8,6 +8,8 @@ import React, {
 import { useAuth } from "./AuthProvider";
 import axios from "axios";
 import { unpackHabitData } from "../utils/habits";
+import { HabitData } from "../types/habits";
+import { setHeapSnapshotNearHeapLimit } from "v8";
 
 interface Habit {
   id: string;
@@ -23,7 +25,7 @@ interface HabitsContextType {
   addHabit: (habit: Habit) => void;
   deleteHabit: (id: string) => void;
   fetchHabits: () => void;
-  updateHabits: (habit: Habit) => void;
+  completeHabit: (habit: Habit) => void;
 }
 
 const HabitsContext = createContext<HabitsContextType | undefined>(undefined);
@@ -35,6 +37,10 @@ export const useHabits = (): HabitsContextType => {
   }
   return context;
 };
+
+export const handleCompleteHabit = (habit: Habit) => {
+
+}
 
 export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -80,10 +86,11 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const updateHabits = async (updatedHabit: Habit) => {
+  // CHANGE TO COMPLETION LOGIC
+  const completeHabit = async (updatedHabit: Habit) => {
     const uid = currentUser?.uid;
     try {
-      await axios.put(`/api/habits/${uid}/${updatedHabit.id}`, updatedHabit, {
+      await axios.put(`/api/habits/${uid}/${updatedHabit.id}`, {
         headers: {
           Authorization: "Bearer " + token,
         },
@@ -91,7 +98,7 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
       console.log("Habit updated successfully!");
       setHabits((prevHabits) =>
         prevHabits.map((habit) =>
-          habit.id === updatedHabit.id ? updatedHabit : habit
+          (habit.id === updatedHabit.id && habit.day === updatedHabit.day) ? updatedHabit : habit
         )
       );
     } catch (error) {
@@ -101,7 +108,7 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <HabitsContext.Provider
-      value={{ habits, addHabit, deleteHabit, fetchHabits, updateHabits }}
+      value={{ habits, addHabit, deleteHabit, fetchHabits, completeHabit }}
     >
       {children}
     </HabitsContext.Provider>

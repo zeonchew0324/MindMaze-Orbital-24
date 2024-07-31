@@ -27,7 +27,7 @@ app.use(express.urlencoded({ extended: true }));
 // Mount routers
 app.use('/user', userRouter);
 app.use('/api/timetables', timetableRouter);
-app.use('/api/habits', habitsRouter);
+app.use('/api/habits', habitsRouter); 
 app.use('/api/todos', todoRouter);  
 app.use('/api/maze', mazeRouter);
 app.use('/api/energy', energyRouter);  

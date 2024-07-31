@@ -33,6 +33,10 @@ export function unpackHabitData(res: HabitData[]): Habit[] {
   return result;
 }
 
+export function completeHabitHelper(req: Habit, arr: HabitData[]) {
+  return arr.map(habit => habit.id === req.id ? {...habit, completed: true} : habit)
+}
+
 export function calculateHabitStreak(habit: Habit): number {
   const today = new Date();
   const habitDay = new Date(habit.day);

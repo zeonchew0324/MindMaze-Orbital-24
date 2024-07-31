@@ -94,7 +94,6 @@ export async function handleUpdateHabits(req: Request, res: Response) {
   try {
     const db = firestoreDb;
     const { id, habitId } = req.params;
-    const updatedHabit = req.body;
 
     // Get the user document using the provided UID
     const userRef = doc(db, "users", id);
@@ -118,7 +117,10 @@ export async function handleUpdateHabits(req: Request, res: Response) {
     }
 
     // Update the habit document
-    await updateDoc(habitDocRef, updatedHabit);
+    await updateDoc(habitDocRef, {
+      completed: true,
+      lastCompleted: Date()
+    });
 
     return res.json({ message: "Habit updated successfully!" });
   } catch (error: any) {
