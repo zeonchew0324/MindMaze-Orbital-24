@@ -9,6 +9,7 @@ import {
 import { useAuth } from "../../contexts/AuthProvider";
 import { User, Lock, Trash2 } from "lucide-react";
 import { useEnergy } from "../../contexts/EnergyProvider";
+import axios from "axios";
 
 const ProfilePage = () => {
     const [username, setUsername] = useState('');
@@ -19,18 +20,20 @@ const ProfilePage = () => {
     const [showUsernameInput, setShowUsernameInput] = useState(false);
     const [showPasswordInput, setShowPasswordInput] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-    const { currentUser } = useAuth();
-    const { completedNum } = useEnergy()
+    const { currentUser, token } = useAuth();
+    const { completedNum, fetchInfo } = useEnergy()
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const user = getCurrentUser();
-      if (user) {
-        setUsername(user.displayName || "");
-      }
-    };
+      if (currentUser) {
+        const uid = currentUser.uid
+        const res = await axios.get(`/user/get-username/${uid}`)
+        setUsername(res.data)
+      };
+    }
 
     fetchUserData();
+    fetchInfo()
   }, []);
   
   const handleUsernameChange = async () => {

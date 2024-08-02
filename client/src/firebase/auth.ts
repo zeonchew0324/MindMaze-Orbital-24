@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {auth} from './firebase-config';
-
 import { createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, updatePassword, deleteUser, User } from "firebase/auth";
+import { useAuth } from '../contexts/AuthProvider';
 
 export const doCreateUser = async (email: string, password: string, username: string) => {
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -44,10 +44,7 @@ export const updateUsername = async (cred: User | null = auth.currentUser, newUs
   try {
     const uid = cred?.uid
     const reqBody = {username: newUsername}
-    await axios.put(`/api/habits/${uid}`, reqBody, {
-      headers: {
-        Authorization: "Bearer " + cred?.getIdToken()
-      }
+    await axios.put(`/user/change-name/${uid}`, reqBody, {
     })
     console.log('Successfully updated username')
   } catch (error) {
@@ -61,7 +58,7 @@ export const deleteAccount = async () => {
     if (currentUser) {
       await deleteUser(currentUser);
       const uid = auth.currentUser?.uid
-      await axios.get(`/api/habits/${uid}`, {
+      await axios.get(`/user/delete/${uid}`, {
         headers: {
           Authorization: "Bearer " + auth.currentUser?.getIdToken()
         }

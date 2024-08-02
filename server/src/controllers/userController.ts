@@ -56,4 +56,24 @@ export async function handleDeleteAccount(req: Request, res: Response) {
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
+}
+
+export async function handleGetUsername(req: Request, res: Response) {
+  try {
+    const db = firestoreDb
+    const { id } = req.params;
+
+    // Get the user document using the provided UID
+    const userRef = doc(db, 'users', id)
+    const userDoc = await getDoc(userRef)
+
+    if (userDoc.exists()) {
+      return res.json(userDoc.data().username);
+    } else {
+      throw Error("Cannot send suername")
+    }
+
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
   }
+}
