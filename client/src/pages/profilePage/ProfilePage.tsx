@@ -8,6 +8,7 @@ import {
 } from "../../firebase/auth";
 import { useAuth } from "../../contexts/AuthProvider";
 import { User, Lock, Trash2 } from "lucide-react";
+import { useEnergy } from "../../contexts/EnergyProvider";
 
 const ProfilePage = () => {
     const [username, setUsername] = useState('');
@@ -19,6 +20,7 @@ const ProfilePage = () => {
     const [showPasswordInput, setShowPasswordInput] = useState(false);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
     const { currentUser } = useAuth();
+    const { completedNum } = useEnergy()
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -93,7 +95,7 @@ const handlePasswordChange = async () => {
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold">Mazes Completed: {mazeCompleted}</h2>
+                <h2 className="text-lg font-semibold">Mazes Completed: {completedNum}</h2>
               </div>
 
               <div>
