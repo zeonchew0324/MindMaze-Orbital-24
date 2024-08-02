@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doSignOut } from '../../firebase/auth';
 import DashboardHabits from '../../components/dashboard/dashboardhabits';
 import DashboardTodos from '../../components/dashboard/DashboardTodos';
 import DashboardReminder from '../../components/dashboard/DashboardReminder';
 import Maze from '../../components/maze/Maze';
+import { useHabits } from '../../contexts/HabitsProvider';
+import { useTodos } from '../../contexts/TodoProvider';
 
 const HomePage: React.FC = () => {
   const [errMessage, setErrMessage] = useState('');
   const [isSigningOut, setIsSigningOut] = useState(false);
   const navigate = useNavigate();
+  const { fetchHabits } = useHabits()
+  const { fetchTodos } = useTodos()
 
   const onSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,6 +30,11 @@ const HomePage: React.FC = () => {
       }
     }
   };
+
+  useEffect(() => {
+    fetchHabits()
+    fetchTodos()
+  }, [])
 
   return (
     <div className="h-svh bg-gradient-to-r from-blue-200 to-orange-500">

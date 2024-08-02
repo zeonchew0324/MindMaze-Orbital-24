@@ -134,3 +134,36 @@ export async function updateHabitStreaks(habits: any[], userId: string) {
     throw error
   }
 }
+
+function areDatesOnDifferentDays(date1: Date, date2: Date): boolean {
+  return date1.getFullYear() !== date2.getFullYear() ||
+         date1.getMonth() !== date2.getMonth() ||
+         date1.getDate() !== date2.getDate();
+}
+
+export async function resetHabitCompletion(habits: Habit[], userId: string): Promise<Habit[]> {
+  const db = firestoreDb;
+  const updatedHabits: Habit[] = [];
+
+  try {
+    for (let habit of habits) {
+      const today = new Date();
+
+      // Check if today's date is after lastCompleted
+      if (areDatesOnDifferentDays(today, new Date(formatDateStringManually(habit.lastCompleted)))) {
+        habit.completed = false;
+      }
+
+      const habitsColRef = collection(db, `users/${userId}/habitsCollection`);
+      const habitDocRef = doc(habitsColRef, habit.id);
+      await updateDoc(habitDocRef, {
+        completed: habit.completed
+      });
+
+      updatedHabits.push(habit);
+    }
+    return updatedHabits;
+  } catch (error) {
+    throw error;
+  }
+}

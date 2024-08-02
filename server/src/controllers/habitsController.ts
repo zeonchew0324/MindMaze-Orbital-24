@@ -8,7 +8,7 @@ import {
   getDocs,
   deleteDoc,
 } from "firebase/firestore";
-import { updateHabitStreaks } from "../util/habitStreak";
+import { resetHabitCompletion, updateHabitStreaks } from "../util/habitStreak";
 const { firestoreDb } = require("../firebase/firebase-config");
 
 export async function handleGetHabits(req: Request, res: Response) {
@@ -33,7 +33,8 @@ export async function handleGetHabits(req: Request, res: Response) {
       ...doc.data(),
     }));
 
-    const checkedHabits = await updateHabitStreaks(habits, id);
+    let checkedHabits = await updateHabitStreaks(habits, id);
+    checkedHabits = await resetHabitCompletion(checkedHabits, id)
 
     return res.json(checkedHabits);
   } catch (error: any) {
