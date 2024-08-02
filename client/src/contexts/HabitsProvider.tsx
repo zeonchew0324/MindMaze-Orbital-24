@@ -107,6 +107,11 @@ export const HabitsProvider: React.FC<{ children: ReactNode }> = ({
           (habit.id === updatedHabit.id && habit.day === updatedHabit.day) ? updatedHabit : habit
         )
       );
+      setHabits((prevHabits) =>
+        prevHabits.map((habit) =>
+          (habit.id === updatedHabit.id && habit.day !== updatedHabit.day) ? {...habit, streak: habit.streak + 1} : habit
+        )
+      );
     } catch (error) {
       console.error("Error updating habit:", error);
     }

@@ -65,7 +65,7 @@ const HabitsList: React.FC<HabitsListProps> = ({ habits }) => {
     }
     completeHabit(updatedHabit);
     if (!currstate) {
-      increaseEnergy(10);
+      increaseEnergy(100);
     }
   };
 
