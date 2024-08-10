@@ -54,7 +54,7 @@ const HabitsPage: React.FC = () => {
           const reqBody = {
             name: habitName,
             day: selectedDays,
-            description: "", //Work in progress
+            description: "", 
             streak: 0,
             completed: false,
           };

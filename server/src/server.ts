@@ -32,7 +32,6 @@ app.use('/api/todos', todoRouter);
 app.use('/api/maze', mazeRouter);
 app.use('/api/energy', energyRouter);  
 
-// Serve react files (assuming this is for production deployment)
 app.use(express.static(path.join(__dirname, '../../client/build')));
 
 // Route to serve React frontend

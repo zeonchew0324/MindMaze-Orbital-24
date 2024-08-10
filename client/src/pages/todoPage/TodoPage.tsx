@@ -19,7 +19,6 @@ const TodoPage: React.FC = () => {
     fetchTodos()
   }, [])
 
-  // axios.defaults.baseURL = 'http://localhost:5000'; // Replace with your backend URL
 
   const handleSubmitTodo = async () => {
     if (todoName.trim() === '' || !todoDeadline || todoPriority.trim() === '') {
